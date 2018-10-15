@@ -1,7 +1,8 @@
 import React from 'react'
-import { Router, Link } from 'react-static'
+import { Router, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
+import Video from './containers/Video'
 //
 import Routes from 'react-static-routes'
 
@@ -50,11 +51,11 @@ const App = () => (
         <Link exact to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Blog</Link>
-        <Link to="/video">Video</Link>
       </nav>
-      <div className="content">
+      <Switch>
+        <Route path="/video/:videoId" component={Video} />
         <Routes />
-      </div>
+      </Switch>
     </AppStyles>
   </Router>
 )
