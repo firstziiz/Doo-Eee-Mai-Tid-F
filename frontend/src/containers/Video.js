@@ -20,9 +20,9 @@ class Video extends Component {
   }
 
   async componentDidMount() {
-    const path = this.props.match.params[0]
-    const baseUrl = 'http://localhost:8080'
-    const { data } = await axios.get(`${baseUrl}${path}`)
+    const videoId = this.props.match.params.videoId
+    const baseUrl = process.env.VIDEO_API
+    const { data } = await axios.get(`${baseUrl}/video/${videoId}`)
     if (data) {
       this.setState({
         url: data.player.hls_url,
