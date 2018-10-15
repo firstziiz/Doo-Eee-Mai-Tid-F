@@ -3,6 +3,7 @@ import { Router, Link, Route, Switch } from 'react-static'
 import styled, { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
 import Video from './containers/Video'
+import { Affix } from 'antd'
 //
 import Routes from 'react-static-routes'
 
@@ -47,11 +48,13 @@ const AppStyles = styled.div`
 const App = () => (
   <Router>
     <AppStyles>
-      <nav>
-        <Link exact to="/">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/blog">Blog</Link>
-      </nav>
+      <Affix>
+        <nav>
+          <Link exact to="/">Home</Link>
+          <Link to="/about">About</Link>
+          <Link to="/blog">Blog</Link>
+        </nav>
+      </Affix>
       <Switch>
         <Route path="/video/:videoId" component={Video} />
         <Routes />
