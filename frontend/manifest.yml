@@ -1,0 +1,6 @@
+applications:
+- name: frontend-service
+  random-route: true
+  path: dist/
+  memory: 64M
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git
