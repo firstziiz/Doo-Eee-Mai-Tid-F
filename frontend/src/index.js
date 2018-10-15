@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
+import 'antd/dist/antd.css'
 // Your top level component
 import App from './App'
 

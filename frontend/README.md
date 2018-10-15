@@ -1,4 +1,4 @@
-# React-Static - Styled-Components Example
+# E-learning FrontEnd
 
 This example includes:
 - Styled-Components

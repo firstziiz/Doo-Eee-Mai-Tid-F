@@ -32,6 +32,14 @@ export default {
         })),
       },
       {
+        path: '/video/:videoId',
+        component: 'src/containers/Video',
+        getData: (route) => {
+          console.log(route)
+          return {route}
+        }
+      },
+      {
         is404: true,
         component: 'src/containers/404',
       },
