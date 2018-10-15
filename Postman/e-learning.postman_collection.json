@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "14cb024a-6c9d-4497-b7f6-9b6c2cfe7a63",
+		"name": "e-learning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get video by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "93658475-1573-4949-81e1-e3640046b1b3",
+						"exec": [
+							"",
+							"pm.environment.set(\"video_id\", \"8286\");",
+							"",
+							"pm.test(\"Returning a valid response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Content-Type is json\", function () {",
+							"    var contentType = postman.getResponseHeader(\"Content-Type\")",
+							"    var expectContentType = \"application/json;charset=UTF-8\"",
+							"    pm.expect(contentType).to.eql(expectContentType)",
+							"});",
+							"",
+							"",
+							"pm.test(\"ResponseBody is valid\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.video_id).to.eql('8286')",
+							"    pm.expect(Object.keys(jsonData).length).to.eql(9)",
+							"}) ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_local}}/video/{{video_id}}",
+					"host": [
+						"{{api_local}}"
+					],
+					"path": [
+						"video",
+						"{{video_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

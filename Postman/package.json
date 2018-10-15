@@ -1,0 +1,11 @@
+{
+  "name": "postman",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "dependencies": {
+    "newman": "^4.1.0"
+  }
+}
