@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import axios from 'axios'
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
@@ -30,14 +31,6 @@ export default {
             post,
           }),
         })),
-      },
-      {
-        path: '/video/:videoId',
-        component: 'src/containers/Video',
-        getData: (route) => {
-          console.log(route)
-          return {route}
-        }
       },
       {
         is404: true,
