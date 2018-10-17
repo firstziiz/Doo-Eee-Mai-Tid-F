@@ -52,7 +52,8 @@ class Video extends Component {
     errorText: '',
   }
 
-  async componentDidMount() {
+  getVideo = () => {
+    this.setState({ loading: true, error: false })
     const videoId = this.props.match.params.videoId
     const baseUrl = process.env.VIDEO_API
     axios.get(`${baseUrl}/video/${videoId}`)
@@ -60,11 +61,9 @@ class Video extends Component {
         const date = moment(data.video_date)
         const start = moment(data.video_starttime)
         const end = moment(data.video_endtime)
-        console.log()
         if (data) {
           this.setState({
             url: data.player.hls_url,
-            videoData: data,
             videoName: data.video_name,
             loading: false,
             date: date.format('DD MMM YYYY'),
@@ -76,13 +75,19 @@ class Video extends Component {
         }
       })
       .catch(err => {
+        console.error(err)
         this.setState({
           loading: false,
           error: true,
           errorMessage: err.message,
           errorText: err.toString()
         })
+        this.getVideo()
       })
+  }
+
+  async componentDidMount() {
+    this.getVideo()
   }
 
   renderError = () => {
