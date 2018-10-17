@@ -1,6 +1,7 @@
 applications:
 - name: frontend-service
   random-route: true
-  path: dist/
-  memory: 64M
-  buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git
+  path: .
+  memory: 256M
+  command: yarn serve
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
