@@ -12,7 +12,7 @@ export default withSiteData(() => (
     <Layout className="content" breakpoint='md'>
       <Row>
         {videos.map(video => (
-          <Col span={4} key={video.video_id} gutter="24">
+          <Col md={4} xs={12} key={video.video_id} gutter="24">
             <Thumb
               src={video.video_thumbnail}
               link={`/video/${video.video_id}`}
