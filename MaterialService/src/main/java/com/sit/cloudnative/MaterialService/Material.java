@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @Table(name="materials")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt","hibernateLazyInitializer", "handler"}, allowGetters = true)
 public class Material implements Serializable {
 
     @Id

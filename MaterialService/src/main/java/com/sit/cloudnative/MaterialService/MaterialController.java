@@ -29,7 +29,7 @@ public class MaterialController {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
-        String encryptTimestampWithFileName = encrypt(timestampWithFileName);
+        String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
 
         if(checkValidFileType(fileType)){
             Material material = new Material();
@@ -44,6 +44,16 @@ public class MaterialController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/materials/{materialId}"
+    )
+    public ResponseEntity<Material> deleteMaterial(@PathVariable("materialId")String materialId){
+        Material material = materialService.getMaterialById(materialId);
+        materialService.deleteMaterial(material);
+        return new ResponseEntity<Material>(HttpStatus.OK);
+    }
+
     public boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
         return Arrays.asList(allowType).contains(fileType);
@@ -56,7 +66,7 @@ public class MaterialController {
         return yearMonthDay.format(now)+"-"+hhmmss.format(now)+"-"+originalFileName;
     }
 
-    public String encrypt(String timestampWithFileName) {
+    public String encryptFileName(String timestampWithFileName) {
         String key = "Bar12345Bar12345";
         String initVector = "WoWoWoWoWoWoWoWo";
 
