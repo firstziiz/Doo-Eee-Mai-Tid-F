@@ -26,22 +26,22 @@ const SidebarStyled = styled.nav`
     }
   }
 
-  .sidebar .nav-link {
+  .nav-link {
     font-weight: 500;
     color: #333;
   }
 
-  .sidebar .nav-link .feather {
+  .nav-link .feather {
     margin-right: 4px;
     color: #999;
   }
 
-  .sidebar .nav-link.active {
+  .nav-link.active {
     color: #007bff;
   }
 
-  .sidebar .nav-link:hover .feather,
-  .sidebar .nav-link.active .feather {
+  .nav-link:hover .feather,
+  .nav-link.active .feather {
     color: inherit;
   }
 
@@ -59,58 +59,42 @@ class Sidebar extends React.Component {
           <ul className="nav flex-column">
             <li className="nav-item">
               <a className="nav-link active" href="#">
-                Dashboard <span className="sr-only">(current)</span>
+                Home <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Orders
+                Curriculum
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Products
+                All Videos
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Customers
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Reports
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Integrations
+                Live
               </a>
             </li>
           </ul>
-
           <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Saved reports</span>
+            <span>Favorites Subject!</span>
           </h6>
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Current month
+                INT999 Motorcycle Training
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Last quarter
+                INT999 Cooking
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Social engagement
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Year-end sale
+                INT999 Introduction of Ragnarok M
               </a>
             </li>
           </ul>

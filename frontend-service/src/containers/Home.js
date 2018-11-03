@@ -5,7 +5,9 @@ class Home extends React.Component {
   render() {
     return (
       <Layout>
-        <h1>Hi</h1>
+        <h1>
+          Welcome to SITFlix, <small>The Next Generation of E-learning</small>
+        </h1>
       </Layout>
     )
   }
