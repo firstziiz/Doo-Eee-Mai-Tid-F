@@ -161,6 +161,18 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "16a94063-2306-412d-a159-90d5eb275e58",
+								"exec": [
+									"if(pm.environment.get(\"user_id\") === undefined){",
+									"    pm.environment.set(\"user_id\", 1);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -171,14 +183,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes/user/1",
+							"raw": "{{api_local}}/notes/user/{{user_id}}",
 							"host": [
 								"{{api_local}}"
 							],
 							"path": [
 								"notes",
 								"user",
-								"1"
+								"{{user_id}}"
 							]
 						},
 						"description": "view all notes of a user"
