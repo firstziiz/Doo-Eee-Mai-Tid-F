@@ -29,7 +29,7 @@ public class SubjectController{
 
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/subject/subjects" 
+        value = "/subjects"
     )
     public ResponseEntity<List<Subject>> getAllSubject(){        
         return   new ResponseEntity<List<Subject>> (subjectService.getAllSubject(), HttpStatus.OK);
