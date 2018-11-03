@@ -1,43 +1,11 @@
-import 'dotenv/config'
-import axios from 'axios'
 import React, { Component } from 'react'
 import { ServerStyleSheet } from 'styled-components'
 
 export default {
+  disableRouteInfoWarning: true,
   getSiteData: () => ({
-    title: 'React Static',
+    title: 'SITFLIX | NEXT GENERATION E-LEARNING!'
   }),
-  getRoutes: async () => {
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
-    return [
-      {
-        path: '/',
-        component: 'src/containers/Home',
-      },
-      {
-        path: '/about',
-        component: 'src/containers/About',
-      },
-      {
-        path: '/blog',
-        component: 'src/containers/Blog',
-        getData: () => ({
-          posts,
-        }),
-        children: posts.map(post => ({
-          path: `/post/${post.id}`,
-          component: 'src/containers/Post',
-          getData: () => ({
-            post,
-          }),
-        })),
-      },
-      {
-        is404: true,
-        component: 'src/containers/404',
-      },
-    ]
-  },
   renderToHtml: (render, Comp, meta) => {
     const sheet = new ServerStyleSheet()
     const html = render(sheet.collectStyles(<Comp />))
@@ -45,21 +13,30 @@ export default {
     return html
   },
   Document: class CustomHtml extends Component {
-    render () {
-      const {
-        Html, Head, Body, children, renderMeta,
-      } = this.props
+    render() {
+      const { Html, Head, Body, children, renderMeta } = this.props
 
       return (
         <Html>
           <Head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>SITFLIX | NEXT GENERATION E-LEARNING!</title>
             {renderMeta.styleTags}
+            <link
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+              crossOrigin="anonymous"
+            />
+            <link
+              href="https://fonts.googleapis.com/css?family=Kanit:300,400,700"
+              rel="stylesheet"
+            />
           </Head>
           <Body>{children}</Body>
         </Html>
       )
     }
-  },
+  }
 }
