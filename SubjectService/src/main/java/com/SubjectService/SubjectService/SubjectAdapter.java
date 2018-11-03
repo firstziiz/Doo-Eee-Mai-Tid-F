@@ -26,7 +26,7 @@ public class SubjectAdapter{
         try {            
             RestTemplate restTemplate = new RestTemplate();
             String endpointSubjectAPI = String.format("https://ngelearning.sit.kmutt.ac.th/api/v0/program/1/subjects");            
-            List<Subject> subject = (List<Subject>) restTemplate.getForObject(endpointSubjectAPI, Subject.class);
+            List<Subject> subject = restTemplate.getForEntity(endpointSubjectAPI, List.class).getBody();
             return subject;
         } catch (Exception e) {
             e.printStackTrace();
