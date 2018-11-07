@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-static'
+import { Icon } from 'antd'
 
 const SidebarStyled = styled.nav`
   position: fixed;
@@ -28,6 +29,8 @@ const SidebarStyled = styled.nav`
   }
 
   .nav-link {
+    display: flex;
+    align-items: center;
     font-weight: 500;
     color: #333;
   }
@@ -60,21 +63,25 @@ class Sidebar extends React.Component {
           <ul className="nav flex-column">
             <li className="nav-item">
               <Link className="nav-link" exact to="/">
+                <Icon type="home" theme="outlined" className="mr-2" />
                 Home <span className="sr-only">(current)</span>
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/curriculum">
+                <Icon type="book" theme="outlined" className="mr-2" />
                 Curriculum
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/videos">
+                <Icon type="youtube" theme="outlined" className="mr-2" />
                 All Videos
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/live">
+                <Icon type="notification" theme="outlined" className="mr-2" />
                 Live
               </Link>
             </li>
@@ -84,19 +91,22 @@ class Sidebar extends React.Component {
           </h6>
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/subjects/1">
+                <Icon type="read" theme="outlined" className="mr-2" />
                 INT999 Motorcycle Training
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/subjects/2">
+                <Icon type="read" theme="outlined" className="mr-2" />
                 INT999 Cooking
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/subjects/3">
+                <Icon type="read" theme="outlined" className="mr-2" />
                 INT999 Introduction of Ragnarok M
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
