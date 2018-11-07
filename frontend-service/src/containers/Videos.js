@@ -1,7 +1,13 @@
 import React from 'react'
+import styled from 'styled-components'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 
+const TitleOverflow = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
 class Videos extends React.Component {
   render() {
     return (
@@ -15,7 +21,7 @@ class Videos extends React.Component {
                   <div className="card mb-4 shadow-sm">
                     <img src="https://placeimg.com/200/125/any" className="card-img-top" />
                     <div className="card-body">
-                      <p className="card-text text-muted">INT999: Make Up Class </p>
+                      <TitleOverflow className="card-text text-muted" >INT999: Make Up Class</TitleOverflow>
                       <div className="d-flex flex-column">
                         <small className="text-muted">9 mins</small>
                         <small className="text-muted">Dr. Kunchai Sodhom — INT101</small>
