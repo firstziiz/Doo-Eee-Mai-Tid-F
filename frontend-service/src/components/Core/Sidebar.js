@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-static'
 
 const SidebarStyled = styled.nav`
   position: fixed;
@@ -58,24 +59,24 @@ class Sidebar extends React.Component {
         <div className="sidebar-sticky">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link active" href="#">
+              <Link className="nav-link" exact to="/">
                 Home <span className="sr-only">(current)</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/curriculum">
                 Curriculum
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/videos">
                 All Videos
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/live">
                 Live
-              </a>
+              </Link>
             </li>
           </ul>
           <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
