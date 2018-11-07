@@ -20,6 +20,9 @@ createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+  .ant-notification {
+    z-index: 999;
+  }
 `
 
 const App = () => (
@@ -38,7 +41,7 @@ const App = () => (
         <Route path="/videos" component={Videos} />
         <Route path="/live" component={Live} />
         <Route path="/subjects/:subjectID" component={Videos} />
-        <Route path="/video/:subjectID/:videoId" component={Video} />
+        <Route path="/video/:videoId" component={Video} />
         <Route component={NotFound} />
       </Switch>
     </React.Fragment>

@@ -2,9 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const NavbarStyled = styled.nav`
-  /*
- * Navbar
- */
+  z-index: 222;
 
   .navbar-brand {
     padding-top: 0.75rem;
