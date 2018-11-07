@@ -6,7 +6,7 @@ class Home extends React.Component {
     return (
       <Layout>
         <h1>
-          Welcome to SITFlix, <small>The Next Generation of E-learning</small>
+          Welcome to SITFlix, <small className="d-block">The Next Generation of E-learning</small>
         </h1>
       </Layout>
     )

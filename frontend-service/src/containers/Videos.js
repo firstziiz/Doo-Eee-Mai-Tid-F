@@ -1,14 +1,14 @@
 import React from 'react'
 import Layout from '../components/Core/Layout'
 
-class Video extends React.Component {
+class Videos extends React.Component {
   render() {
     return (
       <Layout>
-        <h1>Video</h1>
+        <h1>Videos</h1>
       </Layout>
     )
   }
 }
 
-export default Video
+export default Videos
