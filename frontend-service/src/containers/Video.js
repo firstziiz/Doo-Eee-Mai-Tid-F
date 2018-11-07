@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../components/Core/Layout'
 import { notification } from 'antd'
 import ReactQuill from 'react-quill'
+import ReactPlayer from 'react-player'
 import 'react-quill/dist/quill.snow.css'
 
 class Video extends React.Component {
@@ -22,11 +23,10 @@ class Video extends React.Component {
   render() {
     return (
       <Layout>
-        <div className="embed-responsive embed-responsive-16by9">
-          <iframe
-            className="embed-responsive-item"
-            src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-            allowFullscreen
+        <div className="embed-responsive" >
+          <ReactPlayer
+            controls
+            url="https://ngestreaming.sit.kmutt.ac.th/INT305/2018-08-17_13-30_INT305-CB2301_,SD,HD,.mp4.urlset/master.m3u8?ngetoken=_-S3gS9KD7zq5WGxp6sXag&ngetime=1541618437"
           />
         </div>
         <div className="row py-3">
