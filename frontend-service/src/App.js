@@ -2,12 +2,14 @@ import React from 'react'
 import { Router, Route, Switch, Redirect } from 'react-static'
 import { createGlobalStyle } from 'styled-components'
 import { hot } from 'react-hot-loader'
-//
 
 import Home from './containers/Home'
+import Login from './containers/Login'
+import Curriculum from './containers/Curriculum'
+import Live from './containers/Live'
 import Video from './containers/Video'
+import Videos from './containers/Videos'
 import NotFound from './containers/404'
-import Navbar from './components/Core/Navbar'
 
 createGlobalStyle`
   body {
@@ -23,7 +25,6 @@ createGlobalStyle`
 const App = () => (
   <Router>
     <React.Fragment>
-      <Navbar />
       <Route
         path="/:url*"
         exact
@@ -31,8 +32,13 @@ const App = () => (
         render={props => <Redirect to={`${props.location.pathname}/`} />}
       />
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/video/:videoId" component={Video} />
+        <Route path="/login" component={Login} />
+        <Route exact path="/" component={Home} />
+        <Route path="/curriculum" component={Curriculum} />
+        <Route path="/videos" component={Videos} />
+        <Route path="/live" component={Live} />
+        <Route path="/subjects/:subjectID" component={Videos} />
+        <Route path="/video/:subjectID/:videoId" component={Video} />
         <Route component={NotFound} />
       </Switch>
     </React.Fragment>
