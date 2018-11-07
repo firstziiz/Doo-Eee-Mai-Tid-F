@@ -15,7 +15,7 @@ const Layout = ({ children }) => (
     <Container className="container-fluid">
       <div className="row">
         <Sidebar />
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-2">
+        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-3">
           {children}
         </main>
       </div>
