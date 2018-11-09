@@ -44,5 +44,9 @@ public class MinioStorageService {
             minioClient = new MinioClient(url,accessKey,secretKey);
             minioClient.removeObject(bucketName,fileName);
     }
-    
+    public InputStream getFile(String fileName) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidArgumentException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
+            minioClient = new MinioClient(url,accessKey,secretKey);
+            InputStream inputStream = minioClient.getObject(bucketName,fileName);
+            return inputStream;
+    }
 }
