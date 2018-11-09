@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -24,8 +23,8 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-=======
 .idea
 target
 *.iml
->>>>>>> 828fba2f1b193ccc3294701ada713392d1ef78a0
+src/main/appengine/app.yaml
+bin
