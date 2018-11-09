@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '../components/Core/Layout'
 import { notification } from 'antd'
-// import ReactQuill from 'react-quill'
 import ReactPlayer from 'react-player'
 import axios from 'axios'
 import moment from 'moment'
@@ -70,12 +69,24 @@ class Video extends React.Component {
     return response.data
   }
 
-  saveNote = () => {
-    notification['success']({
-      message: 'Note Saved',
-      description: 'Yes! Bros. I have already saved your note for this video.'
+  saveNote = async () => {
+    await axios({
+      url: `/notes`,
+      baseURL: videoServiceURL,
+      method: 'post',
+      body: {
+        userId: 1,
+        videoId: this.videoId,
+        content: this.state.note
+      }
+    }).then(resp => {
+      notification['success']({
+        message: 'Note Saved',
+        description: 'Yes! Bros. I have already saved your note for this video.'
+      })
     })
   }
+
   render() {
     return (
       <Layout>
@@ -97,7 +108,12 @@ class Video extends React.Component {
           </div>
           <div className="col-8">
             <div className="notes">
-              {/* <ReactQuill value={this.state.note} onChange={this.handleChange} /> */}
+              <textarea
+                value={this.state.note}
+                onChange={e => this.handleNoteChange(e.target.value)}
+                rows="5"
+                style={{ width: '100%', borderColor: '#ccc' }}
+              />
               <div className="text-right">
                 <button className="btn btn-primary btn-sm mt-2" onClick={() => this.saveNote()}>
                   Save Note
