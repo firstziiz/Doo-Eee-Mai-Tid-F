@@ -19,6 +19,9 @@ public class SubjectController{
     @Autowired
     private SubjectService subjectService;
 
+    @Autowired
+    private ProgramService programService;
+
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/subject/{subject_id}" 
@@ -34,5 +37,13 @@ public class SubjectController{
     public ResponseEntity<List<Subject>> getAllSubject(@PathVariable("program_id") int program_id ){        
         return new ResponseEntity<List<Subject>> (subjectService.getAllSubject(program_id), HttpStatus.OK);
     }  
+    
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/programs"
+    )
+    public ResponseEntity<List<Program>> getAllProgram(){
+        return new ResponseEntity<List<Program>> (programService.getAllProgram(), HttpStatus.OK);
+    }
 
 }
