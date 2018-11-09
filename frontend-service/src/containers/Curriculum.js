@@ -3,7 +3,25 @@ import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import { Icon } from 'antd'
 
+import axios from '../utils/axios-creator'
+import { subjectServiceURL } from '../utils/env'
+
 class Curriculum extends React.Component {
+  state = {
+    subjects: []
+  }
+
+  async componentWillMount() {
+    const response = await axios({
+      method: 'get',
+      url: `${subjectServiceURL}/subjects`
+    })
+
+    this.setState({
+      subjects: response.data
+    })
+  }
+
   render() {
     return (
       <Layout>
@@ -56,38 +74,18 @@ class Curriculum extends React.Component {
           <div className="col-5">
             <h3>Subject of XXX</h3>
             <div className="list-group mb-3">
-              <Link to="/subjects/1" className="list-group-item d-flex justify-content-between">
-                <div>
-                  <h6 className="my-0">INT101</h6>
-                  <small className="text-muted">IT Fundamental</small>
-                </div>
-              </Link>
-              <Link to="/subjects/2" className="list-group-item d-flex justify-content-between">
-                <div>
-                  <h6 className="my-0">INT102</h6>
-                  <small className="text-muted">Computer Programming 1</small>
-                </div>
-              </Link>
-              <Link to="/subjects/3" className="list-group-item d-flex justify-content-between">
-                <div>
-                  <h6 className="my-0">INT104</h6>
-                  <small className="text-muted">
-                    Discrete Mathematics for Information Technology
-                  </small>
-                </div>
-              </Link>
-              <Link to="/subjects/4" className="list-group-item d-flex justify-content-between">
-                <div>
-                  <h6 className="my-0">INT201</h6>
-                  <small className="text-muted">Network I</small>
-                </div>
-              </Link>
-              <Link to="/subjects/5" className="list-group-item d-flex justify-content-between">
-                <div>
-                  <h6 className="my-0">INT202</h6>
-                  <small className="text-muted">Software Development Process I</small>
-                </div>
-              </Link>
+              {this.state.subjects.map((sj, index) => (
+                <Link
+                  key={index}
+                  to={`/subjects/${sj.subject_id}`}
+                  className="list-group-item d-flex justify-content-between"
+                >
+                  <div>
+                    <h6 className="my-0">{sj.subject_code}</h6>
+                    <small className="text-muted">{sj.subject_name}</small>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
