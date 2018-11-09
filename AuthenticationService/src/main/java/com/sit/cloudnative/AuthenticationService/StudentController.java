@@ -16,6 +16,7 @@ public class StudentController {
             @RequestParam(name = "studentId", required = true) String studentId,
             @RequestParam(name = "fullName", required = true) String fullName,
             @RequestParam(name = "faculty", required = true) String faculty,
+            @RequestParam(name = "year", required = true) int year,
             @RequestParam(name = "major", required = true) String major,
             @RequestParam(name = "password", required = true) String password
     ) {
@@ -24,6 +25,7 @@ public class StudentController {
         student.setFullName(fullName);
         student.setFaculty(faculty);
         student.setMajor(major);
+        student.setYear(year);
         student.setPassword(password);
         studentService.save(student);
         return new ResponseEntity<Student>(student, HttpStatus.CREATED);
