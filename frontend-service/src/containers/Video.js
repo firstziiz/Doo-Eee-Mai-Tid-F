@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../components/Core/Layout'
 import { notification } from 'antd'
-import ReactQuill from 'react-quill'
+// import ReactQuill from 'react-quill'
 import ReactPlayer from 'react-player'
 import axios from 'axios'
 import moment from 'moment'
@@ -97,7 +97,7 @@ class Video extends React.Component {
           </div>
           <div className="col-8">
             <div className="notes">
-              <ReactQuill value={this.state.note} onChange={this.handleChange} />
+              {/* <ReactQuill value={this.state.note} onChange={this.handleChange} /> */}
               <div className="text-right">
                 <button className="btn btn-primary btn-sm mt-2" onClick={() => this.saveNote()}>
                   Save Note
