@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3bbf381d-0bfc-40ec-8982-ce1fea1a02f5",
+		"_postman_id": "8b0448af-6174-4095-af5f-d9f1482f9b4d",
 		"name": "e-learning",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -379,6 +379,7 @@
 									"    pm.expect(json.fullName).to.equal(\"Pureewat Kaewpoy\")",
 									"    pm.expect(json.faculty).to.equal(\"SIT\")",
 									"    pm.expect(json.major).to.equal(\"IT\")",
+									"    pm.expect(json.year).to.equal(3)",
 									"});"
 								],
 								"type": "text/javascript"
@@ -391,7 +392,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsImlkIjoiNTkxMzA1MDAwNDkiLCJleHAiOjE1NDE4NTk0ODR9.P4GMQmxuXpG77_GnHZusBzMnegrc7pSRdKxmD1BW71E",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsImlkIjoiNTkxMzA1MDAwNDkiLCJleHAiOjE1NDE4NjQ5NzF9.mN5FsjPwDlC5dsdQ07nzcBjHvPsWcUEWAfkUBmUZU1g",
 									"type": "string"
 								}
 							]
