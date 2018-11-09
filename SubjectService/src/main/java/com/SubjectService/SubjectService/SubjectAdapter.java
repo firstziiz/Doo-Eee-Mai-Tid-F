@@ -22,10 +22,10 @@ public class SubjectAdapter{
         }
     }
 
-    public List<Subject> getAllSubject() {
+    public List<Subject> getAllSubject(int program_id) {
         try {            
             RestTemplate restTemplate = new RestTemplate();
-            String endpointSubjectAPI = String.format("https://ngelearning.sit.kmutt.ac.th/api/v0/program/1/subjects");            
+            String endpointSubjectAPI = String.format("https://ngelearning.sit.kmutt.ac.th/api/v0/program/%d/subjects", program_id);
             List<Subject> subject = restTemplate.getForEntity(endpointSubjectAPI, List.class).getBody();
             return subject;
         } catch (Exception e) {

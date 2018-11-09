@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 public class SubjectService{
 
     @Autowired
-    private SubjectAdapter dataForSubjectAdapter;
+    private SubjectAdapter subjectAdapter;
    
     public Subject getSubjectById(int subject_Id){
-        return dataForSubjectAdapter.getSubjectById(subject_Id);
+        return subjectAdapter.getSubjectById(subject_Id);
     }
 
-    public List<Subject> getAllSubject() {
-		return dataForSubjectAdapter.getAllSubject();
+    public List<Subject> getAllSubject(int program_id) {
+		return subjectAdapter.getAllSubject(program_id);
     }
 
 }
