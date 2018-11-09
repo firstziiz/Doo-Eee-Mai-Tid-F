@@ -1,24 +1,40 @@
 package com.sit.cloudnative.MaterialService;
 
+import io.minio.errors.*;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.hibernate.result.Output;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xmlpull.v1.XmlPullParserException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class MaterialController {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MinioStorageService minioStorageService;
+
+    @Value("${server.url}")
+    private String appUrl;
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -30,29 +46,43 @@ public class MaterialController {
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
         String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
-
         if(checkValidFileType(fileType)){
-            Material material = new Material();
-            material.setId(encryptTimestampWithFileName);
-            material.setSubjectId(subjectId);
-            material.setFileName(timestampWithFileName);
-            material.setPath("wait for path");
-            material.setActive(isActive);
-            Material material_object = materialService.addMaterial(material);
-            return new ResponseEntity<Material>(material_object,HttpStatus.OK);
+            try{
+                minioStorageService.uploadFile(timestampWithFileName,file);
+                Material material = new Material();
+                material.setId(encryptTimestampWithFileName);
+                material.setSubjectId(subjectId);
+                material.setFileName(timestampWithFileName);
+                material.setPath("wow");
+                material.setActive(isActive);
+                Material material_object = materialService.addMaterial(material);
+                return new ResponseEntity<Material>(material_object,HttpStatus.OK);
+            }catch (MinioException e){
+                System.out.println(e.getMessage());
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(
             method = RequestMethod.DELETE,
-            value = "/materials/{materialId}"
+            value = "/materials"
     )
-    public ResponseEntity<Material> deleteMaterial(@PathVariable("materialId")String materialId){
-        Material material = materialService.getMaterialById(materialId);
-        materialService.deleteMaterial(material);
-        return new ResponseEntity<Material>(HttpStatus.OK);
+    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+        try{
+            Material material = materialService.getMaterialById(materialId);
+            materialService.deleteMaterial(material);
+
+            minioStorageService.deleteFile(material.getFileName());
+
+            return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
+        }catch(MinioException e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    
 
     public boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
@@ -65,6 +95,7 @@ public class MaterialController {
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
         return yearMonthDay.format(now)+"-"+hhmmss.format(now)+"-"+originalFileName;
     }
+
 
     public String encryptFileName(String timestampWithFileName) {
         String key = "Bar12345Bar12345";
