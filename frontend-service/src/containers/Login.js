@@ -6,7 +6,10 @@ import { tokenName, authenticationServiceURL } from '../utils/env'
 import LeftPanel from '../components/Login/LeftSide'
 import LoginPanel from '../components/Login/LoginPanel'
 import axios from '../utils/axios-creator'
+import { observer, inject } from 'mobx-react'
 
+@inject('authenticationStore')
+@observer
 class Login extends React.Component {
   state = {
     authError: false,
@@ -48,6 +51,7 @@ class Login extends React.Component {
   }
 
   render() {
+    const { authenticationStore } = this.props
     return (
       <div>
         <div className="container-fluid text-center">
