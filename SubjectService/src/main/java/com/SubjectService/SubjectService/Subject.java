@@ -7,25 +7,23 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
 public class Subject implements Serializable{
 
-    @Id
     private int subject_Id;
     private String subject_Name;
     private String subject_Code;
     private String subject_Description;
 
     public Subject(
-        @JsonProperty("subject_id")int subject_Id,
-        @JsonProperty("subject_name")String subject_Name,
-        @JsonProperty("subject_code")String subject_Code,
-        @JsonProperty("subject_description")String subject_Description
+      @JsonProperty("subject_id") int subject_Id,
+      @JsonProperty("subject_name") String subject_Name,
+      @JsonProperty("subject_code") String subject_Code,
+      @JsonProperty("subject_description") String subject_Description
         ){
-        this.subject_Id = subject_Id;
-        this.subject_Name = subject_Name;
-        this.subject_Code = subject_Code;
-        this.subject_Description = subject_Description;
+      this.subject_Id = subject_Id;
+      this.subject_Name = subject_Name;
+      this.subject_Code = subject_Code;
+      this.subject_Description = subject_Description;
 
     }
    
