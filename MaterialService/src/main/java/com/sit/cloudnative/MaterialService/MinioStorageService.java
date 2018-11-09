@@ -40,5 +40,9 @@ public class MinioStorageService {
             InputStream inputStream =  new BufferedInputStream(file.getInputStream());
             minioClient.putObject(bucketName,timestampWithFileName,inputStream,file.getContentType());
     }
+    public void deleteFile(String fileName) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidPortException, InvalidEndpointException, InsufficientDataException, NoResponseException, InternalException, InvalidArgumentException, ErrorResponseException, InvalidBucketNameException {
+            minioClient = new MinioClient(url,accessKey,secretKey);
+            minioClient.removeObject(bucketName,fileName);
+    }
     
 }
