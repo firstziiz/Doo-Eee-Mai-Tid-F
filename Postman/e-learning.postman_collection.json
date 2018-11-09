@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9679cc81-4ad6-459f-aa51-30f68787afdb",
+		"_postman_id": "8e8d2924-2a32-448f-9b3d-ca97bf9d83e6",
 		"name": "e-learning",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -320,6 +320,119 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "add subject favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "39174577-0206-4b67-8f27-4d302ef96402",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subjectId\", \"userId\", \"id\"],",
+									"        \"properties\": {",
+									"            \"subjectId\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"userId\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"              \"type\": \"integer\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{subject_api}}/subject/{{subject_id}}/user/{{user_id}}",
+							"host": [
+								"{{subject_api}}"
+							],
+							"path": [
+								"subject",
+								"{{subject_id}}",
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subject favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "315c9d73-a5d2-4028-9e9d-6c1ba55f538d",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subjectId\", \"userId\", \"id\"],",
+									"        \"properties\": {",
+									"            \"subjectId\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"userId\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"              \"type\": \"integer\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{subject_api}}/subject_favorites/user/1",
+							"host": [
+								"{{subject_api}}"
+							],
+							"path": [
+								"subject_favorites",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -379,6 +492,7 @@
 									"    pm.expect(json.fullName).to.equal(\"Pureewat Kaewpoy\")",
 									"    pm.expect(json.faculty).to.equal(\"SIT\")",
 									"    pm.expect(json.major).to.equal(\"IT\")",
+									"    pm.expect(json.year).to.equal(3)",
 									"});"
 								],
 								"type": "text/javascript"
@@ -391,7 +505,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsImlkIjoiNTkxMzA1MDAwNDkiLCJleHAiOjE1NDE4NTk0ODR9.P4GMQmxuXpG77_GnHZusBzMnegrc7pSRdKxmD1BW71E",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsImlkIjoiNTkxMzA1MDAwNDkiLCJleHAiOjE1NDE4NjQ5NzF9.mN5FsjPwDlC5dsdQ07nzcBjHvPsWcUEWAfkUBmUZU1g",
 									"type": "string"
 								}
 							]
@@ -463,229 +577,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Material service",
-			"item": [
-				{
-					"name": "Get all materials",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "d1dba01f-66a0-42c9-9592-22d48e39b408",
-								"exec": [
-									"pm.test(\"server should response with 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"response should be json array\", function () {",
-									"    var schema = {",
-									"        \"type\": \"array\",",
-									"        \"items\": {",
-									"            \"type\": \"object\"",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": ""
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "materialId",
-									"value": "wc7Ll1UnlxFxifzIbw6wfEc8aAK/joSfaTjHqIOaXLvsNTMfSk5GzxhNR6vjzTt6",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{material_api}}/materials",
-							"host": [
-								"{{material_api}}"
-							],
-							"path": [
-								"materials"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Material by subjectId",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ebe7dbd6-daef-431c-a4d9-06ae0bb555c7",
-								"exec": [
-									"pm.test(\"server should response with 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"response should be json array\", function () {",
-									"    var schema = {",
-									"        \"type\": \"array\",",
-									"        \"items\": {",
-									"            \"type\": \"object\"",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": ""
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
-								},
-								{
-									"key": "isActive",
-									"value": "1",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{material_api}}/subjects/5/materials",
-							"host": [
-								"{{material_api}}"
-							],
-							"path": [
-								"subjects",
-								"5",
-								"materials"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add material",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "25e1bfbc-4209-497e-aff4-b12392b1e99d",
-								"exec": [
-									"pm.test(\"server should response with 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "multipart/form-data",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
-								},
-								{
-									"key": "isActive",
-									"value": "1",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{material_api}}/subjects/5/materials",
-							"host": [
-								"{{material_api}}"
-							],
-							"path": [
-								"subjects",
-								"5",
-								"materials"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete material",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "d5a715e8-381f-415f-86b3-5c1f7d2a376a",
-								"exec": [
-									"pm.test(\"server should response with 204\", function () {",
-									"    pm.response.to.have.status(204);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "materialId",
-									"value": "nqCOJ4WJDKHGLC9PzuDhhYkpnKzOvejtCgVsWjuNar0TWjIxHkbu+dxl79kD4I7pR+JrcNWcqwc3EbbDavfrjg==",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{material_api}}/materials",
-							"host": [
-								"{{material_api}}"
-							],
-							"path": [
-								"materials"
-							]
-						}
-					},
-					"response": []
-				}
-			]
 		}
 	],
 	"event": [
@@ -712,45 +603,39 @@
 	],
 	"variable": [
 		{
-			"id": "d785f925-b16f-4bc7-91e1-491a9695b6d5",
+			"id": "d0d34170-3882-421f-a352-34f20aed54b2",
 			"key": "video_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
-			"id": "628ef55b-bc6e-4676-aa01-dc07e073cfef",
+			"id": "421121b7-0833-404e-9544-4166faaa2cf5",
 			"key": "video_id",
 			"value": "8286",
 			"type": "string"
 		},
 		{
-			"id": "d36b176c-c03c-40d2-bca0-bb7f6e597e79",
+			"id": "73e1460b-d9fd-4f7a-845f-031936d771c3",
 			"key": "user_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "0007a902-39eb-48a3-b067-c10963218c9a",
+			"id": "87b90e32-fbd1-4f85-a28d-f91fb0fb944d",
 			"key": "note_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "6b281206-dc11-465f-914f-59321d1478a6",
+			"id": "35634c58-433c-402d-8445-8dbadffb7cdf",
 			"key": "subject_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
-			"id": "e6cbe1b0-b36a-4bed-a31d-4284134f9088",
+			"id": "9b110628-2d68-43e4-bb71-d0ec87065bc7",
 			"key": "subject_id",
 			"value": "2",
-			"type": "string"
-		},
-		{
-			"id": "30a16828-79cc-4200-be88-5e3e181485b6",
-			"key": "material_api",
-			"value": "http://localhost:8080",
 			"type": "string"
 		}
 	]

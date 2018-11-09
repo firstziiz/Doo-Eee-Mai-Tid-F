@@ -49,7 +49,8 @@ public class VideoHistoryController {
             @PathVariable("userId")int userId,
             @RequestParam("video_id")int videoId)
     {
-        VideoHistory videoHistory = new VideoHistory(new CompositePrimaryKey(userId,videoId));
+        CompositePrimaryKey id = new CompositePrimaryKey(userId,videoId);
+        VideoHistory videoHistory = videoHistoryService.getHistoryById(id);
         videoHistoryService.deleteUserHistory(videoHistory);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
