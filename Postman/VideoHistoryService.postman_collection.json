@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "3c855805-7747-4476-9822-7dcc7d6a8acf",
+		"name": "VideoHistoryService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get user history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "84f318b5-c32e-4c66-80ae-3400912fb2f3",
+						"exec": [
+							"pm.test(\"server should response with 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"response should be json array\", function () {",
+							"    var schema = {",
+							"        \"type\": \"array\",",
+							"        \"items\": {",
+							"            \"type\": \"object\"",
+							"        }",
+							"    };",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{videohistory_api}}/users/1/video-history",
+					"host": [
+						"{{videohistory_api}}"
+					],
+					"path": [
+						"users",
+						"1",
+						"video-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b17472ab-e388-4966-ab6a-dd805df2a170",
+						"exec": [
+							"pm.test(\"server should response with 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video_id",
+							"value": "6",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{videohistory_api}}/users/1/video-history",
+					"host": [
+						"{{videohistory_api}}"
+					],
+					"path": [
+						"users",
+						"1",
+						"video-history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a7a9898-1df4-4d16-a1d7-7ef26ef1214b",
+						"exec": [
+							"pm.test(\"server should response with 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"response should be json\", function () {",
+							"    var schema = {",
+							"        \"type\": \"object\",",
+							"        ",
+							"    };",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video_id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{videohistory_api}}/users/1/video-history",
+					"host": [
+						"{{videohistory_api}}"
+					],
+					"path": [
+						"users",
+						"1",
+						"video-history"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "44d61bc1-e761-48cf-9ba6-3ae563da8028",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f9c8ee05-ef4c-41a9-b70f-75a8840385dc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "cdc21286-4749-40ed-a047-d88ea8a963c0",
+			"key": "videohistory_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
