@@ -19,4 +19,8 @@ public class VideoHistoryService {
     public void deleteUserHistory(VideoHistory videoHistory){
         videoHistoryRepository.delete(videoHistory);
     }
+
+    public VideoHistory getHistoryById(CompositePrimaryKey id){
+        return videoHistoryRepository.getOne(id);
+    }
 }
