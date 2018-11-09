@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class AuthResponse implements Serializable {
     private String token;
-    private Date expiryDate;
+    private long expiryDate;
 
     public String getToken() {
         return token;
@@ -15,11 +15,11 @@ public class AuthResponse implements Serializable {
         this.token = token;
     }
 
-    public Date getExpiryDate() {
+    public long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(long expiryDate) {
         this.expiryDate = expiryDate;
     }
 }
