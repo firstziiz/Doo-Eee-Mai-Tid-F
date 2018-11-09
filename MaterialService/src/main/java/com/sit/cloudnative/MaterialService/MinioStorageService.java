@@ -44,9 +44,9 @@ public class MinioStorageService {
             minioClient = new MinioClient(url,accessKey,secretKey);
             minioClient.removeObject(bucketName,fileName);
     }
-    public InputStream getFile(String fileName) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidArgumentException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
+    public String getDownloadLink(String fileName) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidArgumentException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidExpiresRangeException {
             minioClient = new MinioClient(url,accessKey,secretKey);
-            InputStream inputStream = minioClient.getObject(bucketName,fileName);
-            return inputStream;
+            String url = minioClient.presignedGetObject(bucketName,fileName,60*30);
+            return url;
     }
 }
