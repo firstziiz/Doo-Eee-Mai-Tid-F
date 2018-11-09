@@ -9,7 +9,8 @@ import { subjectServiceURL } from '../utils/env'
 class Curriculum extends React.Component {
   state = {
     programs: [],
-    subjects: []
+    subjects: [],
+    selectedProgram: ''
   }
 
   async componentDidMount() {
@@ -27,22 +28,24 @@ class Curriculum extends React.Component {
 
       this.setState({
         programs: programResponse.data,
-        subjects: subjectResponse.data
+        subjects: subjectResponse.data,
+        selectedProgram: program.program_code
       })
     } catch (error) {
 
     }
   }
 
-  onSelectProgram = async (programId) => {
+  onSelectProgram = async (program) => {
     try {
       const subjectResponse = await axios({
         method: 'get',
-        url: `${subjectServiceURL}/program/${programId}/subjects`
+        url: `${subjectServiceURL}/program/${program.program_id}/subjects`
       })
 
       this.setState({
-        subjects: subjectResponse.data
+        subjects: subjectResponse.data,
+        selectedProgram: program.program_code
       })
     } catch (error) {
 
@@ -59,7 +62,7 @@ class Curriculum extends React.Component {
               {this.state.programs.map(program => (
                 <a
                   key={program.program_id}
-                  onClick={() => this.onSelectProgram(program.program_id)}
+                  onClick={() => this.onSelectProgram(program)}
                   className="list-group-item d-flex justify-content-between"
                 >
                   <div>
@@ -76,7 +79,7 @@ class Curriculum extends React.Component {
             </div>
           </div>
           <div className="col-5">
-            <h3>Subject of XXX</h3>
+            <h3>Subject of {this.state.selectedProgram}</h3>
             <div className="list-group mb-3">
               {this.state.subjects.map((sj, index) => (
                 <Link
