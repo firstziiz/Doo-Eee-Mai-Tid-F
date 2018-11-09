@@ -25,3 +25,7 @@ env_variables:
   spring_datasource_url: jdbc:mysql://{ip}:{port}/{database}
   spring_datasource_username:
   spring_datasource_password:
+  storage_minio_url:
+  storage_minio_bucketName:
+  storage_minio_accessKey:
+  storage_minio_secretKey:
