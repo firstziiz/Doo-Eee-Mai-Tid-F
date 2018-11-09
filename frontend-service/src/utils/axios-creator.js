@@ -6,7 +6,7 @@ import { tokenName } from './env'
 const token = Cookies.get(tokenName)
 
 const axiosInstance = axios.create({
-  headers: { Authorization: `JWT ${token}` }
+  headers: { Authorization: `${token}` }
 })
 
 export default axiosInstance
