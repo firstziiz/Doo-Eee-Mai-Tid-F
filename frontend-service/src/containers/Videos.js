@@ -2,30 +2,55 @@ import React from 'react'
 import styled from 'styled-components'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
+import moment from 'moment'
 
-const TitleOverflow = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`
+import axios from '../utils/axios-creator'
+import { videoServiceURL } from '../utils/env'
+
+const TitleOverflow = styled.p``
 class Videos extends React.Component {
+  state = {
+    videos: []
+  }
+
+  get subjectId() {
+    return this.props.match.params.subjectId
+  }
+
+  async componentWillMount() {
+    const response = await axios({
+      method: 'get',
+      url: `${videoServiceURL}/subject/${this.subjectId}/videos`
+    })
+
+    console.log(response)
+
+    const videos = response.data
+    this.setState({
+      videos
+    })
+  }
+
   render() {
     return (
       <Layout>
         <div>
           <h1>All Videos</h1>
           <Link className="row">
-            {[...Array(12)].map((video, index) => (
-              <Link className="col-3" key={index}>
-                <Link to="/video/1">
+            {this.state.videos.map((video, index) => (
+              <Link className="col-4" key={index}>
+                <Link to={`/video/${video.video_id}`}>
                   <div className="card mb-4 shadow-sm">
-                    <img src="https://placeimg.com/200/125/any" className="card-img-top" />
+                    <img src={video.video_thumbnail} className="card-img-top" />
                     <div className="card-body">
-                      <TitleOverflow className="card-text text-muted" >INT999: Make Up Class</TitleOverflow>
+                      <TitleOverflow className="card-text text-muted">
+                        {video.video_name}
+                      </TitleOverflow>
                       <div className="d-flex flex-column">
-                        <small className="text-muted">9 mins</small>
-                        <small className="text-muted">Dr. Kunchai Sodhom — INT101</small>
-                        <small className="text-muted">09 Nov 2561</small>
+                        <small className="text-muted">{video.teacher.teacher_name}</small>
+                        <small className="text-muted">
+                          {moment(video.video_date).format('DD MMM YY')}
+                        </small>
                       </div>
                     </div>
                   </div>
