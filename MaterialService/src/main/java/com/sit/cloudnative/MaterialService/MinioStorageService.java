@@ -27,11 +27,11 @@ public class MinioStorageService {
 
     @Value("${storage.minio.url}")
     private String url;
-    @Value("${storage.minio.bucket-name}")
+    @Value("${storage.minio.bucketName}")
     private String bucketName;
-    @Value("${storage.minio.access-key}")
+    @Value("${storage.minio.accessKey}")
     private String accessKey;
-    @Value("${storage.minio.secret-key}")
+    @Value("${storage.minio.secretKey}")
     private String secretKey;
 
 
