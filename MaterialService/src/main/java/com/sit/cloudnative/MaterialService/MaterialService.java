@@ -11,6 +11,7 @@ public class MaterialService {
     private MaterialRepository materialRepository;
 
     public List<Material> getAllMaterials(){ return materialRepository.findAll();}
+    public List<Material> getMaterialsBySubjectId(int subjectId){return materialRepository.findBySubjectId(subjectId);}
     public Material getMaterialById(String materialId){
         return materialRepository.getOne(materialId);
     }
