@@ -25,7 +25,7 @@ class Layout extends React.Component {
       url: `${authenticationServiceURL}/me`
     })
 
-    console.log(me)
+    // console.log(me)
   }
 
   render() {
