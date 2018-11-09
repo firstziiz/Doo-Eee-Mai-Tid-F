@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "706f71a0-d17c-41fd-8213-66bb48261148",
-		"name": "e-learning",
+		"_postman_id": "0e3c8f8d-bd52-4eb6-bed9-5535a1cfcfc1",
+		"name": "e-learning copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -43,9 +43,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes",
+							"raw": "{{video_api}}/notes",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes"
@@ -123,9 +123,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes/{{note_id}}",
+							"raw": "{{video_api}}/notes/{{note_id}}",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes",
@@ -183,9 +183,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes/user/{{user_id}}",
+							"raw": "{{video_api}}/notes/user/{{user_id}}",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes",
@@ -200,60 +200,113 @@
 			]
 		},
 		{
-			"name": "get video by id",
-			"event": [
+			"name": "Video service",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "93658475-1573-4949-81e1-e3640046b1b3",
-						"exec": [
-							"",
-							"pm.environment.set(\"video_id\", \"8286\");",
-							"",
-							"pm.test(\"Returning a valid response\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Content-Type is json\", function () {",
-							"    var contentType = postman.getResponseHeader(\"Content-Type\")",
-							"    var expectContentType = \"application/json;charset=UTF-8\"",
-							"    pm.expect(contentType).to.eql(expectContentType)",
-							"});",
-							"",
-							"",
-							"pm.test(\"ResponseBody is valid\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.video_id).to.eql('8286')",
-							"    pm.expect(Object.keys(jsonData).length).to.eql(9)",
-							"}) ",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{api_local}}/video/{{video_id}}",
-					"host": [
-						"{{api_local}}"
+					"name": "get video by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "93658475-1573-4949-81e1-e3640046b1b3",
+								"exec": [
+									"",
+									"pm.environment.set(\"video_id\", \"8286\");",
+									"",
+									"pm.test(\"Returning a valid response\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Content-Type is json\", function () {",
+									"    var contentType = postman.getResponseHeader(\"Content-Type\")",
+									"    var expectContentType = \"application/json;charset=UTF-8\"",
+									"    pm.expect(contentType).to.eql(expectContentType)",
+									"});",
+									"",
+									"",
+									"pm.test(\"ResponseBody is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.video_id).to.eql('8286')",
+									"    pm.expect(Object.keys(jsonData).length).to.eql(9)",
+									"}) ",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"video",
-						"{{video_id}}"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{video_api}}/video/{{video_id}}",
+							"host": [
+								"{{video_api}}"
+							],
+							"path": [
+								"video",
+								"{{video_id}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "389a307c-cb75-4eb8-bc90-242ff7ff2ceb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e87ac11d-b092-4267-8599-0f9fdda0efbf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0066f5d7-9a57-41b1-83ce-d201d2df368e",
+			"key": "video_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "bc326e84-6b0b-4205-a3b7-0bfd015234e4",
+			"key": "video_id",
+			"value": "8286",
+			"type": "string"
+		},
+		{
+			"id": "f7e1a134-1615-4943-b624-726dccc35990",
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "b54bcd46-1f46-4b1e-9c7b-51e28f9fd4b7",
+			"key": "note_id",
+			"value": "1",
+			"type": "string"
 		}
 	]
 }
