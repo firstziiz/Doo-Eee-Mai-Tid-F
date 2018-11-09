@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
-@Table(name = "videos")
 public class Video implements Serializable {
 
   @Id
