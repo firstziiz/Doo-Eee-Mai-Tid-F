@@ -73,12 +73,12 @@ class Sidebar extends React.Component {
                 Curriculum
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link" to="/videos">
                 <Icon type="youtube" theme="outlined" className="mr-2" />
                 All Videos
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link className="nav-link" to="/live">
                 <Icon type="notification" theme="outlined" className="mr-2" />

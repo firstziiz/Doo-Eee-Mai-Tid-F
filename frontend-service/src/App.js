@@ -5,6 +5,7 @@ import { hot } from 'react-hot-loader'
 
 import Home from './containers/Home'
 import Login from './containers/Login'
+import Logout from './containers/Logout'
 import Curriculum from './containers/Curriculum'
 import Live from './containers/Live'
 import Video from './containers/Video'
@@ -36,11 +37,12 @@ const App = () => (
       />
       <Switch>
         <Route path="/login" component={Login} />
+        <Route path="/logout" component={Logout} />
         <Route exact path="/" component={Home} />
         <Route path="/curriculum" component={Curriculum} />
         <Route path="/videos" component={Videos} />
         <Route path="/live" component={Live} />
-        <Route path="/subjects/:subjectID" component={Videos} />
+        <Route path="/subjects/:subjectId" component={Videos} />
         <Route path="/video/:videoId" component={Video} />
         <Route component={NotFound} />
       </Switch>

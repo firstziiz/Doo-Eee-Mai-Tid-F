@@ -1,32 +1,67 @@
 import React from 'react'
-import Layout from '../components/Core/Layout'
+import Cookies from 'js-cookie'
+import { withRouter } from 'react-static'
 
+import { tokenName, authenticationServiceURL } from '../utils/env'
+import LeftPanel from '../components/Login/LeftSide'
+import LoginPanel from '../components/Login/LoginPanel'
+import axios from '../utils/axios-creator'
+import { observer, inject } from 'mobx-react'
+
+@inject('authenticationStore')
+@observer
 class Login extends React.Component {
+  state = {
+    authError: false,
+    loading: false
+  }
+
+  componentWillMount() {
+    const token = Cookies.get(tokenName)
+    if (token) {
+      this.props.history.push('/')
+    }
+  }
+
+  signIn = async ({ studentId, password }) => {
+    try {
+      this.setState({
+        loading: true
+      })
+
+      const data = new FormData()
+      data.append('studentId', studentId)
+      data.append('password', password)
+
+      const response = await axios({
+        method: 'post',
+        url: `${authenticationServiceURL}/login`,
+        data
+      })
+
+      const token = response.data.token
+      Cookies.set(tokenName, token)
+      window.location = '/'
+    } catch (error) {
+      this.setState({
+        authError: true,
+        loading: false
+      })
+    }
+  }
+
   render() {
+    const { authenticationStore } = this.props
     return (
       <div>
-        <div className="container text-center pt-5">
+        <div className="container-fluid text-center">
           <div className="row">
-            <div className="col-6 offset-3">
-              <div className="card">
-                <div className="card-body">
-                  <form action="#">
-                    <h3>
-                      SITFLIX <small className="d-block">Next Generation of E-learning</small>
-                    </h3>
-                    <div className="form-group text-left">
-                      <label htmlFor="">Student ID:</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                    <div className="form-group text-left">
-                      <label htmlFor="">Password:</label>
-                      <input type="password" className="form-control" />
-                    </div>
-                    <button className="btn btn-primary btn-block">Login</button>
-                  </form>
-                </div>
-              </div>
-            </div>
+            <LeftPanel />
+            <LoginPanel
+              onSubmit={this.signIn}
+              loading={this.state.loading}
+              authError={this.state.authError}
+            />
           </div>
         </div>
       </div>
@@ -34,4 +69,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login
+export default withRouter(Login)
