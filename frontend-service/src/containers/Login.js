@@ -1,8 +1,12 @@
 import React from 'react'
 import Layout from '../components/Core/Layout'
+import { observer, inject } from 'mobx-react'
 
+@inject('authenticationStore')
+@observer
 class Login extends React.Component {
   render() {
+    const { authenticationStore } = this.props
     return (
       <div>
         <div className="container text-center pt-5">
