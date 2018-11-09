@@ -22,8 +22,8 @@ public class VideoListController {
     method = RequestMethod.GET,
     value = "/subject/{subjectId}/videos"
   )
-  public ResponseEntity<List<VideoList>> getVideoById(@PathVariable("subjectID") Long subjectID) {
-    return new ResponseEntity<List<VideoList>>(videoService.getVideoById(subjectID), HttpStatus.OK);
+  public ResponseEntity<List<?>> getVideoById(@PathVariable("subjectId") Long subjectID) {
+    return new ResponseEntity<List<?>>(videoService.getVideoById(subjectID), HttpStatus.OK);
   }
 
 
