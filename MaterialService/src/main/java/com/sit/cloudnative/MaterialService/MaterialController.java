@@ -33,8 +33,6 @@ public class MaterialController {
     @Autowired
     private MinioStorageService minioStorageService;
 
-    @Value("${server.url}")
-    private String appUrl;
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -98,6 +96,25 @@ public class MaterialController {
         }
         return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
     }
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/subjects/{subjectId}/materials"
+    )
+    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId")int subjectId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+        List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
+        for (Material material:materials) {
+            try{
+                String url = minioStorageService.getDownloadLink(material.getFileName());
+                material.setPath(url);
+            }catch(MinioException e){
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+    }
+
+
 
     public boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
