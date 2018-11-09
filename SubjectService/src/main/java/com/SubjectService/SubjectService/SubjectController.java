@@ -29,10 +29,10 @@ public class SubjectController{
 
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/subjects"
+        value = "/program/{program_id}/subjects"
     )
-    public ResponseEntity<List<Subject>> getAllSubject(){        
-        return   new ResponseEntity<List<Subject>> (subjectService.getAllSubject(), HttpStatus.OK);
+    public ResponseEntity<List<Subject>> getAllSubject(@PathVariable("program_id") int program_id ){        
+        return new ResponseEntity<List<Subject>> (subjectService.getAllSubject(program_id), HttpStatus.OK);
     }  
 
 }
