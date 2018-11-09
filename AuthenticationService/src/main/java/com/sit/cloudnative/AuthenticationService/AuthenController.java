@@ -30,7 +30,7 @@ public class AuthenController {
             Student student = studentService.findById(studentId);
             String token = tokenService.createToken(student, expDate);
             authResponse.setToken("Bearer " + token);
-            authResponse.setExpiryDate(expDate);
+            authResponse.setExpiryDate(expDate.getTime());
             return new ResponseEntity(authResponse, HttpStatus.CREATED);
         }
         return new ResponseEntity(authResponse, HttpStatus.UNAUTHORIZED);
@@ -44,5 +44,20 @@ public class AuthenController {
         String studentId = tokenService.getIdFromToken(authToken);
         Student student = studentService.findById(studentId);
         return new ResponseEntity<Student>(student, HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthResponse> refreshToken(
+            @RequestHeader(name = "Authorization", required = true) String authToken
+    ) {
+        authToken = authToken.substring(7);
+        String studentId = tokenService.getIdFromToken(authToken);
+        Student student = studentService.findById(studentId);
+        Date expDate = new Date(System.currentTimeMillis() + (EXPIRESEC * 1000));
+        String token = tokenService.createToken(student, expDate);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken("Bearer " + token);
+        authResponse.setExpiryDate(expDate.getTime());
+        return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 }
