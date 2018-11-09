@@ -500,6 +500,19 @@
 						}
 					],
 					"request": {
+<<<<<<< HEAD
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+=======
 						"auth": {
 							"type": "bearer",
 							"bearer": [
@@ -509,6 +522,7 @@
 									"type": "string"
 								}
 							]
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 						},
 						"method": "GET",
 						"header": [],
@@ -577,6 +591,161 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "VideoHistory service",
+			"item": [
+				{
+					"name": "Get user history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84f318b5-c32e-4c66-80ae-3400912fb2f3",
+								"exec": [
+									"pm.test(\"server should response with 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response should be json array\", function () {",
+									"    var schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"object\"",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a7a9898-1df4-4d16-a1d7-7ef26ef1214b",
+								"exec": [
+									"pm.test(\"server should response with 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"response should be json\", function () {",
+									"    var schema = {",
+									"        \"type\": \"object\",",
+									"        ",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b17472ab-e388-4966-ab6a-dd805df2a170",
+								"exec": [
+									"pm.test(\"server should response with 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "6",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -603,40 +772,79 @@
 	],
 	"variable": [
 		{
+<<<<<<< HEAD
+			"id": "307071e1-5529-4ce4-94fd-6cf6dc8a807b",
+=======
 			"id": "d0d34170-3882-421f-a352-34f20aed54b2",
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 			"key": "video_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
+<<<<<<< HEAD
+			"id": "af032871-9307-4de4-983a-415c8162f72b",
+=======
 			"id": "421121b7-0833-404e-9544-4166faaa2cf5",
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 			"key": "video_id",
 			"value": "8286",
 			"type": "string"
 		},
 		{
+<<<<<<< HEAD
+			"id": "df9120d2-38b2-42e2-87a7-2521efe25f8f",
+=======
 			"id": "73e1460b-d9fd-4f7a-845f-031936d771c3",
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 			"key": "user_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
+<<<<<<< HEAD
+			"id": "daa15655-0c25-46d5-b2bc-e33dc3e6066a",
+=======
 			"id": "87b90e32-fbd1-4f85-a28d-f91fb0fb944d",
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 			"key": "note_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
+<<<<<<< HEAD
+			"id": "71600a43-b9f2-4ce8-b5d6-03269d3a4285",
+=======
 			"id": "35634c58-433c-402d-8445-8dbadffb7cdf",
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 			"key": "subject_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
+<<<<<<< HEAD
+			"id": "1eac0116-471f-4ba5-a07a-4de971bd5bed",
+			"key": "subject_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"id": "91d67c7e-9a6e-4382-a6b3-7d13fc74fb54",
+			"key": "material_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "bbc7bb85-2b72-4e57-bcd1-bd0fedaa6275",
+			"key": "videohistory_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+=======
 			"id": "9b110628-2d68-43e4-bb71-d0ec87065bc7",
 			"key": "subject_id",
 			"value": "2",
 			"type": "string"
+>>>>>>> 3d6af9e72249a0de7e1275047202897f4bf014a8
 		}
 	]
 }
