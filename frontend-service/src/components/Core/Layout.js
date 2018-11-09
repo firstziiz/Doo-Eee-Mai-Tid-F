@@ -1,7 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import Cookies from 'js-cookie'
+import { withRouter } from 'react-static'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
+import { tokenName } from '../../utils/env'
 
 const Container = styled.div`
   [role='main'] {
@@ -9,18 +12,29 @@ const Container = styled.div`
   }
 `
 
-const Layout = ({ children }) => (
-  <React.Fragment>
-    <Navbar />
-    <Container className="container-fluid">
-      <div className="row">
-        <Sidebar />
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-3">
-          {children}
-        </main>
-      </div>
-    </Container>
-  </React.Fragment>
-)
+class Layout extends React.Component {
+  componentWillMount() {
+    const token = Cookies.get(tokenName)
+    if (!token) {
+      this.props.history.push('/login')
+    }
+  }
 
-export default Layout
+  render() {
+    return (
+      <React.Fragment>
+        <Navbar />
+        <Container className="container-fluid">
+          <div className="row">
+            <Sidebar />
+            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-3">
+              {this.props.children}
+            </main>
+          </div>
+        </Container>
+      </React.Fragment>
+    )
+  }
+}
+
+export default withRouter(Layout)
