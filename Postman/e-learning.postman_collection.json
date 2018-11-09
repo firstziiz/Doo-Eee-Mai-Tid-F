@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9679cc81-4ad6-459f-aa51-30f68787afdb",
+		"_postman_id": "91fc77d8-2a5a-45e5-a4b0-4ee93d86a95f",
 		"name": "e-learning",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -504,14 +504,8 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "materialId",
-									"value": "wc7Ll1UnlxFxifzIbw6wfEc8aAK/joSfaTjHqIOaXLvsNTMfSk5GzxhNR6vjzTt6",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{material_api}}/materials",
@@ -562,19 +556,8 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": ""
-								},
-								{
-									"key": "isActive",
-									"value": "1",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": ""
 						},
 						"url": {
 							"raw": "{{material_api}}/subjects/5/materials",
@@ -686,6 +669,161 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "VideoHistory service",
+			"item": [
+				{
+					"name": "Get user history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84f318b5-c32e-4c66-80ae-3400912fb2f3",
+								"exec": [
+									"pm.test(\"server should response with 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response should be json array\", function () {",
+									"    var schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"object\"",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a7a9898-1df4-4d16-a1d7-7ef26ef1214b",
+								"exec": [
+									"pm.test(\"server should response with 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"response should be json\", function () {",
+									"    var schema = {",
+									"        \"type\": \"object\",",
+									"        ",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b17472ab-e388-4966-ab6a-dd805df2a170",
+								"exec": [
+									"pm.test(\"server should response with 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "6",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -712,44 +850,50 @@
 	],
 	"variable": [
 		{
-			"id": "d785f925-b16f-4bc7-91e1-491a9695b6d5",
+			"id": "307071e1-5529-4ce4-94fd-6cf6dc8a807b",
 			"key": "video_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
-			"id": "628ef55b-bc6e-4676-aa01-dc07e073cfef",
+			"id": "af032871-9307-4de4-983a-415c8162f72b",
 			"key": "video_id",
 			"value": "8286",
 			"type": "string"
 		},
 		{
-			"id": "d36b176c-c03c-40d2-bca0-bb7f6e597e79",
+			"id": "df9120d2-38b2-42e2-87a7-2521efe25f8f",
 			"key": "user_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "0007a902-39eb-48a3-b067-c10963218c9a",
+			"id": "daa15655-0c25-46d5-b2bc-e33dc3e6066a",
 			"key": "note_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "6b281206-dc11-465f-914f-59321d1478a6",
+			"id": "71600a43-b9f2-4ce8-b5d6-03269d3a4285",
 			"key": "subject_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
-			"id": "e6cbe1b0-b36a-4bed-a31d-4284134f9088",
+			"id": "1eac0116-471f-4ba5-a07a-4de971bd5bed",
 			"key": "subject_id",
 			"value": "2",
 			"type": "string"
 		},
 		{
-			"id": "30a16828-79cc-4200-be88-5e3e181485b6",
+			"id": "91d67c7e-9a6e-4382-a6b3-7d13fc74fb54",
 			"key": "material_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "bbc7bb85-2b72-4e57-bcd1-bd0fedaa6275",
+			"key": "videohistory_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		}
