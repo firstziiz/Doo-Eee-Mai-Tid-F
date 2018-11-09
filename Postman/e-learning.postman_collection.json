@@ -259,6 +259,69 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Subject service",
+			"item": [
+				{
+					"name": "get subject by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "39174577-0206-4b67-8f27-4d302ef96402",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subject_id\", \"subject_name\", \"subject_code\", \"subject_description\"],",
+									"        \"properties\": {",
+									"            \"subject_id\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"subject_name\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"subject_code\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"subject_description\": {",
+									"              \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{subject_api}}/subject/{{subject_id}}",
+							"host": [
+								"{{subject_api}}"
+							],
+							"path": [
+								"subject",
+								"{{subject_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -285,27 +348,39 @@
 	],
 	"variable": [
 		{
-			"id": "0066f5d7-9a57-41b1-83ce-d201d2df368e",
+			"id": "d0d34170-3882-421f-a352-34f20aed54b2",
 			"key": "video_api",
 			"value": "http://localhost:8080",
 			"type": "string"
 		},
 		{
-			"id": "bc326e84-6b0b-4205-a3b7-0bfd015234e4",
+			"id": "421121b7-0833-404e-9544-4166faaa2cf5",
 			"key": "video_id",
 			"value": "8286",
 			"type": "string"
 		},
 		{
-			"id": "f7e1a134-1615-4943-b624-726dccc35990",
+			"id": "73e1460b-d9fd-4f7a-845f-031936d771c3",
 			"key": "user_id",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "b54bcd46-1f46-4b1e-9c7b-51e28f9fd4b7",
+			"id": "87b90e32-fbd1-4f85-a28d-f91fb0fb944d",
 			"key": "note_id",
 			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "35634c58-433c-402d-8445-8dbadffb7cdf",
+			"key": "subject_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "9b110628-2d68-43e4-bb71-d0ec87065bc7",
+			"key": "subject_id",
+			"value": "2",
 			"type": "string"
 		}
 	]
