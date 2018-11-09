@@ -16,6 +16,7 @@ public class VideoController {
   @Autowired
   private VideoService videoService;
 
+  @CrossOrigin(origins = "*")
   @RequestMapping(
     method = RequestMethod.GET,
     value = "/video/{videoId}"
