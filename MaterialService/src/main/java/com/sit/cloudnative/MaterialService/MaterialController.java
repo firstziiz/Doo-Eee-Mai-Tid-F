@@ -82,7 +82,22 @@ public class MaterialController {
         }
     }
 
-    
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/materials"
+    )
+    public ResponseEntity<List<Material>> getAllMaterial() throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InsufficientDataException, InvalidPortException, InvalidArgumentException, InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InvalidEndpointException, InternalException {
+        List<Material> materials = materialService.getAllMaterials();
+        for (Material material:materials) {
+            try{
+                String url = minioStorageService.getDownloadLink(material.getFileName());
+                material.setPath(url);
+            }catch(MinioException e){
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+    }
 
     public boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
