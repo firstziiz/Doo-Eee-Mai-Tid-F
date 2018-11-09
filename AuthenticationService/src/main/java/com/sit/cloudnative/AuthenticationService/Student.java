@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -18,6 +19,8 @@ public class Student implements Serializable {
     private String faculty;
     @NotBlank
     private String major;
+    @NotNull
+    private int year;
     @NotBlank
     private String password;
 
@@ -51,6 +54,14 @@ public class Student implements Serializable {
 
     public void setMajor(String major) {
         this.major = major;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     @JsonIgnore
