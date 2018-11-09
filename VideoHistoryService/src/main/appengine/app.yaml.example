@@ -1,0 +1,27 @@
+service: video-history-service
+
+runtime: java
+env: flex
+
+runtime_config:
+  jdk: openjdk8
+
+handlers:
+- url: /.*
+  script: this field is required, but ignored
+
+manual_scaling:
+  instances: 1
+
+health_check:
+  enable_health_check: False
+
+resources:
+  cpu: 1
+  memory_gb: 2.3
+  disk_size_gb: 10
+
+env_variables:
+  spring_datasource_url: jdbc:mysql://{ip}:{port}/{database}
+  spring_datasource_username:
+  spring_datasource_password:
