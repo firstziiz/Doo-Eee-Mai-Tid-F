@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 public class SubjectFavoriteController {
@@ -14,9 +16,17 @@ public class SubjectFavoriteController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/subject/{subject_id}/user/{user_id}"
+            value = "/subject_favorites/{subject_id}/user/{user_id}"
     )
-    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @PathVariable("subject_id") int userId){
+    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @PathVariable("subject_id") long userId){
         return new ResponseEntity<SubjectFavorite>(subjectFavoriteService.addSubjectFavorite(subjectId, userId), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/subject_favorites/user/{user_id}"
+    )
+    public ResponseEntity<List<SubjectFavorite>> getSubjectFavorite(@PathVariable("user_id") long userId){
+        return new ResponseEntity<List<SubjectFavorite>>(subjectFavoriteService.getSubjectFavoriteByUserId(userId), HttpStatus.OK);
     }
 }
