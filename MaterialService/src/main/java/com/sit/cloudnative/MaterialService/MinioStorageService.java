@@ -35,4 +35,10 @@ public class MinioStorageService {
     private String secretKey;
 
 
+    public void uploadFile(String timestampWithFileName, MultipartFile file) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidArgumentException {
+            minioClient = new MinioClient(url,accessKey,secretKey);
+            InputStream inputStream =  new BufferedInputStream(file.getInputStream());
+            minioClient.putObject(bucketName,timestampWithFileName,inputStream,file.getContentType());
+    }
+    
 }
