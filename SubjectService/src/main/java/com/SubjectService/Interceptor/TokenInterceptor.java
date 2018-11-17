@@ -1,42 +1,57 @@
 package com.SubjectService.Interceptor;
 
-import com.SubjectService.Exception.ClientErrorException;
+import com.SubjectService.Exception.BadRequestException;
+import com.SubjectService.Exception.JWTException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class TokenInterceptor implements HandlerInterceptor {
-    private String secret;
+    private String SECRET;
 
     public TokenInterceptor(String secret) {
-        this.secret = secret;
+        this.SECRET = secret;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String token = getToken(request);
+        String userId = this.getUserIdFromToken(token);
+        request.setAttribute("userId", userId);
+        return true;
+    }
+
+    private boolean isValidToken (String token){
+        if (token == null) {
+            return false;
+        } else if (token.startsWith("Bearer") == false || token.equals("")) {
+            return false;
+        }
+        return true;
+    }
+
+    private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
+        String token = httpServletRequest.getHeader("Authorization");
+        if (this.isValidToken(token)) {
+            throw new BadRequestException("Invalid authorization provided.");
+        }
+        return token;
+    }
+    
+    private String getUserIdFromToken(String token) throws JWTException {
         String userId;
-        String token = request.getHeader("Authorization");
-        if (!token.startsWith("Bearer")) {
-            throw new ClientErrorException("No bearer header provided");
-        }
-        if (token.equals("")) {
-            throw new ClientErrorException("No Authorization header provided");
-        }
         try {
             Jws<Claims> claims = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(this.SECRET)
                     .parseClaimsJws(token);
             userId = (String) claims.getBody().get("userId");
         } catch (Exception jwtException) {
-            throw new ClientErrorException(jwtException.getMessage());
+            throw new JWTException(jwtException.getMessage());
         }
-        request.setAttribute("userId", userId);
-        return true;
+        return userId;
     }
 }

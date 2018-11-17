@@ -25,3 +25,5 @@ env_variables:
   spring_datasource_url: jdbc:mysql://{ip}:{port}/{database}
   spring_datasource_username:
   spring_datasource_password:
+  authenservice_jwt_secret:
+  authenservice_jwt_expiresec: 86400
