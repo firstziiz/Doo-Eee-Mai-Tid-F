@@ -15,24 +15,37 @@ import java.util.Date;
 @Service
 public class TokenService {
     @Value("${authenservice.jwt.secret}")
-    private String SECRET;
+    private String SECRET_KEY;
 
+    @Value("${authenservice.jwt.expiresec}")
+    private long EXPIRE_IN_SECOND;
 
-    public String createToken(Student student, Date expDate) {
+    private final int MILLISECOND= 1000;
+
+    private long getExpireMillisecond() {
+        return System.currentTimeMillis() + EXPIRE_IN_SECOND * MILLISECOND;
+    }
+
+    public AuthResponse createToken(Student student) {
+        AuthResponse authResponse = new AuthResponse();
+        Date expiredDate = new Date(this.getExpireMillisecond());
         String token = Jwts.builder()
                 .setSubject("StudentService")
-                .claim("userId", student.getId())
-                .setExpiration(expDate)
-                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .claim("id", student.getId())
+                .setExpiration(expiredDate)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
-        return token;
+        authResponse.setToken("Bearer " + token);
+        authResponse.setExpiryDate(expiredDate.getTime());
+        return authResponse;
     }
 
     public String getIdFromToken(String token) {
+        String tokenFormat = token.substring(7);
         Jws<Claims> claims = Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token);
-        String studentId = (String) claims.getBody().get("userId");
-        return studentId;
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(tokenFormat);
+        String userId = (String) claims.getBody().get("id");
+        return userId;
     }
 }

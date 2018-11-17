@@ -14,50 +14,43 @@ import java.util.Date;
 public class AuthenController {
     @Autowired
     TokenService tokenService;
+
     @Autowired
     StudentService studentService;
-    @Value("${authenservice.jwt.expiresec}")
-    private long EXPIRESEC;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestParam(name = "studentId", required = true) String studentId,
             @RequestParam(name = "password", required = true) String password
             ) {
-        AuthResponse authResponse = new AuthResponse();
-        if(studentService.isCredentialCorrect(studentId, password)) {
-            Date expDate = new Date(System.currentTimeMillis() + (EXPIRESEC * 1000));
-            Student student = studentService.findById(studentId);
-            String token = tokenService.createToken(student, expDate);
-            authResponse.setToken("Bearer " + token);
-            authResponse.setExpiryDate(expDate.getTime());
+        Student student = studentService.findStudentByCredential(studentId, password);
+        if(student != null) {
+            AuthResponse authResponse = tokenService.createToken(student);
             return new ResponseEntity(authResponse, HttpStatus.CREATED);
         }
-        return new ResponseEntity(authResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/me")
     public ResponseEntity<Student> getStudent (
-            @RequestHeader(name = "Authorization", required = true) String authToken
+            @RequestHeader(name = "Authorization", required = true) String token
     ) {
-        authToken = authToken.substring(7);
-        String studentId = tokenService.getIdFromToken(authToken);
-        Student student = studentService.findById(studentId);
+        Student student = this.getUserFromToken(token);
         return new ResponseEntity<Student>(student, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponse> refreshToken(
-            @RequestHeader(name = "Authorization", required = true) String authToken
+            @RequestHeader(name = "Authorization", required = true) String token
     ) {
-        authToken = authToken.substring(7);
-        String studentId = tokenService.getIdFromToken(authToken);
-        Student student = studentService.findById(studentId);
-        Date expDate = new Date(System.currentTimeMillis() + (EXPIRESEC * 1000));
-        String token = tokenService.createToken(student, expDate);
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken("Bearer " + token);
-        authResponse.setExpiryDate(expDate.getTime());
+        Student student = this.getUserFromToken(token);
+        AuthResponse authResponse = tokenService.createToken(student);
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
+    }
+
+    private Student getUserFromToken(String token) {
+        String studentId = tokenService.getIdFromToken(token);
+        Student student = studentService.findById(studentId);
+        return student;
     }
 }

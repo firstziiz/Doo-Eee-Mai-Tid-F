@@ -17,16 +17,12 @@ public class StudentService implements StudentServiceInterface {
     }
 
     @Override
-    public boolean isCredentialCorrect(String studentId, String password) {
-        try {
-            Student student = studentRepository.findById(studentId).get();
-            if (studentId.equals(student.getId()) && passwordEncoder.matches(password, student.getPassword())) {
-                return true;
-            }
-        } catch (NullPointerException npe) {
-            return false;
+    public Student findStudentByCredential(String studentId, String password) {
+        Student student = this.findById(studentId);
+        if (studentId.equals(student.getId()) && passwordEncoder.matches(password, student.getPassword())) {
+            return student;
         }
-        return false;
+        return null;
     }
 
     public Student save(Student student) {
