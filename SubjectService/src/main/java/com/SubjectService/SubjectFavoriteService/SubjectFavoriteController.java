@@ -18,17 +18,17 @@ public class SubjectFavoriteController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/subject_favorites/{subject_id}/user/{user_id}"
+            value = "/subject_favorites"
     )
-    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @PathVariable("subject_id") long userId){
+    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @RequestAttribute("userId") long userId){
         return new ResponseEntity<SubjectFavorite>(subjectFavoriteService.addSubjectFavorite(subjectId, userId), HttpStatus.CREATED);
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/subject_favorites/user/{user_id}"
+            value = "/subject_favorites"
     )
-    public ResponseEntity<List<Subject>> getSubjectFavorite(@PathVariable("user_id") long userId){
+    public ResponseEntity<List<Subject>> getSubjectFavorite(@RequestAttribute("userId") long userId){
         return new ResponseEntity<List<Subject>>(subjectFavoriteService.getSubjectFavoriteByUserId(userId), HttpStatus.OK);
     }
 }
