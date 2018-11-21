@@ -31,7 +31,7 @@ public class TokenService {
         Date expiredDate = new Date(this.getExpireMillisecond());
         String token = Jwts.builder()
                 .setSubject("StudentService")
-                .claim("id", student.getId())
+                .claim("userId", student.getId())
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
@@ -45,7 +45,7 @@ public class TokenService {
         Jws<Claims> claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(tokenFormat);
-        String userId = (String) claims.getBody().get("id");
+        String userId = (String) claims.getBody().get("userId");
         return userId;
     }
 }

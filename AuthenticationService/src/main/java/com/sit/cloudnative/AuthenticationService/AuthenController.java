@@ -1,5 +1,6 @@
 package com.sit.cloudnative.AuthenticationService;
 
+import com.sit.cloudnative.AuthenticationService.Exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -20,15 +21,15 @@ public class AuthenController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
-            @RequestParam(name = "studentId", required = true) String studentId,
+            @RequestParam(name = "userId", required = true) String userId,
             @RequestParam(name = "password", required = true) String password
             ) {
-        Student student = studentService.findStudentByCredential(studentId, password);
-        if(student != null) {
-            AuthResponse authResponse = tokenService.createToken(student);
-            return new ResponseEntity(authResponse, HttpStatus.CREATED);
+        Student student = studentService.findStudentByCredential(userId, password);
+        if (student == null) {
+            throw new UserNotFoundException("No user found with this credential.");
         }
-        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+        AuthResponse authResponse = tokenService.createToken(student);
+        return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")

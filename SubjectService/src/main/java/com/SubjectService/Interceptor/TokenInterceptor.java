@@ -36,7 +36,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
         String token = httpServletRequest.getHeader("Authorization");
-        if (this.isValidToken(token)) {
+        if (this.isValidToken(token) == false) {
             throw new BadRequestException("Invalid authorization provided.");
         }
         return token;
@@ -44,10 +44,11 @@ public class TokenInterceptor implements HandlerInterceptor {
     
     private String getUserIdFromToken(String token) throws JWTException {
         String userId;
+        String tokenFormat = token.substring(7);
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(this.SECRET)
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(tokenFormat);
             userId = (String) claims.getBody().get("userId");
         } catch (Exception jwtException) {
             throw new JWTException(jwtException.getMessage());
