@@ -15,11 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private String jwtSecret;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptor());
+        registry.addInterceptor(tokenInterceptor());
     }
 
     @Bean
-    public MappedInterceptor myInterceptor() {
+    public MappedInterceptor tokenInterceptor() {
         return new MappedInterceptor(
                 new String[] {"/subject_favorites/**", ""},
                 new TokenInterceptor(jwtSecret));
