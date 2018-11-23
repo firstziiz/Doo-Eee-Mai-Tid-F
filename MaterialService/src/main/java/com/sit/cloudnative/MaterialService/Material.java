@@ -1,6 +1,8 @@
 package com.sit.cloudnative.MaterialService;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,7 +30,8 @@ public class Material implements Serializable {
     @Column(name = "file_name")
     private String fileName;
 
-    @NotBlank
+    @JsonInclude()
+    @Transient
     private String path;
 
     @NotNull
