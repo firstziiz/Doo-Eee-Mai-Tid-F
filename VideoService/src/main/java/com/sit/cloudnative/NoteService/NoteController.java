@@ -16,8 +16,8 @@ public class NoteController {
     NoteService noteService;
 
     @CrossOrigin(origins = "*")
-    @GetMapping(path = "/notes/user/{userId}")
-    public ResponseEntity<List<Note>> getAllNoteByUserId(@PathVariable Long userId) {
+    @GetMapping(path = "/notes/user")
+    public ResponseEntity<List<Note>> getAllNoteByUserId(@RequestAttribute(name = "userId") Long userId) {
         List<Note> userNotes = noteService.getNotesByUserId(userId);
         return new ResponseEntity<List<Note>>(userNotes, HttpStatus.OK);
     }
