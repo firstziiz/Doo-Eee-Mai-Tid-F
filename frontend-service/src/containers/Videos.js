@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
+import VideoService from '../services/VideoService'
 
-import axios from '../utils/axios-creator'
-import { videoServiceURL } from '../utils/env'
+// import axios from '../utils/axios-creator'
+// import { videoServiceURL } from '../utils/env'
 
 const TitleOverflow = styled.p``
 class Videos extends React.Component {
@@ -18,14 +19,8 @@ class Videos extends React.Component {
   }
 
   async componentWillMount() {
-    const response = await axios({
-      method: 'get',
-      url: `${videoServiceURL}/subject/${this.subjectId}/videos`
-    })
+    const videos = await VideoService.getVideosBySubjectId(this.subjectId).then(resp => resp.data)
 
-    console.log(response)
-
-    const videos = response.data
     this.setState({
       videos
     })
