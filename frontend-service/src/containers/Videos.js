@@ -4,11 +4,14 @@ import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
 import VideoService from '../services/VideoService'
+import requireAuth from '../utils/requireAuth'
 
 // import axios from '../utils/axios-creator'
 // import { videoServiceURL } from '../utils/env'
 
 const TitleOverflow = styled.p``
+
+@requireAuth
 class Videos extends React.Component {
   state = {
     videos: []
