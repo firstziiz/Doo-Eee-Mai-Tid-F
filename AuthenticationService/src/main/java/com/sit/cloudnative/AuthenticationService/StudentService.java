@@ -20,7 +20,7 @@ public class StudentService implements StudentServiceInterface {
         if (optionalStudent.isPresent()) {
             return optionalStudent.get();
         }
-        throw new UserNotFoundException();
+        return null;
     }
 
     @Override
