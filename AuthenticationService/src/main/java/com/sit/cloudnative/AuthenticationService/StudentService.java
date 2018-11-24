@@ -26,7 +26,7 @@ public class StudentService implements StudentServiceInterface {
     @Override
     public Student findStudentByCredential(String studentId, String password) {
         Student student = this.findById(studentId);
-        if (studentId.equals(student.getId()) && passwordEncoder.matches(password, student.getPassword())) {
+        if (student != null && studentId.equals(student.getId()) && passwordEncoder.matches(password, student.getPassword())) {
             return student;
         }
         return null;
