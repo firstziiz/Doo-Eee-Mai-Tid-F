@@ -35,7 +35,7 @@ public class SubjectController{
         value = "/program/{program_id}/subjects"
     )
     public ResponseEntity<List<Subject>> getAllSubject(@PathVariable("program_id") int program_id ){        
-        return new ResponseEntity<List<Subject>> (subjectService.getAllSubject(program_id), HttpStatus.OK);
+        return new ResponseEntity<List<Subject>> (subjectService.getAllSubjectByProgram(program_id), HttpStatus.OK);
     }  
     
     @RequestMapping(
