@@ -8,6 +8,9 @@ const SubjectService = {
   },
   getPrograms: () => {
     return api.get(`${SUBJECT_URL}/programs`)
+  },
+  getSubject: subjectId => {
+    return api.get(`${SUBJECT_URL}/subject/${subjectId}`)
   }
 }
 
