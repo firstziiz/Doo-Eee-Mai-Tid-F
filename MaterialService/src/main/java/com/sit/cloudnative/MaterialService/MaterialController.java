@@ -33,6 +33,12 @@ public class MaterialController {
     @Autowired
     private MinioStorageService minioStorageService;
 
+    @Value("${storage.file.name.key}")
+    private String fileKey;
+
+    @Value("${storage.file.name.initVector}")
+    private String fileInitVector;
+
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -130,8 +136,8 @@ public class MaterialController {
 
 
     public String encryptFileName(String timestampWithFileName) {
-        String key = "Bar12345Bar12345";
-        String initVector = "WoWoWoWoWoWoWoWo";
+        String key = this.fileInitVector;
+        String initVector = this.fileInitVector;
 
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
