@@ -17,8 +17,7 @@ public class VideoAdapter {
   public Video getVideoById(Long videoId){
     try {
       RestTemplate restTemplate = new RestTemplate();
-      String url = thirdPartyVideoServiceApiUrl+"/api/v0/video/"+videoId;
-      logger.info("Requesting to "+url);
+      String url = String.format(thirdPartyVideoServiceApiUrl + "/api/v0/video/%d", videoId);
       Video video = restTemplate.getForObject(url, Video.class);
       return video;
     } catch (Exception ex ) {
