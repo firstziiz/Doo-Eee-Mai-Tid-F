@@ -1,14 +1,14 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 
-const requireAuth = () => Component => {
-  @inject('user')
+const requireAuth = Component => {
+  @inject('userStore')
   @observer
   class RequireAuth extends React.Component {
     componentWillMount() {
-      if (!this.props.user.authenticated) {
+      if (!this.props.userStore.authenticated) {
         this.props.history.replace('/')
-        this.props.user.setLoginModal(true)
+        this.props.userStore.setLoginModal(true)
       }
     }
 
