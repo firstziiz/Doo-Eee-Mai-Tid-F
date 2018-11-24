@@ -1,8 +1,11 @@
 package com.sit.cloudnative.AuthenticationService;
 
+import com.sit.cloudnative.AuthenticationService.Exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class StudentService implements StudentServiceInterface {
@@ -13,7 +16,11 @@ public class StudentService implements StudentServiceInterface {
 
     @Override
     public Student findById(String studentId) {
-        return studentRepository.findById(studentId).get();
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+        if (optionalStudent.isPresent()) {
+            return optionalStudent.get();
+        }
+        throw new UserNotFoundException();
     }
 
     @Override
