@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public MappedInterceptor tokenInterceptor() {
         return new MappedInterceptor(
-                new String[] {"/subject_favorites/**", ""},
+                new String[] {"/**", ""},
                 new TokenInterceptor(jwtSecret));
     }
 }
