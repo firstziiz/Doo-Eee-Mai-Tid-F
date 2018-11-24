@@ -7,7 +7,9 @@ import moment from 'moment'
 import 'react-quill/dist/quill.snow.css'
 
 import { videoServiceURL, videoHistoryServiceURL } from '../utils/env'
+import requireAuth from '../utils/requireAuth'
 
+@requireAuth
 class Video extends React.Component {
   state = {
     note: '... your note.',

@@ -3,13 +3,19 @@ import styled from 'styled-components'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
+import VideoService from '../services/VideoService'
+import requireAuth from '../utils/requireAuth'
+import SubjectService from '../services/SubjectService'
 
-import axios from '../utils/axios-creator'
-import { videoServiceURL } from '../utils/env'
+// import axios from '../utils/axios-creator'
+// import { videoServiceURL } from '../utils/env'
 
 const TitleOverflow = styled.p``
+
+@requireAuth
 class Videos extends React.Component {
   state = {
+    subject: null,
     videos: []
   }
 
@@ -18,24 +24,25 @@ class Videos extends React.Component {
   }
 
   async componentWillMount() {
-    const response = await axios({
-      method: 'get',
-      url: `${videoServiceURL}/subject/${this.subjectId}/videos`
-    })
+    const subject = await SubjectService.getSubject(this.subjectId).then(resp => resp.data)
+    const videos = await VideoService.getVideosBySubjectId(this.subjectId).then(resp => resp.data)
 
-    console.log(response)
-
-    const videos = response.data
     this.setState({
+      subject,
       videos
     })
   }
 
   render() {
+    console.log(this.state)
     return (
       <Layout>
         <div>
-          <h1>{this.subjectId ? `Subject ${this.subjectId}` : 'All Videos'}</h1>
+          <h1>
+            {this.subjectId && this.state.subject
+              ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
+              : 'All Videos'}
+          </h1>
           <Link className="row">
             {this.state.videos &&
               this.state.videos.map((video, index) => (

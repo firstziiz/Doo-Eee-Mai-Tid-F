@@ -25,7 +25,7 @@ const LoginContainer = styled.div`
 
 class LoginPanel extends React.Component {
   state = {
-    studentId: '',
+    userId: '',
     password: ''
   }
 
@@ -33,7 +33,7 @@ class LoginPanel extends React.Component {
     e.preventDefault()
 
     this.props.onSubmit({
-      studentId: this.state.studentId,
+      userId: this.state.userId,
       password: this.state.password
     })
   }
@@ -57,7 +57,7 @@ class LoginPanel extends React.Component {
             <Input
               type="text"
               className="form-control"
-              onChange={e => this.setState({ studentId: e.target.value })}
+              onChange={e => this.setState({ userId: e.target.value })}
             />
           </div>
           <div className="form-group text-left">
