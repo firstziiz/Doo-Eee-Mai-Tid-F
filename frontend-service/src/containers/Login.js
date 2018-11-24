@@ -1,14 +1,14 @@
 import React from 'react'
-import Cookies from 'js-cookie'
+import store from '../utils/store'
 import { withRouter } from 'react-static'
 
-import { tokenName, authenticationServiceURL } from '../utils/env'
+import { authenticationServiceURL } from '../utils/env'
 import LeftPanel from '../components/Login/LeftSide'
 import LoginPanel from '../components/Login/LoginPanel'
-import axios from '../utils/axios-creator'
+// import axios from '../utils/axios-creator'
 import { observer, inject } from 'mobx-react'
 
-@inject('authenticationStore')
+@inject('userStore')
 @observer
 class Login extends React.Component {
   state = {
@@ -16,32 +16,15 @@ class Login extends React.Component {
     loading: false
   }
 
-  componentWillMount() {
-    const token = Cookies.get(tokenName)
-    if (token) {
-      this.props.history.push('/')
-    }
-  }
-
-  signIn = async ({ studentId, password }) => {
+  signIn = async ({ userId, password }) => {
     try {
+      // console.log(userId, password)
       this.setState({
         loading: true
       })
 
-      const data = new FormData()
-      data.append('studentId', studentId)
-      data.append('password', password)
-
-      const response = await axios({
-        method: 'post',
-        url: `${authenticationServiceURL}/login`,
-        data
-      })
-
-      const token = response.data.token
-      Cookies.set(tokenName, token)
-      window.location = '/'
+      await this.props.userStore.login(userId, password)
+      this.props.history.push('/')
     } catch (error) {
       this.setState({
         authError: true,
@@ -51,7 +34,6 @@ class Login extends React.Component {
   }
 
   render() {
-    const { authenticationStore } = this.props
     return (
       <div>
         <div className="container-fluid text-center">
