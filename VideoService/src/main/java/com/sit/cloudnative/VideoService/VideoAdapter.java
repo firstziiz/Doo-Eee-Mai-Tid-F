@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class VideoAdapter {
 
-  @Value("${thirdparty.video.service.api.url}")
+  @Value("${nge.api.path}")
   private String thirdPartyVideoServiceApiUrl;
 
   private Logger logger = LoggerFactory.getLogger(VideoAdapter.class);
