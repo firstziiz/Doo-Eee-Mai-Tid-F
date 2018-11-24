@@ -1,11 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Cookies from 'js-cookie'
+import store from '../../utils/store'
 import { withRouter } from 'react-static'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
-import { tokenName, authenticationServiceURL } from '../../utils/env'
-import axios from '../../utils/axios-creator'
 
 const Container = styled.div`
   [role='main'] {
@@ -15,15 +13,10 @@ const Container = styled.div`
 
 class Layout extends React.Component {
   async componentWillMount() {
-    const token = Cookies.get(tokenName)
+    const token = store.getAccessToken()
     if (!token) {
       this.props.history.push('/login')
     }
-
-    const me = await axios({
-      method: 'get',
-      url: `${authenticationServiceURL}/me`
-    })
 
     // console.log(me)
   }
