@@ -17,8 +17,8 @@ public class SubjectService{
         return subjectAdapter.getSubjectById(subject_Id);
     }
 
-    public List<Subject> getAllSubject(int program_id) {
-		return subjectAdapter.getAllSubject(program_id);
+    public List<Subject> getAllSubjectByProgram(int program_id) {
+		return subjectAdapter.getAllSubjectByProgram(program_id);
     }
 
 }
