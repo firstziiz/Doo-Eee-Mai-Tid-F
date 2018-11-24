@@ -2,10 +2,10 @@ import React from 'react'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import { Icon } from 'antd'
+import SubjectService from '../services/SubjectService'
+import requireAuth from '../utils/requireAuth'
 
-import axios from '../utils/axios-creator'
-import { subjectServiceURL } from '../utils/env'
-
+@requireAuth
 class Curriculum extends React.Component {
   state = {
     programs: [],
@@ -13,43 +13,26 @@ class Curriculum extends React.Component {
     selectedProgram: ''
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     try {
-      const programResponse = await axios({
-        method: 'get',
-        url: `${subjectServiceURL}/programs`
-      })
-
-      const program = programResponse.data[0]
-      const subjectResponse = await axios({
-        method: 'get',
-        url: `${subjectServiceURL}/program/${program.program_id}/subjects`
-      })
-
+      const programs = await SubjectService.getPrograms().then(resp => resp.data)
       this.setState({
-        programs: programResponse.data,
-        subjects: subjectResponse.data,
-        selectedProgram: program.program_code
+        programs
       })
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
-  onSelectProgram = async (program) => {
+  onSelectProgram = async program_id => {
     try {
-      const subjectResponse = await axios({
-        method: 'get',
-        url: `${subjectServiceURL}/program/${program.program_id}/subjects`
-      })
+      const subjects = await SubjectService.getSubjectsByProgramId(program_id).then(
+        resp => resp.data
+      )
 
       this.setState({
-        subjects: subjectResponse.data,
-        selectedProgram: program.program_code
+        subjects,
+        selectedProgram: program_id
       })
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   render() {
@@ -62,14 +45,12 @@ class Curriculum extends React.Component {
               {this.state.programs.map(program => (
                 <a
                   key={program.program_id}
-                  onClick={() => this.onSelectProgram(program)}
+                  onClick={() => this.onSelectProgram(program.program_id)}
                   className="list-group-item d-flex justify-content-between"
                 >
                   <div>
                     <h6 className="my-0">{program.program_code}</h6>
-                    <small className="text-muted">
-                      {program.program_name}
-                    </small>
+                    <small className="text-muted">{program.program_name}</small>
                   </div>
                   <span className="text-muted">
                     <Icon type="book" theme="outlined" className="mr-2" />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Switch, Redirect } from 'react-static'
+import { Route, Switch, withRouter, Redirect } from 'react-static'
 import { createGlobalStyle } from 'styled-components'
 import { hot } from 'react-hot-loader'
 
@@ -11,6 +11,9 @@ import Live from './containers/Live'
 import Video from './containers/Video'
 import Videos from './containers/Videos'
 import NotFound from './containers/404'
+import { observer, inject } from 'mobx-react'
+import { videoServiceURL } from './utils/env'
+import VideoService from './services/VideoService'
 
 createGlobalStyle`
   body {
@@ -26,28 +29,56 @@ createGlobalStyle`
   }
 `
 
-const App = () => (
-  <Router>
-    <React.Fragment>
-      <Route
-        path="/:url*"
-        exact
-        strict
-        render={props => <Redirect to={`${props.location.pathname}/`} />}
-      />
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/logout" component={Logout} />
-        <Route exact path="/" component={Home} />
-        <Route path="/curriculum" component={Curriculum} />
-        <Route path="/videos" component={Videos} />
-        <Route path="/live" component={Live} />
-        <Route path="/subjects/:subjectId" component={Videos} />
-        <Route path="/video/:videoId" component={Video} />
-        <Route component={NotFound} />
-      </Switch>
-    </React.Fragment>
-  </Router>
-)
+@inject('userStore')
+@observer
+class App extends React.Component {
+  state = {
+    loading: true
+  }
 
-export default hot(module)(App)
+  async componentWillMount() {
+    this.props.userStore.setLoginIn(true)
+    this.props.userStore
+      .getProfile()
+      .then(async () => {
+        if (!this.props.userStore.authenticated) {
+          await this.props.userStore.setLoginIn(false)
+        } else {
+          await this.props.userStore.setLoginIn(false)
+        }
+      })
+      .catch(() => {
+        console.log('you are not logging in')
+      })
+  }
+
+  render() {
+    if (this.props.userStore.logingIn) {
+      return <div />
+    }
+
+    return (
+      <React.Fragment>
+        <Route
+          path="/:url*"
+          exact
+          strict
+          render={props => <Redirect to={`${props.location.pathname}/`} />}
+        />
+        <Switch>
+          <Route key={'1'} exact path="/login" component={Login} />
+          <Route key={'2'} exact path="/logout" component={Logout} />
+          <Route key={'3'} exact path="/" component={Home} />
+          <Route key={'4'} exact path="/curriculum" component={Curriculum} />
+          <Route key={'5'} exact path="/videos" component={Videos} />
+          <Route key={'6'} exact path="/live" component={Live} />
+          <Route key={'7'} exact path="/subjects/:subjectId" component={Videos} />
+          <Route key={'8'} exact path="/video/:videoId" component={Video} />
+          <Route key={'9'} component={NotFound} />
+        </Switch>
+      </React.Fragment>
+    )
+  }
+}
+
+export default hot(module)(withRouter(App))

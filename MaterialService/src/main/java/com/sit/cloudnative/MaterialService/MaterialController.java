@@ -62,7 +62,6 @@ public class MaterialController {
                 Material material_object = materialService.addMaterial(material);
                 return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
             }catch (MinioException e){
-                System.out.println(e.getMessage());
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
