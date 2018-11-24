@@ -1,11 +1,9 @@
 import React from 'react'
-import Cookies from 'js-cookie'
-
-import { tokenName } from '../utils/env'
+import store from '../utils/store'
 
 class Logout extends React.Component {
   componentWillMount() {
-    Cookies.remove(tokenName)
+    store.removeAccessToken()
     window.location = '/login'
   }
 
