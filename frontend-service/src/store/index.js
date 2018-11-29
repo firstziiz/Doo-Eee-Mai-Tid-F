@@ -1,5 +1,9 @@
-import authenticationStore from './authentication'
+import UserStore from './UserStore'
 
-export default {
-  authenticationStore
+class RootStore {
+  constructor() {
+    this.userStore = new UserStore(this)
+  }
 }
+
+export default new RootStore()

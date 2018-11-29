@@ -1,6 +1,8 @@
 import React from 'react'
 import Layout from '../components/Core/Layout'
+import requireAuth from '../utils/requireAuth'
 
+@requireAuth
 class Home extends React.Component {
   render() {
     return (

@@ -35,7 +35,7 @@ public class TokenService {
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
-        authResponse.setToken("Bearer " + token);
+        authResponse.setToken(token);
         authResponse.setExpiryDate(expiredDate.getTime());
         return authResponse;
     }

@@ -3,8 +3,8 @@ package com.sit.cloudnative.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService {
@@ -20,14 +20,8 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
-    public Note getNoteByNoteId(Long noteId) {
-        Note note = null;
-        try {
-            note = noteRepository.getOne(noteId);
-        }catch(EntityNotFoundException e) {
-            e.printStackTrace();
-        }
-        return note;
+    public Optional<Note> getNoteByNoteId(Long noteId) {
+        return noteRepository.findById(noteId);
     }
 
     public Note createNewNote(Note note) {

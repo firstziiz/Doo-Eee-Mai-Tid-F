@@ -1,18 +1,21 @@
 package com.sit.cloudnative.AuthenticationService;
 
 import com.sit.cloudnative.AuthenticationService.Exception.UserNotFoundException;
+import com.sit.cloudnative.AuthenticationService.Logger.AuditLogger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @RestController
 @CrossOrigin("*")
 public class AuthenController {
+
+    AuditLogger logger = new AuditLogger(this.getClass().getName());
+
     @Autowired
     TokenService tokenService;
 
@@ -22,13 +25,16 @@ public class AuthenController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestParam(name = "userId", required = true) String userId,
-            @RequestParam(name = "password", required = true) String password
+            @RequestParam(name = "password", required = true) String password,
+            HttpServletRequest request
             ) {
         Student student = studentService.findStudentByCredential(userId, password);
         if (student == null) {
+            logger.warn(request, "user login failed");
             throw new UserNotFoundException("No user found with this credential.");
         }
         AuthResponse authResponse = tokenService.createToken(student);
+        logger.info(request, "user login success.");
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
