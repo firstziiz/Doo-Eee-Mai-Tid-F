@@ -37,4 +37,8 @@ public class NoteService {
         savingNote.setContent(content);
         return noteRepository.save(savingNote);
     }
+
+    public Optional<Note> getNoteByVideoIdAndUserId(Long videoId, Long userId) {
+        return noteRepository.getByVideoIdAndUserId(videoId, userId);
+    }
 }
