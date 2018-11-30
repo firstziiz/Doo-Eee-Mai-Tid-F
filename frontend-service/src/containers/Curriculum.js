@@ -4,6 +4,7 @@ import { Link } from 'react-static'
 import { Icon } from 'antd'
 import SubjectService from '../services/SubjectService'
 import requireAuth from '../utils/requireAuth'
+import Spinner from '../components/Spinner'
 
 @requireAuth
 class Curriculum extends React.Component {
@@ -42,6 +43,11 @@ class Curriculum extends React.Component {
           <div className="col-5">
             <h3>Curriculum</h3>
             <div className="list-group mb-3">
+              {
+                this.state.programs.length === 0 && (
+                  <Spinner />
+                )
+              }
               {this.state.programs.map(program => (
                 <a
                   key={program.program_id}
