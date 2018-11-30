@@ -30,28 +30,32 @@ public class AuthenController {
             ) {
         Student student = studentService.findStudentByCredential(userId, password);
         if (student == null) {
-            logger.warn(request, "user login failed");
+            logger.warn(request, userId + " login failed");
             throw new UserNotFoundException("No user found with this credential.");
         }
         AuthResponse authResponse = tokenService.createToken(student);
-        logger.info(request, "user login success.");
+        logger.info(request, userId + " login success");
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
     public ResponseEntity<Student> getStudent (
-            @RequestHeader(name = "Authorization", required = true) String token
+            @RequestHeader(name = "Authorization", required = true) String token,
+            HttpServletRequest request
     ) {
         Student student = this.getUserFromToken(token);
+        logger.info(request, student.getId() + " get student data");
         return new ResponseEntity<Student>(student, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponse> refreshToken(
-            @RequestHeader(name = "Authorization", required = true) String token
+            @RequestHeader(name = "Authorization", required = true) String token,
+            HttpServletRequest request
     ) {
         Student student = this.getUserFromToken(token);
         AuthResponse authResponse = tokenService.createToken(student);
+        logger.info(request, student.getId() + " refresh token");
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
