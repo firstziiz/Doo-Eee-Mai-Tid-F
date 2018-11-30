@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class VideoHistoryController {
     @Autowired
     VideoHistoryService videoHistoryService;
