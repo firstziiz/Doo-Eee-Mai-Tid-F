@@ -56,17 +56,18 @@ public class MaterialController {
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
-                Material material = new Material();
-                material.setId(encryptTimestampWithFileName);
-                material.setSubjectId(subjectId);
-                material.setFileName(timestampWithFileName);
-                material.setActive(isActive);
-                material.setUploadedBy(Integer.parseInt(userId));
-                Material material_object = materialService.addMaterial(material);
-                return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
             }catch (MinioException e){
                 throw new MinioErrorException(e.getMessage());
             }
+
+            Material material = new Material();
+            material.setId(encryptTimestampWithFileName);
+            material.setSubjectId(subjectId);
+            material.setFileName(timestampWithFileName);
+            material.setActive(isActive);
+            material.setUploadedBy(Integer.parseInt(userId));
+            Material material_object = materialService.addMaterial(material);
+            return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
         }
         throw new InvalidFileTypeException();
     }
