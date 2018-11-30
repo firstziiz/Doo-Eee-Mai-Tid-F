@@ -1,5 +1,6 @@
 package com.SubjectService;
 
+import com.SubjectService.ExceptionResponse.ExceptionResponse;
 import com.SubjectService.Interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
