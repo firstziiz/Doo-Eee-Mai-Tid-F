@@ -52,6 +52,7 @@ public class MaterialController {
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
         String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
+        
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
@@ -122,12 +123,12 @@ public class MaterialController {
 
 
 
-    public boolean checkValidFileType(String fileType){
+    private boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
         return Arrays.asList(allowType).contains(fileType);
     }
 
-    public String generateTimestampWithFileName(String originalFileName){
+    private String generateTimestampWithFileName(String originalFileName){
         Date now = new Date();
         SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
@@ -135,7 +136,7 @@ public class MaterialController {
     }
 
 
-    public String encryptFileName(String timestampWithFileName) {
+    private String encryptFileName(String timestampWithFileName) {
         String key = this.fileInitVector;
         String initVector = this.fileInitVector;
 
