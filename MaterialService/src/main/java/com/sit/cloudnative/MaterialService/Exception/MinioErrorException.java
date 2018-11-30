@@ -4,23 +4,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-public class MinioException extends HttpErrorException {
-    public MinioException() {
+public class MinioErrorException extends HttpErrorException {
+    public MinioErrorException() {
     }
 
-    public MinioException(String message) {
+    public MinioErrorException(String message) {
         super(message);
     }
 
-    public MinioException(String message, Throwable cause) {
+    public MinioErrorException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public MinioException(Throwable cause) {
+    public MinioErrorException(Throwable cause) {
         super(cause);
     }
 
-    public MinioException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public MinioErrorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
