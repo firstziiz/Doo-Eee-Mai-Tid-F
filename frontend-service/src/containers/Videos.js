@@ -1,16 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Row } from 'antd'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
 import VideoService from '../services/VideoService'
 import requireAuth from '../utils/requireAuth'
 import SubjectService from '../services/SubjectService'
-
-// import axios from '../utils/axios-creator'
-// import { videoServiceURL } from '../utils/env'
-
-const TitleOverflow = styled.p``
+import Spinner from '../components/Spinner'
 
 @requireAuth
 class Videos extends React.Component {
@@ -34,7 +31,17 @@ class Videos extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+
+    if (this.state.videos.length === 0) {
+      return (
+        <Layout>
+          <Row type="flex" justify="center" align="middle" style={{ height: '100vh'}}>
+            <Spinner />
+          </Row>
+        </Layout>
+      )
+    }
+
     return (
       <Layout>
         <div>
@@ -50,9 +57,9 @@ class Videos extends React.Component {
                   <div className="card mb-4 shadow-sm">
                     <img src={video.video_thumbnail} className="card-img-top" />
                     <div className="card-body">
-                      <TitleOverflow className="card-text text-muted">
+                      <p className="card-text text-muted">
                         {video.video_name}
-                      </TitleOverflow>
+                      </p>
                       <div className="d-flex flex-column">
                         <small className="text-muted">{video.teacher.teacher_name}</small>
                         <small className="text-muted">
