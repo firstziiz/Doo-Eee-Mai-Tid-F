@@ -51,7 +51,6 @@ public class MaterialController {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
-        String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
 
         if(checkValidFileType(fileType)){
             try{
@@ -61,7 +60,6 @@ public class MaterialController {
             }
 
             Material material = new Material();
-            material.setId(encryptTimestampWithFileName);
             material.setSubjectId(subjectId);
             material.setFileName(timestampWithFileName);
             material.setActive(isActive);
@@ -76,8 +74,8 @@ public class MaterialController {
             method = RequestMethod.DELETE,
             value = "/materials"
     )
-    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        Material material = materialService.getMaterialById(materialId);
+    public ResponseEntity<Material> deleteMaterial(@RequestParam("fileName")String fileName) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+        Material material = materialService.getMaterialByFileName(fileName);
         materialService.deleteMaterial(material);
         try {
             minioStorageService.deleteFile(material.getFileName());
@@ -136,23 +134,4 @@ public class MaterialController {
     }
 
 
-    private String encryptFileName(String timestampWithFileName) {
-        String key = this.fileInitVector;
-        String initVector = this.fileInitVector;
-
-        try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-
-            byte[] encrypted = cipher.doFinal(timestampWithFileName.getBytes());
-            return Base64.encodeBase64String(encrypted);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
 }
