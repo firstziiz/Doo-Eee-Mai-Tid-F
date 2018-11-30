@@ -56,17 +56,18 @@ public class MaterialController {
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
-                Material material = new Material();
-                material.setId(encryptTimestampWithFileName);
-                material.setSubjectId(subjectId);
-                material.setFileName(timestampWithFileName);
-                material.setActive(isActive);
-                material.setUploadedBy(Integer.parseInt(userId));
-                Material material_object = materialService.addMaterial(material);
-                return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
             }catch (MinioException e){
                 throw new MinioErrorException(e.getMessage());
             }
+
+            Material material = new Material();
+            material.setId(encryptTimestampWithFileName);
+            material.setSubjectId(subjectId);
+            material.setFileName(timestampWithFileName);
+            material.setActive(isActive);
+            material.setUploadedBy(Integer.parseInt(userId));
+            Material material_object = materialService.addMaterial(material);
+            return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
         }
         throw new InvalidFileTypeException();
     }
@@ -76,16 +77,14 @@ public class MaterialController {
             value = "/materials"
     )
     public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        try{
-            Material material = materialService.getMaterialById(materialId);
-            materialService.deleteMaterial(material);
-
+        Material material = materialService.getMaterialById(materialId);
+        materialService.deleteMaterial(material);
+        try {
             minioStorageService.deleteFile(material.getFileName());
-
-            return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
-        }catch(MinioException e){
+        } catch(MinioException e){
             throw new MinioErrorException(e.getMessage());
         }
+        return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(
