@@ -41,100 +41,96 @@ public class MaterialController {
     @Value("${storage.file.name.initVector}")
     private String fileInitVector;
 
-
-    @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/subjects/{subjectId}/materials"
-    )
-    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive) throws Exception {
+    @RequestMapping(method = RequestMethod.POST, value = "/subjects/{subjectId}/materials")
+    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId") int subjectId,
+            @RequestParam(name = "file", required = true) MultipartFile file,
+            @RequestParam(name = "isActive", required = true) boolean isActive) throws Exception {
 
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
         String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
-        
-        if(checkValidFileType(fileType)){
-            try{
-                minioStorageService.uploadFile(timestampWithFileName,file);
+
+        if (checkValidFileType(fileType)) {
+            try {
+                minioStorageService.uploadFile(timestampWithFileName, file);
                 Material material = new Material();
                 material.setId(encryptTimestampWithFileName);
                 material.setSubjectId(subjectId);
                 material.setFileName(timestampWithFileName);
                 material.setActive(isActive);
                 Material material_object = materialService.addMaterial(material);
-                return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
-            }catch (MinioException e){
+                return new ResponseEntity<Material>(material_object, HttpStatus.CREATED);
+            } catch (MinioException e) {
                 throw new MinioErrorException(e.getMessage());
             }
         }
         throw new InvalidFileTypeException();
     }
 
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            value = "/materials"
-    )
-    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        try{
+    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{materialId}")
+    public ResponseEntity<Material> deleteMaterial(@PathVariable("materialId") String materialId)
+            throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException,
+            InvalidEndpointException, InvalidPortException, NoResponseException, InternalException,
+            InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+        try {
             Material material = materialService.getMaterialById(materialId);
             materialService.deleteMaterial(material);
 
             minioStorageService.deleteFile(material.getFileName());
 
             return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
-        }catch(MinioException e){
+        } catch (MinioException e) {
             throw new MinioErrorException(e.getMessage());
         }
     }
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/materials"
-    )
-    public ResponseEntity<List<Material>> getAllMaterial() throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InsufficientDataException, InvalidPortException, InvalidArgumentException, InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InvalidEndpointException, InternalException {
+    @RequestMapping(method = RequestMethod.GET, value = "/materials")
+    public ResponseEntity<List<Material>> getAllMaterial() throws XmlPullParserException, NoSuchAlgorithmException,
+            InvalidKeyException, IOException, InsufficientDataException, InvalidPortException, InvalidArgumentException,
+            InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException,
+            InvalidEndpointException, InternalException {
         List<Material> materials = materialService.getAllMaterials();
-        for (Material material:materials) {
-            try{
+        for (Material material : materials) {
+            try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
-            }catch(MinioException e){
+            } catch (MinioException e) {
                 throw new MinioErrorException(e.getMessage());
             }
         }
-        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+        return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/subjects/{subjectId}/materials"
-    )
-    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId")int subjectId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/{subjectId}/materials")
+    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId)
+            throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
         List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
-        for (Material material:materials) {
-            try{
+        for (Material material : materials) {
+            try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
-            }catch(MinioException e){
+            } catch (MinioException e) {
                 throw new MinioErrorException(e.getMessage());
             }
         }
-        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+        return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
     }
 
-
-
-    private boolean checkValidFileType(String fileType){
-        String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
+    private boolean checkValidFileType(String fileType) {
+        String allowType[] = { "application/pdf", "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation" };
         return Arrays.asList(allowType).contains(fileType);
     }
 
-    private String generateTimestampWithFileName(String originalFileName){
+    private String generateTimestampWithFileName(String originalFileName) {
         Date now = new Date();
         SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
-        return yearMonthDay.format(now)+"-"+hhmmss.format(now)+"-"+originalFileName;
+        return yearMonthDay.format(now) + "-" + hhmmss.format(now) + "-" + originalFileName;
     }
-
 
     private String encryptFileName(String timestampWithFileName) {
         String key = this.fileInitVector;
