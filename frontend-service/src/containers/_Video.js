@@ -5,7 +5,6 @@ import {
   Breadcrumb,
   Row,
   Col,
-  Card,
   Spin
 } from 'antd'
 import axios from 'axios'
@@ -39,12 +38,10 @@ const Container = styled.div`
 
 class Video extends Component {
   state = {
-    // video detail
     videoName: '',
     url: '',
     date: '',
     period: '',
-
     404: false,
     loading: true,
     error: false,
@@ -56,12 +53,16 @@ class Video extends Component {
     this.setState({ loading: true, error: false })
     const videoId = this.props.match.params.videoId
     const baseUrl = process.env.VIDEO_API
+
     axios.get(`${baseUrl}/video/${videoId}`)
+
       .then(({data}) => {
         const date = moment(data.video_date)
         const start = moment(data.video_starttime)
         const end = moment(data.video_endtime)
         if (data) {
+          console.log(data)
+
           this.setState({
             url: data.player.hls_url,
             videoName: data.video_name,
@@ -69,11 +70,11 @@ class Video extends Component {
             date: date.format('DD MMM YYYY'),
             period: `${start.format('HH:mm')} - ${end.format('HH:mm')}`
           })
-          console.log(data)
         } else {
           this.setState({ 404: true, loading: false })
         }
       })
+
       .catch(err => {
         console.error(err)
         this.setState({
@@ -103,6 +104,7 @@ class Video extends Component {
     if (this.state.loading) return <Container center mt="80"><Spin size="large" /></Container>
     if (this.state.error) return this.renderError()
     if (this.state[404]) return <NotFound />
+
     return (
         <Layout className="layout">
           <Content style={{ padding: '0 15px' }}>
