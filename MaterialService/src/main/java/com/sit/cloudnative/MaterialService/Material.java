@@ -1,6 +1,8 @@
 package com.sit.cloudnative.MaterialService;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,12 +30,17 @@ public class Material implements Serializable {
     @Column(name = "file_name")
     private String fileName;
 
-    @NotBlank
+    @JsonInclude()
+    @Transient
     private String path;
 
     @NotNull
     @Column(name = "is_active")
     private boolean isActive;
+
+    @NotNull
+    @Column(name = "uploaded_by")
+    private int uploadedBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -96,4 +103,11 @@ public class Material implements Serializable {
         isActive = active;
     }
 
+    public int getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(int uploadedBy) {
+        this.uploadedBy = uploadedBy;
+    }
 }
