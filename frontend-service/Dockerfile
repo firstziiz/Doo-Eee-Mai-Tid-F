@@ -19,10 +19,8 @@ COPY ./public ./public
 RUN ls -la
 
 RUN yarn run build
-
-FROM nginx:1.15-alpine
+ENV PORT=8080
 
 EXPOSE 8080
 
-COPY --from=Builder /app/dist /var/www/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+CMD ["yarn", "serve"]
