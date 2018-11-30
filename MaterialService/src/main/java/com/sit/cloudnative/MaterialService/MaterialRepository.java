@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material,String> {
     List<Material> findBySubjectId(int subjectId);
+    Material findByFileName(String fileName);
 }
