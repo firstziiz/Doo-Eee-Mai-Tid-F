@@ -46,13 +46,13 @@ public class MaterialController {
             method = RequestMethod.POST,
             value = "/subjects/{subjectId}/materials"
     )
-    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive) throws Exception {
+    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive,@RequestAttribute("userId") String userId) throws Exception {
 
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
         String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
-        
+
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
@@ -61,6 +61,7 @@ public class MaterialController {
                 material.setSubjectId(subjectId);
                 material.setFileName(timestampWithFileName);
                 material.setActive(isActive);
+                material.setUploadedBy(Integer.parseInt(userId));
                 Material material_object = materialService.addMaterial(material);
                 return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
             }catch (MinioException e){
