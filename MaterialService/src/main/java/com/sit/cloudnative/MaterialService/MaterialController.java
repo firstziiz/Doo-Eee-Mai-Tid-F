@@ -1,5 +1,7 @@
 package com.sit.cloudnative.MaterialService;
 
+import com.sit.cloudnative.MaterialService.Exception.InvalidFileTypeException;
+import com.sit.cloudnative.MaterialService.Exception.MinioErrorException;
 import io.minio.errors.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.result.Output;
@@ -50,6 +52,7 @@ public class MaterialController {
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
         String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
+        
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
@@ -57,15 +60,14 @@ public class MaterialController {
                 material.setId(encryptTimestampWithFileName);
                 material.setSubjectId(subjectId);
                 material.setFileName(timestampWithFileName);
-                material.setPath("wow");
                 material.setActive(isActive);
                 Material material_object = materialService.addMaterial(material);
                 return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
             }catch (MinioException e){
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new MinioErrorException(e.getMessage());
             }
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        throw new InvalidFileTypeException();
     }
 
     @RequestMapping(
@@ -81,7 +83,7 @@ public class MaterialController {
 
             return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
         }catch(MinioException e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new MinioErrorException(e.getMessage());
         }
     }
 
@@ -96,7 +98,7 @@ public class MaterialController {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
             }catch(MinioException e){
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new MinioErrorException(e.getMessage());
             }
         }
         return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
@@ -113,7 +115,7 @@ public class MaterialController {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
             }catch(MinioException e){
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new MinioErrorException(e.getMessage());
             }
         }
         return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
@@ -121,12 +123,12 @@ public class MaterialController {
 
 
 
-    public boolean checkValidFileType(String fileType){
+    private boolean checkValidFileType(String fileType){
         String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
         return Arrays.asList(allowType).contains(fileType);
     }
 
-    public String generateTimestampWithFileName(String originalFileName){
+    private String generateTimestampWithFileName(String originalFileName){
         Date now = new Date();
         SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
@@ -134,7 +136,7 @@ public class MaterialController {
     }
 
 
-    public String encryptFileName(String timestampWithFileName) {
+    private String encryptFileName(String timestampWithFileName) {
         String key = this.fileInitVector;
         String initVector = this.fileInitVector;
 
