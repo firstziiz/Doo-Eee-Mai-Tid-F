@@ -15,5 +15,6 @@ export default props => (
     type={props.type}
     className={`form-control ${props.className}`}
     onChange={props.onChange}
+    {...props}
   />
 )

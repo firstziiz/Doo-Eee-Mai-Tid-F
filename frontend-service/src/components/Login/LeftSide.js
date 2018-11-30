@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import passionImg from '../../../public/bg/passion.jpg'
+import passionImg from '../../static/bg/passion.jpg'
 
 const PhotoContainer = styled.div`
   height: 100vh;

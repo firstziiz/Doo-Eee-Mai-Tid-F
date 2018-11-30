@@ -18,10 +18,10 @@ public class VideoHistoryController {
             value = "/users/video-history"
     )
     public ResponseEntity<CompositePrimaryKey> createNewHistory(
-            @RequestAttribute("userId")int userId,
+            @RequestAttribute("userId") String userId,
             @RequestParam("video_id")int videoId)
     {
-        VideoHistory videoHistory = new VideoHistory(new CompositePrimaryKey(userId,videoId));
+        VideoHistory videoHistory = new VideoHistory(new CompositePrimaryKey(Integer.parseInt(userId),videoId));
         videoHistory = videoHistoryService.createNewHistory(videoHistory);
         CompositePrimaryKey compositePrimaryKey = videoHistory.getId();
         return new ResponseEntity<CompositePrimaryKey>(compositePrimaryKey,HttpStatus.CREATED);
@@ -31,8 +31,8 @@ public class VideoHistoryController {
             method = RequestMethod.GET,
             value = "/users/video-history"
     )
-    public ResponseEntity<List<CompositePrimaryKey>> getHistory(@RequestAttribute("userId")int userId){
-        List<VideoHistory> videoHistories = videoHistoryService.getUserHistory(userId);
+    public ResponseEntity<List<CompositePrimaryKey>> getHistory(@RequestAttribute("userId") String userId){
+        List<VideoHistory> videoHistories = videoHistoryService.getUserHistory(Integer.parseInt(userId));
         List<CompositePrimaryKey> compositePrimaryKeys = new ArrayList<>();
         for (VideoHistory videoHistory:videoHistories){
             CompositePrimaryKey compositePrimaryKey = videoHistory.getId();
@@ -45,14 +45,14 @@ public class VideoHistoryController {
             method = RequestMethod.DELETE,
             value = "/users/video-history"
     )
-    public ResponseEntity deleteHistory(
-            @RequestAttribute("userId")int userId,
+    public ResponseEntity<CompositePrimaryKey> deleteHistory(
+            @RequestAttribute("userId") String userId,
             @RequestParam("video_id")int videoId)
     {
-        CompositePrimaryKey id = new CompositePrimaryKey(userId,videoId);
+        CompositePrimaryKey id = new CompositePrimaryKey(Integer.parseInt(userId),videoId);
         VideoHistory videoHistory = videoHistoryService.getHistoryById(id);
         videoHistoryService.deleteUserHistory(videoHistory);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<CompositePrimaryKey>(id,HttpStatus.NO_CONTENT);
     }
 
 }
