@@ -2,9 +2,12 @@ package com.SubjectService.Interceptor;
 
 import com.SubjectService.Exception.BadRequestException;
 import com.SubjectService.Exception.JWTException;
+import com.SubjectService.ExceptionResponse.ExceptionResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,16 +16,23 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenInterceptor implements HandlerInterceptor {
     private String SECRET;
 
+    private ExceptionResponse exceptionResponse;
+
     public TokenInterceptor(String secret) {
         this.SECRET = secret;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = getToken(request);
-        String userId = this.getUserIdFromToken(token);
-        request.setAttribute("userId", userId);
-        return true;
+        try {
+            String token = getToken(request);
+            String userId = this.getUserIdFromToken(token);
+            request.setAttribute("userId", userId);
+            return true;
+        } catch (BadRequestException ex) {
+            exceptionResponse.involveResponseWithException(request, response, ex, HttpStatus.BAD_REQUEST);
+            return false;
+        }
     }
 
     private boolean isValidToken (String token){

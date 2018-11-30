@@ -20,15 +20,13 @@ import java.util.Date;
 public class Material implements Serializable {
 
     @Id
-    private String id;
+    @NotBlank
+    @Column(name = "file_name")
+    private String fileName;
 
     @NotNull
     @Column(name = "subject_id")
     private int subjectId;
-
-    @NotBlank
-    @Column(name = "file_name")
-    private String fileName;
 
     @JsonInclude()
     @Transient
@@ -55,20 +53,12 @@ public class Material implements Serializable {
     public Material() {
     }
 
-    public Material(String id, @NotNull int subjectId, @NotBlank String fileName, @NotBlank String path, @NotNull boolean isActive) {
-        this.id = id;
-        this.subjectId = subjectId;
+    public Material(@NotBlank String fileName, @NotNull int subjectId, String path, @NotNull boolean isActive, @NotNull int uploadedBy) {
         this.fileName = fileName;
+        this.subjectId = subjectId;
         this.path = path;
         this.isActive = isActive;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.uploadedBy = uploadedBy;
     }
 
     public int getSubjectId() {
