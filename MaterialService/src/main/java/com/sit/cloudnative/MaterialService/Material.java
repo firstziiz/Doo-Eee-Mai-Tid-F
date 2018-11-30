@@ -38,6 +38,10 @@ public class Material implements Serializable {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @NotNull
+    @Column(name = "uploaded_by")
+    private int uploadedBy;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
