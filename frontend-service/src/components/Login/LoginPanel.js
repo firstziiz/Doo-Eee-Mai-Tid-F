@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Alert } from 'antd'
+import { observer, inject } from 'mobx-react'
+import { Redirect } from 'react-static'
 
 import AppTitle from '../Typography/AppTitle'
 import Button from '../Form/Button'
@@ -23,28 +25,32 @@ const LoginContainer = styled.div`
   }
 `
 
+@inject('userStore')
+@observer
 class LoginPanel extends React.Component {
-  state = {
-    userId: '',
-    password: ''
-  }
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault()
-
-    this.props.onSubmit({
-      userId: this.state.userId,
-      password: this.state.password
-    })
+    const responseStatus = await this.props.userStore.login()
+    if (responseStatus) {
+      this.props.history.push('/')
+    }
   }
 
   render() {
+    const {
+      userId,
+      password,
+      authError,
+      setField,
+      loading
+    } = this.props.userStore
     return (
       <LoginContainer>
         <form onSubmit={this.onSubmit}>
           <AppTitle />
           <h4 className="mb-3">Next Generation of E-learning</h4>
-          {this.props.authError && (
+          {authError && (
             <Alert
               message="Username or password is not correct."
               type="error"
@@ -56,23 +62,27 @@ class LoginPanel extends React.Component {
             <label htmlFor="">Username</label>
             <Input
               type="text"
+              id="userId-input"
               className="form-control"
-              onChange={e => this.setState({ userId: e.target.value })}
+              onChange={e => setField('userId', e.target.value)}
+              value={userId}
             />
           </div>
           <div className="form-group text-left">
             <label htmlFor="">Password</label>
             <Input
               type="password"
+              id="password-input"
               className="form-control"
-              onChange={e => this.setState({ password: e.target.value })}
+              onChange={e => setField('password', e.target.value)}
+              value={password}
             />
           </div>
           <Button
             className="mt-3"
             title="SIGN IN"
             type="submit"
-            loading={this.props.loading}
+            loading={loading}
             block
           />
         </form>

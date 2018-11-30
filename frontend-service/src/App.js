@@ -12,8 +12,6 @@ import Video from './containers/Video'
 import Videos from './containers/Videos'
 import NotFound from './containers/404'
 import { observer, inject } from 'mobx-react'
-import { videoServiceURL } from './utils/env'
-import VideoService from './services/VideoService'
 
 createGlobalStyle`
   body {
@@ -53,10 +51,6 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.userStore.logingIn) {
-      return <div />
-    }
-
     return (
       <React.Fragment>
         <Route
