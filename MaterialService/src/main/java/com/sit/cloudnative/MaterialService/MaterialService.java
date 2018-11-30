@@ -12,9 +12,7 @@ public class MaterialService {
 
     public List<Material> getAllMaterials(){ return materialRepository.findAll();}
     public List<Material> getMaterialsBySubjectId(int subjectId){return materialRepository.findBySubjectId(subjectId);}
-    public Material getMaterialById(String materialId){
-        return materialRepository.getOne(materialId);
-    }
+    public Material getMaterialByFileName(String fileName){return materialRepository.findByFileName(fileName);}
     public Material addMaterial(Material material) {
         return materialRepository.save(material);
     }

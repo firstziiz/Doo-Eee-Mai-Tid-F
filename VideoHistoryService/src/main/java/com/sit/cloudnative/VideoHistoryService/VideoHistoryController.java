@@ -45,14 +45,14 @@ public class VideoHistoryController {
             method = RequestMethod.DELETE,
             value = "/users/video-history"
     )
-    public ResponseEntity deleteHistory(
+    public ResponseEntity<CompositePrimaryKey> deleteHistory(
             @RequestAttribute("userId") String userId,
             @RequestParam("video_id")int videoId)
     {
         CompositePrimaryKey id = new CompositePrimaryKey(Integer.parseInt(userId),videoId);
         VideoHistory videoHistory = videoHistoryService.getHistoryById(id);
         videoHistoryService.deleteUserHistory(videoHistory);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<CompositePrimaryKey>(id,HttpStatus.NO_CONTENT);
     }
 
 }
