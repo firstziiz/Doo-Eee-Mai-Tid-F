@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx'
 import { message } from 'antd'
+
 import store from '../utils/store'
 import AuthenticationService from '../services/AuthenticationService'
 
@@ -7,6 +8,18 @@ export default class UserStore {
   constructor(rootStore) {
     this.rootStore = rootStore
   }
+
+  @observable
+  userId = ''
+
+  @observable
+  password = ''
+
+  @observable
+  authError = false
+
+  @observable
+  loading = false
 
   @observable
   user = {}
@@ -20,29 +33,37 @@ export default class UserStore {
   authenticated = false
 
   @action
-  login = async (userId, password) => {
+  setField = (field, value) => {
+    this[field] = value
+  }
+
+  @action
+  login = async () => {
     this.setLoginIn(true)
     await store.removeAccessToken()
     message.loading('กำลังเข้าสู่ระบบ')
     try {
+      this.authError = false
+      this.loading = true
+      const { userId, password } = this
       const result = await AuthenticationService.login(userId, password)
         .then(async resp => {
-          this.setLoginIn(false)
           await store.setAccessToken(resp.data.token)
           await this.getProfile()
           message.success('เข้าสู่ระบบสำเร็จ กรุณารอซักครู่')
           return true
         })
-        .catch(err => {
-          console.log(err)
-          message.error('เข้าสู่ระบบไม่สำเร็จ กรุณาติดต่อผู้ดูแลระบบ')
-        })
       return result
     } catch (error) {
-      this.setLoginIn(false)
+      this.authError = true
       message.error('เข้าสู่ระบบไม่สำเร็จ กรุณาติดต่อผู้ดูแลระบบ')
       console.log(error)
       return false
+    } finally {
+      this.setLoginIn(false)
+      this.loading = false
+      this.setField('userId', '')
+      this.setField('password', '')
     }
   }
 
