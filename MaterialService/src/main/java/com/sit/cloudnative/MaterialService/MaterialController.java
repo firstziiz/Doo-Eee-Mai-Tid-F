@@ -2,6 +2,7 @@ package com.sit.cloudnative.MaterialService;
 
 import com.sit.cloudnative.MaterialService.Exception.InvalidFileTypeException;
 import com.sit.cloudnative.MaterialService.Exception.MinioErrorException;
+
 import io.minio.errors.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.result.Output;
@@ -20,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -46,7 +48,7 @@ public class MaterialController {
             method = RequestMethod.POST,
             value = "/subjects/{subjectId}/materials"
     )
-    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive,@RequestAttribute("userId") String userId) throws Exception {
+    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive,@RequestAttribute("userId") String userId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException  {
 
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
@@ -56,8 +58,26 @@ public class MaterialController {
         if(checkValidFileType(fileType)){
             try{
                 minioStorageService.uploadFile(timestampWithFileName,file);
-            }catch (MinioException e){
-                throw new MinioErrorException(e.getMessage());
+            } catch (NoResponseException e) {
+                throw new NoResponseException();
+            } catch (InvalidPortException e) {
+                throw new InvalidPortException(1 , "");
+            } catch (InvalidEndpointException e) {
+                throw new InvalidEndpointException("", "");
+            } catch (InsufficientDataException e) {
+                throw new InsufficientDataException("");
+            } catch (InvalidBucketNameException e) {
+                throw new InvalidBucketNameException("", "");
+            } catch (InternalException e) {
+                throw new InternalException("");
+            } catch (InvalidArgumentException e) {
+                throw new InvalidArgumentException("");
+            } catch (GeneralSecurityException e) {
+                throw new GeneralSecurityException();
+            } catch (IOException e) {
+                throw new IOException();
+            } catch (XmlPullParserException e) {
+                throw new XmlPullParserException("");
             }
 
             Material material = new Material();
@@ -76,13 +96,31 @@ public class MaterialController {
             method = RequestMethod.DELETE,
             value = "/materials"
     )
-    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
+    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException {
         Material material = materialService.getMaterialById(materialId);
         materialService.deleteMaterial(material);
         try {
             minioStorageService.deleteFile(material.getFileName());
-        } catch(MinioException e){
-            throw new MinioErrorException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new NoResponseException();
+        } catch (InvalidPortException e) {
+            throw new InvalidPortException(1 , "");
+        } catch (InvalidEndpointException e) {
+            throw new InvalidEndpointException("", "");
+        } catch (InsufficientDataException e) {
+            throw new InsufficientDataException("");
+        } catch (InvalidBucketNameException e) {
+            throw new InvalidBucketNameException("", "");
+        } catch (InternalException e) {
+            throw new InternalException("");
+        } catch (InvalidArgumentException e) {
+            throw new InvalidArgumentException("");
+        } catch (GeneralSecurityException e) {
+            throw new GeneralSecurityException();
+        } catch (IOException e) {
+            throw new IOException();
+        } catch (XmlPullParserException e) {
+            throw new XmlPullParserException("");
         }
         return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
     }
@@ -91,14 +129,34 @@ public class MaterialController {
             method = RequestMethod.GET,
             value = "/materials"
     )
-    public ResponseEntity<List<Material>> getAllMaterial() throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InsufficientDataException, InvalidPortException, InvalidArgumentException, InvalidExpiresRangeException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InvalidEndpointException, InternalException {
+    public ResponseEntity<List<Material>> getAllMaterial() throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException, InvalidExpiresRangeException {
         List<Material> materials = materialService.getAllMaterials();
         for (Material material:materials) {
-            try{
+            try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
-            }catch(MinioException e){
-                throw new MinioErrorException(e.getMessage());
+            } catch (NoResponseException e) {
+                throw new NoResponseException();
+            } catch (InvalidPortException e) {
+                throw new InvalidPortException(1 , "");
+            } catch (InvalidEndpointException e) {
+                throw new InvalidEndpointException("", "");
+            } catch (InsufficientDataException e) {
+                throw new InsufficientDataException("");
+            } catch (InvalidBucketNameException e) {
+                throw new InvalidBucketNameException("", "");
+            } catch (InternalException e) {
+                throw new InternalException("");
+            } catch (InvalidArgumentException e) {
+                throw new InvalidArgumentException("");
+            } catch (GeneralSecurityException e) {
+                throw new GeneralSecurityException();
+            } catch (IOException e) {
+                throw new IOException();
+            } catch (XmlPullParserException e) {
+                throw new XmlPullParserException("");
+            } catch (InvalidExpiresRangeException e) {
+                throw new InvalidExpiresRangeException("");
             }
         }
         return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
