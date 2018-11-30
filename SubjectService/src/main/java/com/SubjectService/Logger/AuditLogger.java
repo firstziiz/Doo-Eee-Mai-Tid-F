@@ -17,7 +17,7 @@ public class AuditLogger {
         this.logger = LoggerFactory.getLogger(caller);
     }
 
-    public void logging(HttpServletRequest request, String message, JsonLogger logger) {
+    private void logging(HttpServletRequest request, String message, JsonLogger logger) {
         String userAgent = request.getHeader(USER_AGENT);
         String ip = request.getRemoteAddr();
         logger.message(message).field(USER_AGENT, userAgent).field(IP, ip).log();
