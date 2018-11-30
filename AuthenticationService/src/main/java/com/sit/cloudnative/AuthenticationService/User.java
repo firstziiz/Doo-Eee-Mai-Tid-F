@@ -3,26 +3,41 @@ package com.sit.cloudnative.AuthenticationService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-public class Student implements Serializable {
+@Table(name = "users")
+public class User implements Serializable {
     @Id
     private String id;
     @NotBlank
     private String fullName;
-    @NotBlank
+
     private String faculty;
-    @NotBlank
+
     private String major;
-    @NotNull
+
     private int year;
+
     @NotBlank
     private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(32) default 'STUDENT'")
+    private Role role;
+
+    enum Role {
+        STUDENT, TEACHER
+    }
 
     public String getId() {
         return id;
@@ -67,6 +82,14 @@ public class Student implements Serializable {
     @JsonIgnore
     public String getPassword() {
         return password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setPassword(String password) {
