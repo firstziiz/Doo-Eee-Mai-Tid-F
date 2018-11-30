@@ -79,9 +79,9 @@ public class MaterialController {
         throw new InvalidFileTypeException();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{materialId}")
-    public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException {
-        Material material = materialService.getMaterialById(materialId);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{fileName}")
+    public ResponseEntity<Material> deleteMaterial(@RequestParam("fileName") String fileName) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException {
+        Material material = materialService.getMaterialByFileName(fileName);
         materialService.deleteMaterial(material);
         try {
             minioStorageService.deleteFile(material.getFileName());
@@ -140,7 +140,7 @@ public class MaterialController {
             } catch (XmlPullParserException e) {
                 throw new XmlPullParserException("");
             } catch (InvalidExpiresRangeException e) {
-                throw new InvalidExpiresRangeException("");
+                throw new InvalidExpiresRangeException(1, "");
             }
         }
         return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
