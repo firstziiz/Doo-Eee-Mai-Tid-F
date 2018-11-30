@@ -130,27 +130,5 @@ public class MaterialController {
         return yearMonthDay.format(now) + "-" + hhmmss.format(now) + "-" + originalFileName;
     }
 
-    <<<<<<<HEAD
 
-    =======
-
-    private String encryptFileName(String timestampWithFileName) {
-        String key = this.fileInitVector;
-        String initVector = this.fileInitVector;
-
-        try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-
-            byte[] encrypted = cipher.doFinal(timestampWithFileName.getBytes());
-            return Base64.encodeBase64String(encrypted);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }>>>>>>>e9bb4e17b64f7591f35da93de8cb1f3f1c6080d6
 }
