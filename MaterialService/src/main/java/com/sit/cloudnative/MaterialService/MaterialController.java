@@ -81,7 +81,7 @@ public class MaterialController {
         throw new InvalidFileTypeException();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{fileName}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/materials/{fileName}")
     public ResponseEntity<Material> deleteMaterial(@PathVariable("fileName") String fileName)
             throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
             ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
