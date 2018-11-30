@@ -30,11 +30,12 @@ public class TokenService {
         return System.currentTimeMillis() + EXPIRE_IN_SECOND * MILLISECOND;
     }
 
-    public AuthResponse createToken(Student student) {
+    public AuthResponse createToken(User user) {
         AuthResponse authResponse = new AuthResponse();
         Date expiredDate = new Date(this.getExpireMillisecond());
-        String token = Jwts.builder().setSubject("StudentService").claim("userId", student.getId())
-                .setExpiration(expiredDate).signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+        String token = Jwts.builder().setSubject("UserService").claim("userId", user.getId())
+                .claim("role", user.getRole()).setExpiration(expiredDate).signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
         authResponse.setToken(token);
         authResponse.setExpiryDate(expiredDate.getTime());
         return authResponse;

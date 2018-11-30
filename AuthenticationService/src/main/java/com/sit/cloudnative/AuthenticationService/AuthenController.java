@@ -20,48 +20,41 @@ public class AuthenController {
     TokenService tokenService;
 
     @Autowired
-    StudentService studentService;
+    UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(
-            @RequestParam(name = "userId", required = true) String userId,
-            @RequestParam(name = "password", required = true) String password,
-            HttpServletRequest request
-            ) {
-        Student student = studentService.findStudentByCredential(userId, password);
-        if (student == null) {
+    public ResponseEntity<AuthResponse> login(@RequestParam(name = "userId", required = true) String userId,
+            @RequestParam(name = "password", required = true) String password, HttpServletRequest request) {
+        User user = userService.findStudentByCredential(userId, password);
+        if (user == null) {
             logger.warn(request, userId + " login failed");
             throw new UserNotFoundException("No user found with this credential.");
         }
-        AuthResponse authResponse = tokenService.createToken(student);
+        AuthResponse authResponse = tokenService.createToken(user);
         logger.info(request, userId + " login success");
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Student> getStudent (
-            @RequestHeader(name = "Authorization", required = true) String token,
-            HttpServletRequest request
-    ) {
-        Student student = this.getUserFromToken(token);
-        logger.info(request, student.getId() + " get student data");
-        return new ResponseEntity<Student>(student, HttpStatus.OK);
+    public ResponseEntity<User> getUser(@RequestHeader(name = "Authorization", required = true) String token,
+            HttpServletRequest request) {
+        User user = this.getUserFromToken(token);
+        logger.info(request, user.getId() + " get student data");
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponse> refreshToken(
-            @RequestHeader(name = "Authorization", required = true) String token,
-            HttpServletRequest request
-    ) {
-        Student student = this.getUserFromToken(token);
-        AuthResponse authResponse = tokenService.createToken(student);
-        logger.info(request, student.getId() + " refresh token");
+            @RequestHeader(name = "Authorization", required = true) String token, HttpServletRequest request) {
+        User user = this.getUserFromToken(token);
+        AuthResponse authResponse = tokenService.createToken(user);
+        logger.info(request, user.getId() + " refresh token");
         return new ResponseEntity(authResponse, HttpStatus.CREATED);
     }
 
-    private Student getUserFromToken(String token) {
-        String studentId = tokenService.getIdFromToken(token);
-        Student student = studentService.findById(studentId);
-        return student;
+    private User getUserFromToken(String token) {
+        String userId = tokenService.getIdFromToken(token);
+        User user = userService.findById(userId);
+        return user;
     }
 }
