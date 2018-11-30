@@ -1,6 +1,6 @@
 import React from 'react'
 import { Spin, Icon } from 'antd'
 
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const antIcon = <Icon type="loading" style={{ fontSize: 48 }} spin />;
 
-export default () => ( <Spin indicator={antIcon} /> )
+export default (props) => ( <Spin indicator={antIcon} /> )
