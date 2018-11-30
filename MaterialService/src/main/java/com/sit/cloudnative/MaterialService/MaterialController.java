@@ -1,26 +1,17 @@
 package com.sit.cloudnative.MaterialService;
 
 import com.sit.cloudnative.MaterialService.Exception.InvalidFileTypeException;
-import com.sit.cloudnative.MaterialService.Exception.MinioErrorException;
 
 import io.minio.errors.*;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.hibernate.result.Output;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
