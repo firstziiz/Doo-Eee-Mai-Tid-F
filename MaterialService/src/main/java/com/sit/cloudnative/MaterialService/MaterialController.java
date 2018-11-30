@@ -43,17 +43,14 @@ public class MaterialController {
     @Value("${storage.file.name.initVector}")
     private String fileInitVector;
 
-
-    @RequestMapping(
-            method = RequestMethod.POST,
-            value = "/subjects/{subjectId}/materials"
-    )
-    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId")int subjectId,@RequestParam("file") MultipartFile file,@RequestParam("isActive")boolean isActive,@RequestAttribute("userId") String userId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException  {
-
+    @RequestMapping(method = RequestMethod.POST, value = "/subjects/{subjectId}/materials")
+    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId") int subjectId,
+            @RequestParam(name = "file", required = true) MultipartFile file,
+            @RequestParam(name = "isActive", required = true) boolean isActive,
+            @RequestAttribute("userId") String userId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException  {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
-        String encryptTimestampWithFileName = encryptFileName(timestampWithFileName);
 
         if(checkValidFileType(fileType)){
             try{
@@ -81,21 +78,17 @@ public class MaterialController {
             }
 
             Material material = new Material();
-            material.setId(encryptTimestampWithFileName);
             material.setSubjectId(subjectId);
             material.setFileName(timestampWithFileName);
             material.setActive(isActive);
             material.setUploadedBy(Integer.parseInt(userId));
             Material material_object = materialService.addMaterial(material);
-            return new ResponseEntity<Material>(material_object,HttpStatus.CREATED);
+            return new ResponseEntity<Material>(material_object, HttpStatus.CREATED);
         }
         throw new InvalidFileTypeException();
     }
 
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            value = "/materials"
-    )
+    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{materialId}")
     public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException {
         Material material = materialService.getMaterialById(materialId);
         materialService.deleteMaterial(material);
@@ -159,58 +152,45 @@ public class MaterialController {
                 throw new InvalidExpiresRangeException("");
             }
         }
-        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+        return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/subjects/{subjectId}/materials"
-    )
-    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId")int subjectId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+    @RequestMapping(method = RequestMethod.GET, value = "/subject/{subjectId}/materials")
+    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException {
         List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
-        for (Material material:materials) {
-            try{
+        for (Material material : materials) {
+            try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
-            }catch(MinioException e){
-                throw new MinioErrorException(e.getMessage());
+            } catch (XmlPullParserException e) {
+                throw new XmlPullParserException(e.getMessage());
+            } catch (NoSuchAlgorithmException e) {
+                throw new NoSuchAlgorithmException();
+            } catch (InvalidKeyException e) {
+                throw new InvalidKeyException();
+            } catch (IOException e) {
+                throw new IOException();
+            } catch (MinioException e) {
+                throw new MinioException(e.getMessage());
             }
         }
-        return new ResponseEntity<List<Material>>(materials,HttpStatus.OK);
+        return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
     }
 
-
-
-    private boolean checkValidFileType(String fileType){
-        String allowType[] = {"application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation"};
+    private boolean checkValidFileType(String fileType) {
+        String allowType[] = { "application/pdf", "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation" };
         return Arrays.asList(allowType).contains(fileType);
     }
 
-    private String generateTimestampWithFileName(String originalFileName){
+    private String generateTimestampWithFileName(String originalFileName) {
         Date now = new Date();
         SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
-        return yearMonthDay.format(now)+"-"+hhmmss.format(now)+"-"+originalFileName;
+        return yearMonthDay.format(now) + "-" + hhmmss.format(now) + "-" + originalFileName;
     }
 
 
-    private String encryptFileName(String timestampWithFileName) {
-        String key = this.fileInitVector;
-        String initVector = this.fileInitVector;
-
-        try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-
-            byte[] encrypted = cipher.doFinal(timestampWithFileName.getBytes());
-            return Base64.encodeBase64String(encrypted);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
 }
