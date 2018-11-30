@@ -101,15 +101,22 @@ public class MaterialController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject/{subjectId}/materials")
-    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId)
-            throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException {
         List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
         for (Material material : materials) {
             try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
+            } catch (XmlPullParserException e) {
+                throw new XmlPullParserException(e.getMessage());
+            } catch (NoSuchAlgorithmException e) {
+                throw new NoSuchAlgorithmException();
+            } catch (InvalidKeyException e) {
+                throw new InvalidKeyException();
+            } catch (IOException e) {
+                throw new IOException();
             } catch (MinioException e) {
-                throw new MinioErrorException(e.getMessage());
+                throw new MinioException(e.getMessage());
             }
         }
         return new ResponseEntity<List<Material>>(materials, HttpStatus.OK);
