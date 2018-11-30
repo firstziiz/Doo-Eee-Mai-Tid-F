@@ -77,16 +77,14 @@ public class MaterialController {
             value = "/materials"
     )
     public ResponseEntity<Material> deleteMaterial(@RequestParam("materialId")String materialId) throws XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException, InvalidEndpointException, InvalidPortException, NoResponseException, InternalException, InvalidArgumentException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException {
-        try{
-            Material material = materialService.getMaterialById(materialId);
-            materialService.deleteMaterial(material);
-
+        Material material = materialService.getMaterialById(materialId);
+        materialService.deleteMaterial(material);
+        try {
             minioStorageService.deleteFile(material.getFileName());
-
-            return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
-        }catch(MinioException e){
+        } catch(MinioException e){
             throw new MinioErrorException(e.getMessage());
         }
+        return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(
