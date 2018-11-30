@@ -103,4 +103,11 @@ public class Material implements Serializable {
         isActive = active;
     }
 
+    public int getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(int uploadedBy) {
+        this.uploadedBy = uploadedBy;
+    }
 }
