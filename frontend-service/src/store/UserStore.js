@@ -48,7 +48,6 @@ export default class UserStore {
       const { userId, password } = this
       const result = await AuthenticationService.login(userId, password)
         .then(async resp => {
-          this.setLoginIn(false)
           await store.setAccessToken(resp.data.token)
           await this.getProfile()
           message.success('เข้าสู่ระบบสำเร็จ กรุณารอซักครู่')
@@ -56,12 +55,12 @@ export default class UserStore {
         })
       return result
     } catch (error) {
-      this.setLoginIn(false)
       this.authError = true
       message.error('เข้าสู่ระบบไม่สำเร็จ กรุณาติดต่อผู้ดูแลระบบ')
       console.log(error)
       return false
     } finally {
+      this.setLoginIn(false)
       this.loading = false
       this.setField('userId', '')
       this.setField('password', '')
