@@ -24,6 +24,9 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (this.isOptionMethod(request)) {
+            return true;
+        }
         try {
             String token = getToken(request);
             String userId = this.getUserIdFromToken(token);
@@ -64,5 +67,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new JWTException(jwtException.getMessage());
         }
         return userId;
+    }
+
+    private boolean isOptionMethod(HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 }

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class MaterialController {
 
     AuditLogger logger = new AuditLogger(this.getClass().getName());
@@ -50,9 +51,9 @@ public class MaterialController {
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
 
-        if(checkValidFileType(fileType)){
-            try{
-                minioStorageService.uploadFile(timestampWithFileName,file);
+        if (checkValidFileType(fileType)) {
+            try {
+                minioStorageService.uploadFile(timestampWithFileName, file);
             } catch (NoResponseException e) {
                 logger.error(request, "no response exception in addMaterial");
                 throw new NoResponseException();
@@ -145,7 +146,7 @@ public class MaterialController {
     )
     public ResponseEntity<List<Material>> getAllMaterial(HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException, InvalidExpiresRangeException {
         List<Material> materials = materialService.getAllMaterials();
-        for (Material material:materials) {
+        for (Material material : materials) {
             try {
                 String url = minioStorageService.getDownloadLink(material.getFileName());
                 material.setPath(url);
@@ -240,6 +241,5 @@ public class MaterialController {
         SimpleDateFormat hhmmss = new SimpleDateFormat("hhmmss");
         return yearMonthDay.format(now) + "-" + hhmmss.format(now) + "-" + originalFileName;
     }
-
 
 }
