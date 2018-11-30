@@ -41,6 +41,19 @@ public class NoteController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(path = "/notes/user/video/{videoId}")
+    public ResponseEntity<Note> getNoteByVideoIdAndUserId(@RequestAttribute(name = "userId") Long userId,
+                                                          @PathVariable(name = "videoId") Long videoId) {
+        logger.info("Getting note from video: "+videoId+" of user: "+userId);
+        Optional<Note> note = noteService.getNoteByVideoIdAndUserId(videoId, userId);
+        if(note.isPresent() == false) {
+            logger.info("Note of user: "+userId+" from video: "+videoId+" is not found");
+            throw new NoteUserVideoNotFoundException(videoId.toString(), userId.toString());
+        }
+        return new ResponseEntity<Note>(note.get(), HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(path = "/notes")
     public ResponseEntity<List<Note>> getAllNotes() {
         logger.info("Getting all notes from the system");
