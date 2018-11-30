@@ -27,7 +27,7 @@ public class AuthenController {
             @RequestParam(name = "password", required = true) String password, HttpServletRequest request) {
         User user = userService.findStudentByCredential(userId, password);
         if (user == null) {
-            logger.warn(request, userId + " login failed");
+            logger.error(request, userId + " login failed");
             throw new UserNotFoundException("No user found with this credential.");
         }
         AuthResponse authResponse = tokenService.createToken(user);
