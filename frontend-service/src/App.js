@@ -53,10 +53,6 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.userStore.logingIn) {
-      return <div />
-    }
-
     return (
       <React.Fragment>
         <Route
