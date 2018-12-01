@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.snow.css'
 import { videoServiceURL, videoHistoryServiceURL } from '../utils/env'
 import requireAuth from '../utils/requireAuth'
 import NotFound from '../containers/404'
+import VideoService from '../services/VideoService'
 
 @requireAuth
 class Video extends React.Component {
@@ -43,11 +44,7 @@ class Video extends React.Component {
   }
 
   async componentDidMount() {
-    const response = await axios({
-      url: `/video/${this.videoId}`,
-      baseURL: videoServiceURL,
-      method: 'get'
-    })
+    const response = await VideoService.getVideo(this.videoId)
 
     const video = response.data
     const endtime = moment(video.video_endtime).format('HH:mm')
