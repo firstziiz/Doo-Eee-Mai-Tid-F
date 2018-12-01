@@ -1,6 +1,8 @@
 package com.sit.cloudnative.MaterialService;
 
+import com.sit.cloudnative.MaterialService.DTO.User;
 import com.sit.cloudnative.MaterialService.Exception.InvalidFileTypeException;
+import com.sit.cloudnative.MaterialService.Exception.PermissionExpcetion;
 
 import com.sit.cloudnative.MaterialService.Logger.AuditLogger;
 import io.minio.errors.*;
@@ -41,16 +43,22 @@ public class MaterialController {
     private String fileInitVector;
 
     @RequestMapping(method = RequestMethod.POST, value = "/subjects/{subjectId}/materials")
-    public ResponseEntity<Material> addMaterial(@PathVariable("subjectId") int subjectId,
+    public ResponseEntity<?> addMaterial(
+            HttpServletRequest request,
+            @PathVariable("subjectId") int subjectId,
             @RequestParam(name = "file", required = true) MultipartFile file,
             @RequestParam(name = "isActive", required = true) boolean isActive,
-            @RequestAttribute("userId") String userId,
-            HttpServletRequest request)
-            throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException  {
+            @RequestAttribute("user") User user
+    )
+            throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
+            ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
+            GeneralSecurityException, IOException, XmlPullParserException {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String timestampWithFileName = generateTimestampWithFileName(fileName);
-
+        if (!user.canUploadMaterial()) {
+            throw new PermissionExpcetion("No upload permission for user:" + user.getUserId());
+        }
         if (checkValidFileType(fileType)) {
             try {
                 minioStorageService.uploadFile(timestampWithFileName, file);
@@ -59,12 +67,12 @@ public class MaterialController {
                 throw new NoResponseException();
             } catch (InvalidPortException e) {
                 logger.error(request, "invalid port exception in addMaterial");
-                throw new InvalidPortException(0 , e.getMessage());
+                throw new InvalidPortException(0, e.getMessage());
             } catch (InvalidEndpointException e) {
                 logger.error(request, "invalid endpoint exception in addMaterial");
                 throw new InvalidEndpointException(minioStorageService.getUrl(), e.getMessage());
             } catch (InsufficientDataException e) {
-                logger.error(request, userId + " insufficient data exception in addMaterial");
+                logger.error(request, user.getUserId() + " insufficient data exception in addMaterial");
                 throw new InsufficientDataException(e.getMessage());
             } catch (InvalidBucketNameException e) {
                 logger.error(request, "invalid bucket name exception in addMaterial");
@@ -90,7 +98,7 @@ public class MaterialController {
             material.setSubjectId(subjectId);
             material.setFileName(timestampWithFileName);
             material.setActive(isActive);
-            material.setUploadedBy(Integer.parseInt(userId));
+            material.setUploadedBy(Integer.parseInt(user.getUserId()));
             Material material_object = materialService.addMaterial(material);
             return new ResponseEntity<Material>(material_object, HttpStatus.CREATED);
         }
@@ -98,10 +106,10 @@ public class MaterialController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/material/{fileName}")
-    public ResponseEntity<Material> deleteMaterial(
-            @RequestParam("fileName") String fileName,
-            HttpServletRequest request)
-            throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException {
+    public ResponseEntity<Material> deleteMaterial(@RequestParam("fileName") String fileName,
+            HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException,
+            InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException,
+            InternalException, GeneralSecurityException, IOException, XmlPullParserException {
         Material material = materialService.getMaterialByFileName(fileName);
         materialService.deleteMaterial(material);
         try {
@@ -111,7 +119,7 @@ public class MaterialController {
             throw new NoResponseException();
         } catch (InvalidPortException e) {
             logger.error(request, "invalid port exception in deleteMaterial");
-            throw new InvalidPortException(0 , e.getMessage());
+            throw new InvalidPortException(0, e.getMessage());
         } catch (InvalidEndpointException e) {
             logger.error(request, "invalid endpoint exception in deleteMaterial");
             throw new InvalidEndpointException(minioStorageService.getUrl(), e.getMessage());
@@ -140,11 +148,11 @@ public class MaterialController {
         return new ResponseEntity<Material>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/materials"
-    )
-    public ResponseEntity<List<Material>> getAllMaterial(HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException, GeneralSecurityException, IOException, XmlPullParserException, InvalidExpiresRangeException {
+    @RequestMapping(method = RequestMethod.GET, value = "/materials")
+    public ResponseEntity<List<Material>> getAllMaterial(HttpServletRequest request)
+            throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
+            ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
+            GeneralSecurityException, IOException, XmlPullParserException, InvalidExpiresRangeException {
         List<Material> materials = materialService.getAllMaterials();
         for (Material material : materials) {
             try {
@@ -155,12 +163,13 @@ public class MaterialController {
                 throw new NoResponseException();
             } catch (InvalidPortException e) {
                 logger.error(request, "invalid port exception in deleteMaterial");
-                throw new InvalidPortException(0 , e.getMessage());
+                throw new InvalidPortException(0, e.getMessage());
             } catch (InvalidEndpointException e) {
                 logger.error(request, "invalid endpoint exception in deleteMaterial");
                 throw new InvalidEndpointException(minioStorageService.getUrl(), e.getMessage());
             } catch (InsufficientDataException e) {
-                logger.error(request, request.getAttribute("userId") + " insufficient data exception in deleteMaterial");
+                logger.error(request,
+                        request.getAttribute("userId") + " insufficient data exception in deleteMaterial");
                 throw new InsufficientDataException(e.getMessage());
             } catch (InvalidBucketNameException e) {
                 logger.error(request, "invalid bucket name exception in deleteMaterial");
@@ -186,7 +195,9 @@ public class MaterialController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/subject/{subjectId}/materials")
-    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId, HttpServletRequest request) throws MinioException, IOException, InvalidKeyException, NoSuchAlgorithmException, XmlPullParserException, GeneralSecurityException {
+    public ResponseEntity<List<Material>> getMaterialBySubjectId(@PathVariable("subjectId") int subjectId,
+            HttpServletRequest request) throws MinioException, IOException, InvalidKeyException,
+            NoSuchAlgorithmException, XmlPullParserException, GeneralSecurityException {
         List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
         for (Material material : materials) {
             try {
@@ -197,12 +208,13 @@ public class MaterialController {
                 throw new NoResponseException();
             } catch (InvalidPortException e) {
                 logger.error(request, "invalid port exception in deleteMaterial");
-                throw new InvalidPortException(0 , e.getMessage());
+                throw new InvalidPortException(0, e.getMessage());
             } catch (InvalidEndpointException e) {
                 logger.error(request, "invalid endpoint exception in deleteMaterial");
                 throw new InvalidEndpointException(minioStorageService.getUrl(), e.getMessage());
             } catch (InsufficientDataException e) {
-                logger.error(request, request.getAttribute("userId") + " insufficient data exception in deleteMaterial");
+                logger.error(request,
+                        request.getAttribute("userId") + " insufficient data exception in deleteMaterial");
                 throw new InsufficientDataException(e.getMessage());
             } catch (InvalidBucketNameException e) {
                 logger.error(request, "invalid bucket name exception in deleteMaterial");

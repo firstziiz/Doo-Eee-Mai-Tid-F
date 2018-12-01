@@ -22,10 +22,13 @@ resources:
   disk_size_gb: 10
 
 env_variables:
-  spring_datasource_url: jdbc:mysql://{ip}:{port}/{database}
-  spring_datasource_username:
-  spring_datasource_password:
-  storage_minio_url:
-  storage_minio_bucketName:
-  storage_minio_accessKey:
-  storage_minio_secretKey:
+  DB_HOST:
+  DB_DATABASE:
+  DB_USERNAME:
+  DB_PASSWORD:
+  STORAGE_MINIO_URL:
+  STORAGE_MINIO_BUCKETNAME:
+  STORAGE_MINIO_ACCESSKEY:
+  STORAGE_MINIO_SECRETKEY:
+  STORAGE_FILE_NAME_KEY:
+  STORAGE_FILE_NAME_INITVECTOR:
