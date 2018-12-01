@@ -21,7 +21,7 @@ class Curriculum extends React.Component {
     favSubjects: []
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     try {
       const programs = await SubjectService.getPrograms().then(resp => resp.data)
       this.setState({

@@ -2,10 +2,16 @@ import React from 'react'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
+import VideoService from '../services/VideoService'
 
 class History extends React.Component {
   state = {
     videos: []
+  }
+
+  async componentDidMount() {
+    const videos = await VideoService.getVideoHistories().then(resp => resp.data)
+    console.log(videos)
   }
 
   render() {

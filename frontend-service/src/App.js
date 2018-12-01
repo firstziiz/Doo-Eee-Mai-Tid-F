@@ -34,7 +34,7 @@ class App extends React.Component {
     loading: true
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     this.props.userStore.setLoginIn(true)
     this.props.userStore
       .getProfile()
