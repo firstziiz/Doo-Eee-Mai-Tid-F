@@ -1,7 +1,11 @@
 applications:
-- name: frontend-service
-  random-route: true
-  path: .
-  memory: 256M
-  command: yarn serve
-  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+- name: demtf-frontend-service
+  instances: 1
+  docker:
+    image: sgnsys3/demtf-frontend:5
+  env:
+    AUTHENTICATION_SERVICE_URL: "https://authentication-service-dot-sit-cloudnative.appspot.com"
+    SUBJECT_SERVICE_URL: "https://subject-service-dot-sit-cloudnative.appspot.com"
+    VIDEO_SERVICE_URL: "https://video-service-dot-sit-cloudnative.appspot.com"
+    VIDEO_HISTORY_SERVICE_URL:  "https://video-history-service-dot-sit-cloudnative.appspot.com"
+    MATERIAL_SERVICE_URL: "https://material-service-dot-sit-cloudnative.appspot.com"

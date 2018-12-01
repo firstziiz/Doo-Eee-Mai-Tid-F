@@ -28,3 +28,4 @@ target
 *.iml
 src/main/appengine/app.yaml
 bin
+manifest.yml
