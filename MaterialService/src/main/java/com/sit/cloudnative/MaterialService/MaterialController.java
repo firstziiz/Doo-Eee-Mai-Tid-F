@@ -42,26 +42,23 @@ public class MaterialController {
     @Value("${storage.file.name.initVector}")
     private String fileInitVector;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/subjects/{subjectId}/materials")
-    public ResponseEntity<?> addMaterial(
-            HttpServletRequest request,
-            @PathVariable("subjectId") int subjectId,
+    @RequestMapping(method = RequestMethod.POST, value = "/subject/{subjectId}/materials")
+    public ResponseEntity<?> addMaterial(HttpServletRequest request, @PathVariable("subjectId") int subjectId,
             @RequestParam(name = "file", required = true) MultipartFile file,
-            @RequestParam(name = "isActive", required = true) boolean isActive,
-            @RequestAttribute("user") User user
-    )
+            @RequestParam(name = "isActive", required = true) boolean isActive, @RequestAttribute("user") User user)
             throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
             ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
             GeneralSecurityException, IOException, XmlPullParserException {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
-        String timestampWithFileName = generateTimestampWithFileName(fileName);
+        String filekey = generateTimestampWithFileName(fileName);
         if (!user.canUploadMaterial()) {
             throw new PermissionExpcetion("No upload permission for user:" + user.getUserId());
         }
+
         if (checkValidFileType(fileType)) {
             try {
-                minioStorageService.uploadFile(timestampWithFileName, file);
+                minioStorageService.uploadFile(filekey, file);
             } catch (NoResponseException e) {
                 logger.error(request, "no response exception in addMaterial");
                 throw new NoResponseException();
@@ -96,24 +93,25 @@ public class MaterialController {
 
             Material material = new Material();
             material.setSubjectId(subjectId);
-            material.setFileName(timestampWithFileName);
+            material.setFileName(fileName);
             material.setActive(isActive);
-            material.setUploadedBy(Integer.parseInt(user.getUserId()));
+            material.setUploadedBy(user.getUserId());
+            material.setFilekey(filekey);
             Material material_object = materialService.addMaterial(material);
             return new ResponseEntity<Material>(material_object, HttpStatus.CREATED);
         }
         throw new InvalidFileTypeException();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{fileName}")
-    public ResponseEntity<Material> deleteMaterial(@RequestParam("fileName") String fileName,
+    @RequestMapping(method = RequestMethod.DELETE, value = "/material/{materialId}")
+    public ResponseEntity<Material> deleteMaterialById(@RequestParam("materialId") long materialId,
             HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException,
             InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException,
             InternalException, GeneralSecurityException, IOException, XmlPullParserException {
-        Material material = materialService.getMaterialByFileName(fileName);
+        Material material = materialService.getMaterialById(materialId);
         materialService.deleteMaterial(material);
         try {
-            minioStorageService.deleteFile(material.getFileName());
+            minioStorageService.deleteFile(material.getFilekey());
         } catch (NoResponseException e) {
             logger.error(request, "no response exception in deleteMaterial");
             throw new NoResponseException();
@@ -156,7 +154,7 @@ public class MaterialController {
         List<Material> materials = materialService.getAllMaterials();
         for (Material material : materials) {
             try {
-                String url = minioStorageService.getDownloadLink(material.getFileName());
+                String url = minioStorageService.getDownloadLink(material.getFilekey());
                 material.setPath(url);
             } catch (NoResponseException e) {
                 logger.error(request, "no response exception in deleteMaterial");
@@ -201,7 +199,7 @@ public class MaterialController {
         List<Material> materials = materialService.getMaterialsBySubjectId(subjectId);
         for (Material material : materials) {
             try {
-                String url = minioStorageService.getDownloadLink(material.getFileName());
+                String url = minioStorageService.getDownloadLink(material.getFilekey());
                 material.setPath(url);
             } catch (NoResponseException e) {
                 logger.error(request, "no response exception in deleteMaterial");
