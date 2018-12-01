@@ -50,11 +50,11 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
         String token = httpServletRequest.getHeader("Authorization");
         if (this.isValidToken(token) == false) {
-            throw new BadRequestException("Invalid authorization provided.");
+            throw new BadRequestException("Invalid authorization provided: " + token);
         }
         return token;
     }
-    
+
     private String getUserIdFromToken(String token) throws JWTException {
         String userId;
         String tokenFormat = token.substring(7);
