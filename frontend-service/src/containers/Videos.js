@@ -146,7 +146,7 @@ class Videos extends React.Component {
               : 'All Videos'}
           </h1>
           <div className="row">
-            {this.state.videos &&
+            {this.state.videos.length !== 0 &&
               this.state.videos.map((video, index) => (
                 <Link className="col-4" key={index} to={`/video/${video.video_id}`}>
                   <div className="card mb-4 shadow-sm">
@@ -163,6 +163,9 @@ class Videos extends React.Component {
                   </div>
                 </Link>
               ))}
+            {this.state.videos.length === 0 && (
+              <div className="col-12">ไม่มี Videos สำหรับวิชานี้</div>
+            )}
           </div>
         </div>
       </Layout>

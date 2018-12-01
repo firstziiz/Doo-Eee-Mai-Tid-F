@@ -7,7 +7,7 @@ import Home from './containers/Home'
 import Login from './containers/Login'
 import Logout from './containers/Logout'
 import Curriculum from './containers/Curriculum'
-import Live from './containers/Live'
+import History from './containers/History'
 import Video from './containers/Video'
 import Videos from './containers/Videos'
 import NotFound from './containers/404'
@@ -69,7 +69,7 @@ class App extends React.Component {
           <Route key={'3'} exact path="/" component={Home} />
           <Route key={'4'} exact path="/curriculum" component={Curriculum} />
           <Route key={'5'} exact path="/videos" component={Videos} />
-          <Route key={'6'} exact path="/live" component={Live} />
+          <Route key={'6'} exact path="/history" component={History} />
           <Route key={'7'} exact path="/subjects/:subjectId" component={Videos} />
           <Route key={'8'} exact path="/video/:videoId" component={Video} />
           <Route key={'9'} component={NotFound} />

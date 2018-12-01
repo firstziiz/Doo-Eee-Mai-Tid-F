@@ -11,6 +11,15 @@ const SubjectService = {
   },
   getSubject: subjectId => {
     return api.get(`${SUBJECT_URL}/subject/${subjectId}`)
+  },
+  getFavoriteSubjects: () => {
+    return api.get(`${SUBJECT_URL}/subject_favorites`)
+  },
+  addFavoriteSubject: subjectId => {
+    const data = new FormData()
+    data.append('subjectId', subjectId)
+
+    return api.post(`${SUBJECT_URL}/subject_favorites`, data)
   }
 }
 

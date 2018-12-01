@@ -91,9 +91,7 @@ class Video extends React.Component {
 
   render() {
     if (!this.state.url) {
-      return (
-        <NotFound />
-      )
+      return <NotFound />
     }
 
     return (
