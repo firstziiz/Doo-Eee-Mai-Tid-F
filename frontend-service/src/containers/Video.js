@@ -90,10 +90,6 @@ class Video extends React.Component {
   }
 
   render() {
-    if (!this.state.url) {
-      return <NotFound />
-    }
-
     return (
       <Layout>
         <div className="embed-responsive">

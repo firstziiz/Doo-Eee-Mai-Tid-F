@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Icon, Table, Col, Card } from 'antd'
+import { Row, Icon, Table, Col, Card, Button } from 'antd'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
@@ -73,6 +73,12 @@ class Videos extends React.Component {
     })
   }
 
+  deleteMaterial = materialId => {
+    MaterialService.deleteByMaterialId(materialId).then(() => {
+      window.location.reload()
+    })
+  }
+
   renderUploadPanel = () => {
     if (this.props.userStore.user.role === 'TEACHER') {
       return (
@@ -127,6 +133,14 @@ class Videos extends React.Component {
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         render: time => <span>{moment(time).format('DD MMM YYYY hh:mm')}</span>
+      },
+      {
+        title: 'Actions',
+        dataIndex: 'action',
+        key: 'action',
+        render: (text, record) => (
+          <Button onClick={() => this.deleteMaterial(record.id)}>Delete</Button>
+        )
       }
     ]
 
