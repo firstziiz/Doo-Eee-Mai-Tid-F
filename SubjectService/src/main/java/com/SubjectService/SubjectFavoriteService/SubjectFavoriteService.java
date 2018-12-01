@@ -1,5 +1,6 @@
 package com.SubjectService.SubjectFavoriteService;
 
+import com.SubjectService.Exception.DuplicateSubjectFavorite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,11 @@ public class SubjectFavoriteService {
     @Autowired
     private SubjectAdapter subjectAdapter;
 
-    public SubjectFavorite addSubjectFavorite(int subjectId, String userId){
+    public SubjectFavorite addSubjectFavorite(int subjectId, String userId) throws DuplicateSubjectFavorite{
+        SubjectFavorite subjectFavorite = subjectFavoriteRepository.findBySubjectIdAndUserId(subjectId, userId);
+        if (subjectFavorite != null) {
+            throw new DuplicateSubjectFavorite("Duplicate Subject Favorite for this user");
+        }
         return subjectFavoriteRepository.save(new SubjectFavorite(subjectId, userId));
     }
     public List<Subject> getSubjectFavoriteByUserId(String userId){
