@@ -5,3 +5,4 @@ export const subjectServiceURL = 'https://subject-service-dot-sit-cloudnative.ap
 export const videoServiceURL = 'https://video-service-dot-sit-cloudnative.appspot.com'
 export const videoHistoryServiceURL =
   'https://video-history-service-dot-sit-cloudnative.appspot.com'
+export const materialServiceURL = 'https://material-service-dot-sit-cloudnative.appspot.com'

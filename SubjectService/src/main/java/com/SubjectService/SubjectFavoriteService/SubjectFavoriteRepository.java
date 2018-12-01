@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface SubjectFavoriteRepository extends JpaRepository<SubjectFavorite, Integer> {
     List<SubjectFavorite> findByUserId(String userId);
+    SubjectFavorite findBySubjectIdAndUserId(int subjectId, String userId);
 }

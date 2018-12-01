@@ -24,4 +24,5 @@
 /nbdist/
 /.nb-gradle/
 
+manifest.yml
 src/main/appengine/app.yaml

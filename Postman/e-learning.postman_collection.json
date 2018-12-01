@@ -372,19 +372,22 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": ""
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "subjectId",
+									"value": "{{subject_id}}",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "{{subject_api}}/subject_favorites/{{subject_id}}/user/{{studentId}}",
+							"raw": "{{subject_api}}/subject_favorites",
 							"host": [
 								"{{subject_api}}"
 							],
 							"path": [
-								"subject_favorites",
-								"{{subject_id}}",
-								"user",
-								"{{studentId}}"
+								"subject_favorites"
 							]
 						}
 					},
@@ -439,13 +442,11 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{subject_api}}/user/59130500007/subject_favorites",
+							"raw": "{{subject_api}}/subject_favorites",
 							"host": [
 								"{{subject_api}}"
 							],
 							"path": [
-								"user",
-								"59130500007",
 								"subject_favorites"
 							]
 						}
