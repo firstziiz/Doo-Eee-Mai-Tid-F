@@ -87,15 +87,15 @@ class Videos extends React.Component {
   }
 
   render() {
-    if (this.state.videos.length === 0) {
-      return (
-        <Layout>
-          <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
-            <Spinner />
-          </Row>
-        </Layout>
-      )
-    }
+    // if (this.state.videos.length === 0) {
+    //   return (
+    //     <Layout>
+    //       <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
+    //         <Spinner />
+    //       </Row>
+    //     </Layout>
+    //   )
+    // }
 
     const columns = [
       {
@@ -130,7 +130,11 @@ class Videos extends React.Component {
     return (
       <Layout>
         <div>
-          <h1>INT401</h1>
+          <h1>
+            {this.subjectId && this.state.subject
+              ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
+              : 'All Videos'}
+          </h1>
           <h3>Materials</h3>
 
           {this.renderUploadPanel()}
@@ -140,11 +144,7 @@ class Videos extends React.Component {
               <Table columns={columns} dataSource={this.state.materials} pagination={false} />
             </Col>
           </Row>
-          <h1>
-            {this.subjectId && this.state.subject
-              ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
-              : 'All Videos'}
-          </h1>
+          <h3>Videos</h3>
           <div className="row">
             {this.state.videos.length !== 0 &&
               this.state.videos.map((video, index) => (
