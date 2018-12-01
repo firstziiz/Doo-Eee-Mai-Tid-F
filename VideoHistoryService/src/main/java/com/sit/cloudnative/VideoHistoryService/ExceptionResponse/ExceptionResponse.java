@@ -1,6 +1,6 @@
-package com.SubjectService.ExceptionResponse;
+package com.sit.cloudnative.VideoHistoryService.ExceptionResponse;
 
-import com.SubjectService.Logger.AuditLogger;
+import com.sit.cloudnative.VideoHistoryService.Logger.AuditLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 

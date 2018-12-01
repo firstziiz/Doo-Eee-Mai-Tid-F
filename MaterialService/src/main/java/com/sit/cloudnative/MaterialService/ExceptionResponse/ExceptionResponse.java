@@ -1,7 +1,7 @@
-package com.SubjectService.ExceptionResponse;
+package com.sit.cloudnative.MaterialService.ExceptionResponse;
 
-import com.SubjectService.Logger.AuditLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sit.cloudnative.MaterialService.Logger.AuditLogger;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;

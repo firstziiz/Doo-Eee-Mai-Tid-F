@@ -43,18 +43,19 @@ public class MaterialController {
     private String fileInitVector;
 
     @RequestMapping(method = RequestMethod.POST, value = "/subject/{subjectId}/materials")
-    public ResponseEntity<?> addMaterial(@PathVariable("subjectId") int subjectId,
+    public ResponseEntity<?> addMaterial(HttpServletRequest request, @PathVariable("subjectId") int subjectId,
             @RequestParam(name = "file", required = true) MultipartFile file,
-            @RequestParam(name = "isActive", required = true) boolean isActive, @RequestAttribute("user") User user,
-            HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException,
-            InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException,
-            InternalException, GeneralSecurityException, IOException, XmlPullParserException {
+            @RequestParam(name = "isActive", required = true) boolean isActive, @RequestAttribute("user") User user)
+            throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
+            ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
+            GeneralSecurityException, IOException, XmlPullParserException {
         String fileType = file.getContentType();
         String fileName = file.getOriginalFilename();
         String filekey = generateTimestampWithFileName(fileName);
         if (!user.canUploadMaterial()) {
             throw new PermissionExpcetion("No upload permission for user:" + user.getUserId());
         }
+
         if (checkValidFileType(fileType)) {
             try {
                 minioStorageService.uploadFile(filekey, file);
