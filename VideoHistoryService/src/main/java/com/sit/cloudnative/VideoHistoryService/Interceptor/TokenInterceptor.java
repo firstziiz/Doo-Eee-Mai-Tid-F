@@ -5,13 +5,18 @@ import com.sit.cloudnative.VideoHistoryService.Exception.JWTException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sit.cloudnative.VideoHistoryService.ExceptionResponse.ExceptionResponse;
+
 public class TokenInterceptor implements HandlerInterceptor {
     private String SECRET;
+
+    private ExceptionResponse exceptionResponse;
 
     public TokenInterceptor(String secret) {
         this.SECRET = secret;
@@ -19,10 +24,18 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = getToken(request);
-        String userId = this.getUserIdFromToken(token);
-        request.setAttribute("userId", userId);
-        return true;
+        if (this.isOptionMethod(request)) {
+            return true;
+        }
+        try {
+            String token = getToken(request);
+            String userId = this.getUserIdFromToken(token);
+            request.setAttribute("userId", userId);
+            return true;
+        } catch (BadRequestException ex) {
+            exceptionResponse.involveResponseWithException(request, response, ex, HttpStatus.BAD_REQUEST);
+            return false;
+        }
     }
 
     private boolean isValidToken (String token){
@@ -54,5 +67,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new JWTException(jwtException.getMessage());
         }
         return userId;
+    }
+
+    private boolean isOptionMethod(HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 }
