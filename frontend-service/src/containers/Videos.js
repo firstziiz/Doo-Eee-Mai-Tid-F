@@ -63,8 +63,6 @@ class Videos extends React.Component {
     })
   }
 
-<<<<<<< HEAD
-=======
   uploadMaterial = async () => {
     const data = new FormData()
     data.append('file', this.state.material)
@@ -88,7 +86,6 @@ class Videos extends React.Component {
     }
   }
 
->>>>>>> bad6bf144afde69c1bbb9b4338f62b276516cbd8
   render() {
     if (this.state.videos.length === 0) {
       return (
