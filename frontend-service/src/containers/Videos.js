@@ -49,7 +49,7 @@ class Videos extends React.Component {
     return this.props.match.params.subjectId
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const subject = await SubjectService.getSubject(this.subjectId).then(resp => resp.data)
     const videos = await VideoService.getVideosBySubjectId(this.subjectId).then(resp => resp.data)
     const materials = await MaterialService.getMaterialsBySubjectId(this.subjectId).then(
@@ -68,7 +68,9 @@ class Videos extends React.Component {
     data.append('file', this.state.material)
     data.append('isActive', true)
 
-    return MaterialService.upload(this.subjectId, data)
+    MaterialService.upload(this.subjectId, data).then(() => {
+      window.location.reload()
+    })
   }
 
   renderUploadPanel = () => {
@@ -87,15 +89,15 @@ class Videos extends React.Component {
   }
 
   render() {
-    // if (this.state.videos.length === 0) {
-    //   return (
-    //     <Layout>
-    //       <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
-    //         <Spinner />
-    //       </Row>
-    //     </Layout>
-    //   )
-    // }
+    if (this.state.videos.length === 0) {
+      return (
+        <Layout>
+          <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
+            <Spinner />
+          </Row>
+        </Layout>
+      )
+    }
 
     const columns = [
       {
