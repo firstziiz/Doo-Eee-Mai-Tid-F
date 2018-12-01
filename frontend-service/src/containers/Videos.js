@@ -31,11 +31,10 @@ class Videos extends React.Component {
   }
 
   render() {
-
     if (this.state.videos.length === 0) {
       return (
         <Layout>
-          <Row type="flex" justify="center" align="middle" style={{ height: '100vh'}}>
+          <Row type="flex" justify="center" align="middle" style={{ height: '100vh' }}>
             <Spinner />
           </Row>
         </Layout>
@@ -51,15 +50,13 @@ class Videos extends React.Component {
               : 'All Videos'}
           </h1>
           <div className="row">
-            {this.state.videos &&
+            {this.state.videos.length !== 0 &&
               this.state.videos.map((video, index) => (
                 <Link className="col-4" key={index} to={`/video/${video.video_id}`}>
                   <div className="card mb-4 shadow-sm">
                     <img src={video.video_thumbnail} className="card-img-top" />
                     <div className="card-body">
-                      <p className="card-text text-muted">
-                        {video.video_name}
-                      </p>
+                      <p className="card-text text-muted">{video.video_name}</p>
                       <div className="d-flex flex-column">
                         <small className="text-muted">{video.teacher.teacher_name}</small>
                         <small className="text-muted">
@@ -70,6 +67,9 @@ class Videos extends React.Component {
                   </div>
                 </Link>
               ))}
+            {this.state.videos.length === 0 && (
+              <div className="col-12">ไม่มี Videos สำหรับวิชานี้</div>
+            )}
           </div>
         </div>
       </Layout>
