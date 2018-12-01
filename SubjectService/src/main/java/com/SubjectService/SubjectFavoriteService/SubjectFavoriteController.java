@@ -31,7 +31,7 @@ public class SubjectFavoriteController {
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/subject_favorites"
+            value = "/user/{userId}/subject_favorites"
     )
     public ResponseEntity<List<Subject>> getSubjectFavorite(@RequestAttribute("userId") long userId){
         logger.info("Getting favorite subject of user: "  + userId);
