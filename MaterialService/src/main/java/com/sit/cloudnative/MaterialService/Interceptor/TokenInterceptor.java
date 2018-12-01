@@ -24,14 +24,15 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
         if (this.isOptionMethod(request)) {
             return true;
         }
         try {
             String token = getToken(request);
-            String userId = this.getUserIdFromToken(token);
-            request.setAttribute("userId", userId);
+            User user = this.getUserFromToken(token);
+            request.setAttribute("user", user);
             return true;
         } catch (BadRequestException ex) {
             exceptionResponse.involveResponseWithException(request, response, ex, HttpStatus.BAD_REQUEST);
@@ -39,7 +40,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
     }
 
-    private boolean isValidToken (String token){
+    private boolean isValidToken(String token) {
         if (token == null) {
             return false;
         } else if (token.startsWith("Bearer") == false || token.equals("")) {
@@ -48,7 +49,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
+    private String getToken(HttpServletRequest httpServletRequest) throws BadRequestException {
         String token = httpServletRequest.getHeader("Authorization");
         if (this.isValidToken(token) == false) {
             throw new BadRequestException("Invalid authorization provided: " + token);
@@ -56,18 +57,17 @@ public class TokenInterceptor implements HandlerInterceptor {
         return token;
     }
 
-    private String getUserIdFromToken(String token) throws JWTException {
-        String userId;
+    private User getUserFromToken(String token) throws JWTException {
+        User user = new User();
         String tokenFormat = token.substring(7);
         try {
-            Jws<Claims> claims = Jwts.parser()
-                    .setSigningKey(this.SECRET)
-                    .parseClaimsJws(tokenFormat);
-            userId = (String) claims.getBody().get("userId");
+            Jws<Claims> claims = Jwts.parser().setSigningKey(this.SECRET).parseClaimsJws(tokenFormat);
+            user.setUserId((String) claims.getBody().get("userId"));
+            user.setRole((String) claims.getBody().get("role"));
         } catch (Exception jwtException) {
             throw new JWTException(jwtException.getMessage());
         }
-        return userId;
+        return user;
     }
 
     private boolean isOptionMethod(HttpServletRequest request) {

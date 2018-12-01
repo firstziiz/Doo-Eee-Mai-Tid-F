@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MaterialRepository extends JpaRepository<Material,String> {
+public interface MaterialRepository extends JpaRepository<Material, Long> {
     List<Material> findBySubjectId(int subjectId);
+
     Material findByFileName(String fileName);
+
+    Material findById(long id);
 }

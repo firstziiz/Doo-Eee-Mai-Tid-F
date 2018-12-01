@@ -20,6 +20,9 @@ public class TokenInterceptorConfig implements WebMvcConfigurer {
 
     @Bean
     public MappedInterceptor tokenInterceptor() {
-        return new MappedInterceptor(new String[] { "/**", "" }, new TokenInterceptor(JWT_SECRET));
+        return new MappedInterceptor(
+                new String[] {"/**", ""},
+                new String[] {"/actuator/**", "/error/**"},
+                new TokenInterceptor(JWT_SECRET));
     }
 }

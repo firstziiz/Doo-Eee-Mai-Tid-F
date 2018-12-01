@@ -14,15 +14,22 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="materials")
+@Table(name = "materials")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt","hibernateLazyInitializer", "handler"}, allowGetters = true)
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt", "hibernateLazyInitializer", "handler" }, allowGetters = true)
 public class Material implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @NotBlank
     @Column(name = "file_name")
     private String fileName;
+
+    @NotBlank
+    @Column(name = "file_key")
+    private String filekey;
 
     @NotNull
     @Column(name = "subject_id")
@@ -38,7 +45,7 @@ public class Material implements Serializable {
 
     @NotNull
     @Column(name = "uploaded_by")
-    private int uploadedBy;
+    private String uploadedBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -53,12 +60,45 @@ public class Material implements Serializable {
     public Material() {
     }
 
-    public Material(@NotBlank String fileName, @NotNull int subjectId, String path, @NotNull boolean isActive, @NotNull int uploadedBy) {
+    public Material(@NotBlank String fileName, @NotNull int subjectId, String path, @NotNull boolean isActive,
+            @NotNull String uploadedBy) {
         this.fileName = fileName;
         this.subjectId = subjectId;
         this.path = path;
         this.isActive = isActive;
         this.uploadedBy = uploadedBy;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getFilekey() {
+        return filekey;
+    }
+
+    public void setFilekey(String filekey) {
+        this.filekey = filekey;
     }
 
     public int getSubjectId() {
@@ -93,11 +133,11 @@ public class Material implements Serializable {
         isActive = active;
     }
 
-    public int getUploadedBy() {
+    public String getUploadedBy() {
         return uploadedBy;
     }
 
-    public void setUploadedBy(int uploadedBy) {
+    public void setUploadedBy(String uploadedBy) {
         this.uploadedBy = uploadedBy;
     }
 }

@@ -1,14 +1,43 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Row } from 'antd'
+import { Row, Icon, Table, Col, Card } from 'antd'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
 import VideoService from '../services/VideoService'
 import requireAuth from '../utils/requireAuth'
 import SubjectService from '../services/SubjectService'
+import MaterialService from '../services/MaterialService'
 import Spinner from '../components/Spinner'
+import { inject, observer } from 'mobx-react'
 
+const UploadPanel = props => (
+  <Row>
+    <Col span={24}>
+      <Card title="New file">
+        <Row type="flex" gutter={32}>
+          <Col span={6}>
+            <p>Select file</p>
+          </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col span={6}>
+            <div className="form-group">
+              <input type="file" className="form-control-file" onChange={e => props.onChange(e)} />
+            </div>
+          </Col>
+          <Col>
+            <button type="submit" className="btn btn-primary mb-2" onClick={props.uploadMaterial}>
+              Upload
+            </button>
+          </Col>
+        </Row>
+      </Card>
+    </Col>
+  </Row>
+)
+
+@observer
+@inject('userStore')
 @requireAuth
 class Videos extends React.Component {
   state = {
@@ -23,13 +52,43 @@ class Videos extends React.Component {
   async componentWillMount() {
     const subject = await SubjectService.getSubject(this.subjectId).then(resp => resp.data)
     const videos = await VideoService.getVideosBySubjectId(this.subjectId).then(resp => resp.data)
+    const materials = await MaterialService.getMaterialsBySubjectId(this.subjectId).then(
+      resp => resp.data
+    )
 
     this.setState({
       subject,
-      videos
+      videos,
+      materials
     })
   }
 
+<<<<<<< HEAD
+=======
+  uploadMaterial = async () => {
+    const data = new FormData()
+    data.append('file', this.state.material)
+    data.append('isActive', true)
+
+    return MaterialService.upload(this.subjectId, data)
+  }
+
+  renderUploadPanel = () => {
+    if (this.props.userStore.user.role === 'TEACHER') {
+      return (
+        <UploadPanel
+          onChange={e =>
+            this.setState({
+              material: e.target.files[0]
+            })
+          }
+          uploadMaterial={this.uploadMaterial}
+        />
+      )
+    }
+  }
+
+>>>>>>> bad6bf144afde69c1bbb9b4338f62b276516cbd8
   render() {
     if (this.state.videos.length === 0) {
       return (
@@ -41,9 +100,49 @@ class Videos extends React.Component {
       )
     }
 
+    const columns = [
+      {
+        title: '#',
+        dataIndex: '#',
+        key: '#',
+        width: 10,
+        render: (text, record, index) => (
+          <Row type="flex" align="middle">
+            <p style={{ margin: 0 }}>{index + 1}</p>
+          </Row>
+        )
+      },
+      {
+        title: 'Material',
+        dataIndex: 'fileName',
+        key: 'fileName',
+        render: (text, record) => (
+          <Row type="flex" align="middle">
+            <Icon type="file" style={{ marginRight: 10 }} />
+            <a href={record.path}>{text}</a>
+          </Row>
+        )
+      },
+      {
+        title: 'Last updated',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt'
+      }
+    ]
+
     return (
       <Layout>
         <div>
+          <h1>INT401</h1>
+          <h3>Materials</h3>
+
+          {this.renderUploadPanel()}
+
+          <Row style={{ margin: '16px 0' }}>
+            <Col span={24}>
+              <Table columns={columns} dataSource={this.state.materials} pagination={false} />
+            </Col>
+          </Row>
           <h1>
             {this.subjectId && this.state.subject
               ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
