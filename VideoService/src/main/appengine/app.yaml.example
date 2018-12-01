@@ -22,6 +22,9 @@ resources:
   disk_size_gb: 10
 
 env_variables:
-  spring_datasource_url: jdbc:mysql://{ip}:{port}/{database}
-  spring_datasource_username:
-  spring_datasource_password:
+  DB_HOST:
+  DB_DATABASE:
+  DB_USERNAME:
+  DB_PASSWORD:
+  NGE_API_PATH:
+  JWT_SECRET:

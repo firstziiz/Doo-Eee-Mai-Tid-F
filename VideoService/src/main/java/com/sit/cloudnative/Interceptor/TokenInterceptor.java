@@ -2,19 +2,20 @@ package com.sit.cloudnative.Interceptor;
 
 import com.sit.cloudnative.Exception.BadRequestException;
 import com.sit.cloudnative.Exception.JWTException;
-import com.sit.cloudnative.Logger.AuditLogger;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
+import com.sit.cloudnative.ExceptionResponse.ExceptionResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class TokenInterceptor implements HandlerInterceptor {
-    AuditLogger logger = new AuditLogger(this.getClass().getName());
-
     private String SECRET;
+
+    private ExceptionResponse exceptionResponse;
 
     public TokenInterceptor(String secret) {
         this.SECRET = secret;
@@ -22,10 +23,18 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = getToken(request);
-        String userId = this.getUserIdFromToken(token);
-        request.setAttribute("userId", userId);
-        return true;
+        if (this.isOptionMethod(request)) {
+            return true;
+        }
+        try {
+            String token = getToken(request);
+            String userId = this.getUserIdFromToken(token);
+            request.setAttribute("userId", userId);
+            return true;
+        } catch (BadRequestException ex) {
+            exceptionResponse.involveResponseWithException(request, response, ex, HttpStatus.BAD_REQUEST);
+            return false;
+        }
     }
 
     private boolean isValidToken (String token){
@@ -40,7 +49,6 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
         String token = httpServletRequest.getHeader("Authorization");
         if (this.isValidToken(token) == false) {
-            logger.error(httpServletRequest, "token invalid: " + token);
             throw new BadRequestException("Invalid authorization provided.");
         }
         return token;
@@ -58,5 +66,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new JWTException(jwtException.getMessage());
         }
         return userId;
+    }
+
+    private boolean isOptionMethod(HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 }
