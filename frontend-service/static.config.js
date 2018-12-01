@@ -33,7 +33,7 @@ export default {
               href="https://fonts.googleapis.com/css?family=Kanit:300,400,700"
               rel="stylesheet"
             />
-            <script src="http://sitflix-dot-sit-cloudnative.appspot.com/env.js" />
+            <script src="/env.js" />
           </Head>
           <Body>{children}</Body>
         </Html>
