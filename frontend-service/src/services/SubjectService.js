@@ -1,6 +1,7 @@
 import api from '../utils/api'
 
-const SUBJECT_URL = `https://subject-service-dot-sit-cloudnative.appspot.com`
+const SUBJECT_URL =
+  window.env.subjectServiceURL || `https://subject-service-dot-sit-cloudnative.appspot.com`
 
 const SubjectService = {
   getSubjectsByProgramId: programId => {

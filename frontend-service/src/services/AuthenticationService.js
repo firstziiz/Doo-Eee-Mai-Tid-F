@@ -1,6 +1,8 @@
 import api from '../utils/api'
 
-const AUTH_URL = `https://authentication-service-dot-sit-cloudnative.appspot.com`
+const AUTH_URL =
+  window.env.authenticationServiceURL ||
+  `https://authentication-service-dot-sit-cloudnative.appspot.com`
 
 const AuthenticationService = {
   login: (userId, password) => {
