@@ -96,12 +96,6 @@ class Sidebar extends React.Component {
                 Curriculum
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/history">
-                <Icon type="notification" theme="outlined" className="mr-2" />
-                Video History
-              </Link>
-            </li>
           </ul>
           <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Favorites Subject!</span>
