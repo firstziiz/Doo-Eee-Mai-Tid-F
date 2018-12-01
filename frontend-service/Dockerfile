@@ -21,6 +21,10 @@ RUN ls -la
 RUN yarn run build
 ENV PORT=8080
 
+COPY ./entrypoint.sh .
+
+ENTRYPOINT [ "./entrypoint.sh" ]
+
 EXPOSE 8080
 
 CMD ["yarn", "serve"]
