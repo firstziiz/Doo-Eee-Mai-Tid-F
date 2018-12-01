@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-static'
 import { Icon } from 'antd'
+import SubjectService from '../../services/SubjectService'
 
 const SidebarStyled = styled.nav`
   position: fixed;
@@ -56,6 +57,28 @@ const SidebarStyled = styled.nav`
 `
 
 class Sidebar extends React.Component {
+  state = {
+    subjects: []
+  }
+
+  async componentDidMount() {
+    await this.getFavoritesSubject()
+  }
+
+  getFavoritesSubject = async () => {
+    try {
+      const subjects = await SubjectService.getFavoriteSubjects().then(resp => resp.data)
+
+      this.setState({
+        subjects
+      })
+    } catch (error) {
+      this.setState({
+        subjects: []
+      })
+    }
+  }
+
   render() {
     return (
       <SidebarStyled className="col-md-2 d-none d-md-block bg-light sidebar">
@@ -73,16 +96,10 @@ class Sidebar extends React.Component {
                 Curriculum
               </Link>
             </li>
-            {/* <li className="nav-item">
-              <Link className="nav-link" to="/videos">
-                <Icon type="youtube" theme="outlined" className="mr-2" />
-                All Videos
-              </Link>
-            </li> */}
             <li className="nav-item">
-              <Link className="nav-link" to="/live">
+              <Link className="nav-link" to="/history">
                 <Icon type="notification" theme="outlined" className="mr-2" />
-                Live
+                Video History
               </Link>
             </li>
           </ul>
@@ -90,24 +107,25 @@ class Sidebar extends React.Component {
             <span>Favorites Subject!</span>
           </h6>
           <ul className="nav flex-column mb-2">
-            <li className="nav-item">
-              <Link className="nav-link" to="/subjects/1">
-                <Icon type="read" theme="outlined" className="mr-2" />
-                INT999 Motorcycle Training
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/subjects/2">
-                <Icon type="read" theme="outlined" className="mr-2" />
-                INT999 Cooking
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/subjects/3">
-                <Icon type="read" theme="outlined" className="mr-2" />
-                INT999 Introduction of Ragnarok M
-              </Link>
-            </li>
+            {this.state.subjects.length !== 0 &&
+              this.state.subjects.map(sj => (
+                <li className="nav-item" key={sj.subject_id}>
+                  <Link className="nav-link align-items-start" to={`/subjects/${sj.subject_id}`}>
+                    <Icon type="read" theme="outlined" className="mr-2 mt-1" />
+                    <div>
+                      <div>
+                        <b>{sj.subject_code}</b>
+                      </div>
+                      <div>{sj.subject_name}</div>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            {this.state.subjects.length === 0 && (
+              <li className="nav-item">
+                <div className="nav-link">ขณะนี้คุณยังไม่มีวิชาโปรดเลย</div>
+              </li>
+            )}
           </ul>
         </div>
       </SidebarStyled>
