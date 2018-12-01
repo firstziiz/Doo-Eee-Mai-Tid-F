@@ -12,7 +12,7 @@ const Container = styled.div`
 `
 
 class Layout extends React.Component {
-  async componentDidMount() {
+  async componentWillMount() {
     const token = store.getAccessToken()
     if (!token) {
       this.props.history.push('/login')

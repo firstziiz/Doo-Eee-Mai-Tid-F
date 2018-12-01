@@ -5,7 +5,7 @@ const requireAuth = Component => {
   @inject('userStore')
   @observer
   class RequireAuth extends React.Component {
-    componentDidMount() {
+    componentWillMount() {
       if (!this.props.userStore.authenticated) {
         this.props.history.replace('/')
         this.props.userStore.setLoginModal(true)
