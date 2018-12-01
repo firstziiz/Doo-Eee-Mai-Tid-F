@@ -3,7 +3,9 @@ import api from '../utils/api'
 let AUTH_URL = `https://authentication-service-dot-sit-cloudnative.appspot.com`
 
 if (typeof window !== 'undefined') {
-  AUTH_URL = window.env.authenticationServiceURL
+  AUTH_URL =
+    window.env.authenticationServiceURL ||
+    `https://authentication-service-dot-sit-cloudnative.appspot.com`
 }
 
 const AuthenticationService = {

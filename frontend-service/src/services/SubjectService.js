@@ -3,7 +3,8 @@ import api from '../utils/api'
 let SUBJECT_URL = `https://subject-service-dot-sit-cloudnative.appspot.com`
 
 if (typeof window !== 'undefined') {
-  SUBJECT_URL = window.env.subjectServiceURL
+  SUBJECT_URL =
+    window.env.subjectServiceURL || `https://subject-service-dot-sit-cloudnative.appspot.com`
 }
 
 const SubjectService = {
