@@ -13,7 +13,7 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Value("${authenservice.jwt.secret}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
