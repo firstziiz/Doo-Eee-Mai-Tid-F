@@ -125,7 +125,8 @@ class Videos extends React.Component {
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        key: 'updatedAt'
+        key: 'updatedAt',
+        render: time => <span>{moment(time).format('DD MMM YYYY hh:mm')}</span>
       }
     ]
 
