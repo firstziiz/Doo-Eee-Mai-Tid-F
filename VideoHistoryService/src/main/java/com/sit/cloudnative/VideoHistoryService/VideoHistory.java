@@ -12,17 +12,17 @@ import java.util.Date;
 @Entity
 @Table(name = "video_histories")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","createdAt","updatedAt"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "createdAt", "updatedAt" })
 public class VideoHistory implements Serializable {
     @EmbeddedId
     CompositePrimaryKey id;
 
-    @Column(name = "created_at",nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
 
-    @Column(name = "updated_at",nullable = false)
+    @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
@@ -42,26 +42,27 @@ public class VideoHistory implements Serializable {
         this.id = id;
     }
 }
+
 @Embeddable
-class CompositePrimaryKey implements Serializable{
+class CompositePrimaryKey implements Serializable {
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
     @Column(name = "video_id")
     private int videoId;
 
     public CompositePrimaryKey() {
     }
 
-    public CompositePrimaryKey(int userId, int videoId) {
+    public CompositePrimaryKey(String userId, int videoId) {
         this.userId = userId;
         this.videoId = videoId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
