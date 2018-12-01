@@ -98,7 +98,7 @@ public class MaterialController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/material/{materialId}")
-    public ResponseEntity<Material> deleteMaterialById(@RequestParam("materialId") long materialId,
+    public ResponseEntity<Material> deleteMaterialById(@PathVariable("materialId") long materialId,
             HttpServletRequest request) throws NoResponseException, InvalidPortException, InvalidEndpointException,
             InsufficientDataException, ErrorResponseException, InvalidBucketNameException, InvalidArgumentException,
             InternalException, GeneralSecurityException, IOException, XmlPullParserException {

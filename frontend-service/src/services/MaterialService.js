@@ -9,6 +9,9 @@ const SubjectService = {
   },
   getMaterialsBySubjectId: subjectId => {
     return api.get(`${MATERIAL_SERVICE_URL}/subject/${subjectId}/materials`)
+  },
+  deleteByMaterialId: materialId => {
+    return api.delete(`${MATERIAL_SERVICE_URL}/material/${materialId}?materialId=${materialId}`)
   }
 }
 

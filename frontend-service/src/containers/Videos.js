@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Icon, Table, Col, Card } from 'antd'
+import { Row, Icon, Table, Col, Card, Button } from 'antd'
 import Layout from '../components/Core/Layout'
 import { Link } from 'react-static'
 import moment from 'moment'
@@ -49,7 +49,7 @@ class Videos extends React.Component {
     return this.props.match.params.subjectId
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const subject = await SubjectService.getSubject(this.subjectId).then(resp => resp.data)
     const videos = await VideoService.getVideosBySubjectId(this.subjectId).then(resp => resp.data)
     const materials = await MaterialService.getMaterialsBySubjectId(this.subjectId).then(
@@ -68,7 +68,15 @@ class Videos extends React.Component {
     data.append('file', this.state.material)
     data.append('isActive', true)
 
-    return MaterialService.upload(this.subjectId, data)
+    MaterialService.upload(this.subjectId, data).then(() => {
+      window.location.reload()
+    })
+  }
+
+  deleteMaterial = materialId => {
+    MaterialService.deleteByMaterialId(materialId).then(() => {
+      window.location.reload()
+    })
   }
 
   renderUploadPanel = () => {
@@ -123,14 +131,27 @@ class Videos extends React.Component {
       {
         title: 'Last updated',
         dataIndex: 'updatedAt',
-        key: 'updatedAt'
+        key: 'updatedAt',
+        render: time => <span>{moment(time).format('DD MMM YYYY hh:mm')}</span>
+      },
+      {
+        title: 'Actions',
+        dataIndex: 'action',
+        key: 'action',
+        render: (text, record) => (
+          <Button onClick={() => this.deleteMaterial(record.id)}>Delete</Button>
+        )
       }
     ]
 
     return (
       <Layout>
         <div>
-          <h1>INT401</h1>
+          <h1>
+            {this.subjectId && this.state.subject
+              ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
+              : 'All Videos'}
+          </h1>
           <h3>Materials</h3>
 
           {this.renderUploadPanel()}
@@ -140,11 +161,7 @@ class Videos extends React.Component {
               <Table columns={columns} dataSource={this.state.materials} pagination={false} />
             </Col>
           </Row>
-          <h1>
-            {this.subjectId && this.state.subject
-              ? `${this.state.subject.subject_code || ''}: ${this.state.subject.subject_name || ''}`
-              : 'All Videos'}
-          </h1>
+          <h3>Videos</h3>
           <div className="row">
             {this.state.videos.length !== 0 &&
               this.state.videos.map((video, index) => (

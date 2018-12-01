@@ -10,17 +10,19 @@ public class VideoHistoryService {
     @Autowired
     private VideoHistoryRepository videoHistoryRepository;
 
-    public VideoHistory createNewHistory(VideoHistory videoHistory){
+    public VideoHistory createNewHistory(VideoHistory videoHistory) {
         return videoHistoryRepository.save(videoHistory);
     }
-    public List<VideoHistory> getUserHistory(int userId){
+
+    public List<VideoHistory> getUserHistory(String userId) {
         return videoHistoryRepository.findByIdUserId(userId);
     }
-    public void deleteUserHistory(VideoHistory videoHistory){
+
+    public void deleteUserHistory(VideoHistory videoHistory) {
         videoHistoryRepository.delete(videoHistory);
     }
 
-    public VideoHistory getHistoryById(CompositePrimaryKey id){
+    public VideoHistory getHistoryById(CompositePrimaryKey id) {
         return videoHistoryRepository.getOne(id);
     }
 }
