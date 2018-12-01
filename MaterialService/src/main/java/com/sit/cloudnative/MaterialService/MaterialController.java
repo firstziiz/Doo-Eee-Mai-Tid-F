@@ -43,9 +43,13 @@ public class MaterialController {
     private String fileInitVector;
 
     @RequestMapping(method = RequestMethod.POST, value = "/subjects/{subjectId}/materials")
-    public ResponseEntity<?> addMaterial(@PathVariable("subjectId") int subjectId,
+    public ResponseEntity<?> addMaterial(
+            HttpServletRequest request,
+            @PathVariable("subjectId") int subjectId,
             @RequestParam(name = "file", required = true) MultipartFile file,
-            @RequestParam(name = "isActive", required = true) boolean isActive, @RequestAttribute("user") User user)
+            @RequestParam(name = "isActive", required = true) boolean isActive,
+            @RequestAttribute("user") User user
+    )
             throws NoResponseException, InvalidPortException, InvalidEndpointException, InsufficientDataException,
             ErrorResponseException, InvalidBucketNameException, InvalidArgumentException, InternalException,
             GeneralSecurityException, IOException, XmlPullParserException {
@@ -68,7 +72,7 @@ public class MaterialController {
                 logger.error(request, "invalid endpoint exception in addMaterial");
                 throw new InvalidEndpointException(minioStorageService.getUrl(), e.getMessage());
             } catch (InsufficientDataException e) {
-                logger.error(request, userId + " insufficient data exception in addMaterial");
+                logger.error(request, user.getUserId() + " insufficient data exception in addMaterial");
                 throw new InsufficientDataException(e.getMessage());
             } catch (InvalidBucketNameException e) {
                 logger.error(request, "invalid bucket name exception in addMaterial");
@@ -94,7 +98,7 @@ public class MaterialController {
             material.setSubjectId(subjectId);
             material.setFileName(timestampWithFileName);
             material.setActive(isActive);
-            material.setUploadedBy(Integer.parseInt(userId));
+            material.setUploadedBy(Integer.parseInt(user.getUserId()));
             Material material_object = materialService.addMaterial(material);
             return new ResponseEntity<Material>(material_object, HttpStatus.CREATED);
         }
