@@ -9,5 +9,4 @@ applications:
     DB_USERNAME: root
     DB_PASSWORD: wowthisisfakepassword
     JWT_SECRET: veryverysecret
-    JWT_EXPIRESEC: 
     NGE_API_PATH:

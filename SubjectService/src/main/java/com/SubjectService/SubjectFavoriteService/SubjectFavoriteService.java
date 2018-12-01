@@ -18,10 +18,10 @@ public class SubjectFavoriteService {
     @Autowired
     private SubjectAdapter subjectAdapter;
 
-    public SubjectFavorite addSubjectFavorite(int subjectId, long userId){
+    public SubjectFavorite addSubjectFavorite(int subjectId, String userId){
         return subjectFavoriteRepository.save(new SubjectFavorite(subjectId, userId));
     }
-    public List<Subject> getSubjectFavoriteByUserId(long userId){
+    public List<Subject> getSubjectFavoriteByUserId(String userId){
         List<SubjectFavorite> subjectFavorites = subjectFavoriteRepository.findByUserId(userId);
         List<Subject> subjects = new ArrayList<Subject>();
         for (SubjectFavorite subjectFav : subjectFavorites) {

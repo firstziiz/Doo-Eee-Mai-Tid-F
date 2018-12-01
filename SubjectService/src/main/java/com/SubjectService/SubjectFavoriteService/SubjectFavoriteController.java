@@ -22,18 +22,19 @@ public class SubjectFavoriteController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/subject_favorites"
+            value = "/subject_favorites/{subject_id}/user/{user_id}"
     )
-    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @RequestAttribute("userId") long userId){
-        logger.info("Add subject" + subjectId + "to favorite" + "by user: " + userId);
+    public ResponseEntity<SubjectFavorite> addSubjectFavorite(@PathVariable("subject_id") int subjectId, @RequestAttribute("user_id") String userId){
+        System.out.println("userId " + userId);
+        logger.info("Add subject " + subjectId + " to favorite" + "by user: " + userId);
         return new ResponseEntity<SubjectFavorite>(subjectFavoriteService.addSubjectFavorite(subjectId, userId), HttpStatus.CREATED);
     }
 
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/subject_favorites"
+            value = "/user/{user_id}/subject_favorites"
     )
-    public ResponseEntity<List<Subject>> getSubjectFavorite(@RequestAttribute("userId") long userId){
+    public ResponseEntity<List<Subject>> getSubjectFavorite(@RequestAttribute("user_id") String userId){
         logger.info("Getting favorite subject of user: "  + userId);
         return new ResponseEntity<List<Subject>>(subjectFavoriteService.getSubjectFavoriteByUserId(userId), HttpStatus.OK);
     }
