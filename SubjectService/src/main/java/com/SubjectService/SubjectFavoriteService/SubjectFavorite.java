@@ -15,7 +15,7 @@ public class SubjectFavorite implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int subjectId;
-    private long userId;
+    private String userId;
 
     @CreationTimestamp
     private Date createdAt;
@@ -23,12 +23,12 @@ public class SubjectFavorite implements Serializable {
     public SubjectFavorite() {
     }
 
-    public SubjectFavorite(int subjectId, long userId) {
+    public SubjectFavorite(int subjectId, String userId) {
         this.subjectId = subjectId;
         this.userId = userId;
     }
 
-    public SubjectFavorite(int id, int subjectId, long userId, Date createdAt) {
+    public SubjectFavorite(int id, int subjectId, String userId, Date createdAt) {
         this.id = id;
         this.subjectId = subjectId;
         this.userId = userId;
@@ -51,11 +51,11 @@ public class SubjectFavorite implements Serializable {
         this.subjectId = subjectId;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

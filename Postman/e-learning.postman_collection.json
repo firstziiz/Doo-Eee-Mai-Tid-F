@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "706f71a0-d17c-41fd-8213-66bb48261148",
+		"_postman_id": "a54901fe-093a-44b3-bd7d-a80876126422",
 		"name": "e-learning",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -37,21 +37,15 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes",
+							"raw": "{{video_api}}/notes",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes"
@@ -73,7 +67,7 @@
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"response should be json object\", function () {",
+									"pm.test(\"response should be json array\", function () {",
 									"    var schema = {",
 									"        \"type\": \"object\"",
 									"    };",
@@ -123,21 +117,15 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes/{{note_id}}",
+							"raw": "{{video_api}}/notes/{{note_id}}",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes",
@@ -145,85 +133,6 @@
 							]
 						},
 						"description": "view note"
-					},
-					"response": []
-				},
-				{
-					"name": "get note by {invalid} note id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "c2453495-84ad-48fc-88d9-51a75fa90a43",
-								"exec": [
-									"pm.test(\"server should response with 404\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});",
-									"",
-									"pm.test(\"response should be json object\", function () {",
-									"    var schema = {",
-									"        \"type\": \"object\"",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});",
-									"",
-									"pm.test(\"object schema must be valid\", function () {",
-									"    var schema = {",
-									"        \"type\": \"object\",",
-									"        \"required\": [\"errorCode\", \"errorMessage\"],",
-									"        \"properties\": {",
-									"            \"errorCode\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"errorMessage\": {",
-									"              \"type\": \"string\"",
-									"            }",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "455de65d-864b-45dc-b12c-79e3ca84a47a",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{api_local}}/notes/123123",
-							"host": [
-								"{{api_local}}"
-							],
-							"path": [
-								"notes",
-								"123123"
-							]
-						}
 					},
 					"response": []
 				},
@@ -268,294 +177,30 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/notes/user",
+							"raw": "{{video_api}}/notes/user/{{user_id}}",
 							"host": [
-								"{{api_local}}"
-							],
-							"path": [
-								"notes",
-								"user"
-							]
-						},
-						"description": "view all notes of a user"
-					},
-					"response": []
-				},
-				{
-					"name": "create a note",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "f9a86780-5749-41f1-b478-4baaf927e753",
-								"exec": [
-									"pm.environment.get(\"user_id\") === undefined && pm.environment.set(\"user_id\", 1);",
-									"",
-									"pm.environment.get(\"video_id\") === undefined && pm.environment.set(\"video_id\", 8084);",
-									"",
-									"pm.environment.get(\"content\") === undefined && pm.environment.set(\"content\", \"Oh hi! Here is a short note you typed.\");"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "8f1786d0-7f2f-4606-af75-4e84a2c5ec6c",
-								"exec": [
-									"pm.test(\"should response with success\", function () {",
-									"    pm.response.to.not.be.error;",
-									"});",
-									"",
-									"pm.test(\"response should be json object\", function () {",
-									"    var schema = {",
-									"        \"type\": \"object\"",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});",
-									"",
-									"pm.test(\"object schema must be valid\", function () {",
-									"    var schema = {",
-									"        \"required\": [\"id\", \"userId\", \"videoId\", \"content\", \"createdAt\", \"updatedAt\"],",
-									"        \"properties\": {",
-									"            \"id\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"userId\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"videoId\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"content\": {",
-									"              \"type\": \"string\"",
-									"            },",
-									"            \"createdAt\": {",
-									"              \"type\": \"string\"",
-									"            },",
-									"            \"updatedAt\": {",
-									"              \"type\": \"string\"",
-									"            }",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"userId\": {{user_id}},\n\t\"videoId\": {{video_id}},\n\t\"content\": \"{{content}}\"\n}"
-						},
-						"url": {
-							"raw": "{{api_local}}/notes",
-							"host": [
-								"{{api_local}}"
-							],
-							"path": [
-								"notes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "edit a note",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "f9a86780-5749-41f1-b478-4baaf927e753",
-								"exec": [
-									"pm.environment.get(\"note_id\") === undefined && pm.environment.set(\"note_id\", 1);",
-									"",
-									"pm.environment.get(\"content\") === undefined && pm.environment.set(\"content\", \"Hey! This is edited note!\");",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "8f1786d0-7f2f-4606-af75-4e84a2c5ec6c",
-								"exec": [
-									"pm.test(\"should response with success\", function () {",
-									"    pm.response.to.not.be.error;",
-									"});",
-									"",
-									"pm.test(\"response should be json object\", function () {",
-									"    var schema = {",
-									"        \"type\": \"object\"",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});",
-									"",
-									"pm.test(\"object schema must be valid\", function () {",
-									"    var schema = {",
-									"        \"required\": [\"id\", \"userId\", \"videoId\", \"content\", \"createdAt\", \"updatedAt\"],",
-									"        \"properties\": {",
-									"            \"id\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"userId\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"videoId\": {",
-									"              \"type\": \"integer\"",
-									"            },",
-									"            \"content\": {",
-									"              \"type\": \"string\"",
-									"            },",
-									"            \"createdAt\": {",
-									"              \"type\": \"string\"",
-									"            },",
-									"            \"updatedAt\": {",
-									"              \"type\": \"string\"",
-									"            }",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});",
-									"",
-									"pm.test(\"note response content must be the same as requested\", function () {",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    var content = jsonData.content;",
-									"    var requestedContent = pm.environment.get(\"content\");",
-									"    pm.expect(content).to.eql(requestedContent);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"content\": \"{{content}}\"\n}"
-						},
-						"url": {
-							"raw": "{{api_local}}/notes/{{note_id}}",
-							"host": [
-								"{{api_local}}"
-							],
-							"path": [
-								"notes",
-								"{{note_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get note by video id and user id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "c2453495-84ad-48fc-88d9-51a75fa90a43",
-								"exec": [
-									"pm.test(\"server should response with 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"response should be json array\", function () {",
-									"    var schema = {",
-									"        \"type\": \"array\",",
-									"        \"items\": {",
-									"            \"type\": \"object\"",
-									"        }",
-									"    };",
-									"    var jsonData = JSON.parse(responseBody);",
-									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsInVzZXJJZCI6IjU4MTMwNTAwMDA5IiwiZXhwIjoxNTQzNjc1OTE5fQ.1-ogMaUULRXuB6L5P2nqyZ-w3Gwh6rhKhoQmcgZjNPU",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{api_local}}/notes/user/video/8081",
-							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"notes",
 								"user",
-								"video",
-								"8081"
+								"{{user_id}}"
 							]
 						},
-						"description": "view all notes in the system"
+						"description": "view all notes of a user"
 					},
 					"response": []
 				}
 			]
 		},
 		{
-			"name": "Video Feature",
+			"name": "Video service",
 			"item": [
 				{
 					"name": "get video by id",
@@ -601,9 +246,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/video/{{video_id}}",
+							"raw": "{{video_api}}/video/{{video_id}}",
 							"host": [
-								"{{api_local}}"
+								"{{video_api}}"
 							],
 							"path": [
 								"video",
@@ -612,25 +257,196 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Subject service",
+			"item": [
 				{
-					"name": "get videos by subject id",
+					"name": "get subject by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "39174577-0206-4b67-8f27-4d302ef96402",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subject_id\", \"subject_name\", \"subject_code\", \"subject_description\"],",
+									"        \"properties\": {",
+									"            \"subject_id\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"subject_name\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"subject_code\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"subject_description\": {",
+									"              \"type\": \"string\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/subject/{{subject_id}}/videos",
+							"raw": "{{subject_api}}/subject/{{subject_id}}",
 							"host": [
-								"{{api_local}}"
+								"{{subject_api}}"
 							],
 							"path": [
 								"subject",
+								"{{subject_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add subject favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "39174577-0206-4b67-8f27-4d302ef96402",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subjectId\", \"userId\", \"id\"],",
+									"        \"properties\": {",
+									"            \"subjectId\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"userId\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"              \"type\": \"integer\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{subject_api}}/subject_favorites/{{subject_id}}/user/{{studentId}}",
+							"host": [
+								"{{subject_api}}"
+							],
+							"path": [
+								"subject_favorites",
 								"{{subject_id}}",
-								"videos"
+								"user",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subject favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "315c9d73-a5d2-4028-9e9d-6c1ba55f538d",
+								"exec": [
+									"pm.test(\"server should response with http status 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"object schema must be valid if there is response data\", function () {",
+									"    var schema = {",
+									"        \"required\": [\"subjectId\", \"userId\", \"id\"],",
+									"        \"properties\": {",
+									"            \"subjectId\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"userId\": {",
+									"              \"type\": \"string\"",
+									"            },",
+									"            \"id\": {",
+									"              \"type\": \"integer\"",
+									"            }",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{subject_api}}/user/59130500007/subject_favorites",
+							"host": [
+								"{{subject_api}}"
+							],
+							"path": [
+								"user",
+								"59130500007",
+								"subject_favorites"
 							]
 						}
 					},
@@ -639,10 +455,24 @@
 			]
 		},
 		{
-			"name": "Material Feature",
+			"name": "AuthenticationService",
 			"item": [
 				{
-					"name": "get material by id",
+					"name": "get user information without token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40b17587-b924-4379-aaf8-a0334f14a368",
+								"exec": [
+									"pm.test(\"API must return http response 400 cause of client error (not send token)\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -651,19 +481,335 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api_local}}/materials/1",
+							"raw": "{{api_local}}/me",
 							"host": [
 								"{{api_local}}"
 							],
 							"path": [
-								"materials",
-								"1"
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user information with token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bba2be28-c5bf-48d1-bfe5-a4cd9b3f7ead",
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"User information is correct\", function () {",
+									"    let json = pm.response.json();",
+									"    pm.expect(json.id).to.equal(\"59130500049\")",
+									"    pm.expect(json.fullName).to.equal(\"Pureewat Kaewpoy\")",
+									"    pm.expect(json.faculty).to.equal(\"SIT\")",
+									"    pm.expect(json.major).to.equal(\"IT\")",
+									"    pm.expect(json.year).to.equal(3)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTdHVkZW50U2VydmljZSIsImlkIjoiNTkxMzA1MDAwNDkiLCJleHAiOjE1NDE4NjQ5NzF9.mN5FsjPwDlC5dsdQ07nzcBjHvPsWcUEWAfkUBmUZU1g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_local}}/me",
+							"host": [
+								"{{api_local}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token shold not null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "259edd5a-73cf-441d-99e0-065aac305e8a",
+								"exec": [
+									"pm.test(\"Must return token and expire date\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.token).to.not.be.null;",
+									"    pm.expect(jsonData.expiryDate).to.not.be.null;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "{{studentId}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_local}}/login",
+							"host": [
+								"{{api_local}}"
+							],
+							"path": [
+								"login"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "VideoHistory service",
+			"item": [
+				{
+					"name": "Get user history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84f318b5-c32e-4c66-80ae-3400912fb2f3",
+								"exec": [
+									"pm.test(\"server should response with 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response should be json array\", function () {",
+									"    var schema = {",
+									"        \"type\": \"array\",",
+									"        \"items\": {",
+									"            \"type\": \"object\"",
+									"        }",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a7a9898-1df4-4d16-a1d7-7ef26ef1214b",
+								"exec": [
+									"pm.test(\"server should response with 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"response should be json\", function () {",
+									"    var schema = {",
+									"        \"type\": \"object\",",
+									"        ",
+									"    };",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b17472ab-e388-4966-ab6a-dd805df2a170",
+								"exec": [
+									"pm.test(\"server should response with 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video_id",
+									"value": "6",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{videohistory_api}}/users/1/video-history",
+							"host": [
+								"{{videohistory_api}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"video-history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "389a307c-cb75-4eb8-bc90-242ff7ff2ceb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e87ac11d-b092-4267-8599-0f9fdda0efbf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d0d34170-3882-421f-a352-34f20aed54b2",
+			"key": "video_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "421121b7-0833-404e-9544-4166faaa2cf5",
+			"key": "video_id",
+			"value": "8286",
+			"type": "string"
+		},
+		{
+			"id": "73e1460b-d9fd-4f7a-845f-031936d771c3",
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "87b90e32-fbd1-4f85-a28d-f91fb0fb944d",
+			"key": "note_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "35634c58-433c-402d-8445-8dbadffb7cdf",
+			"key": "subject_api",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"id": "9b110628-2d68-43e4-bb71-d0ec87065bc7",
+			"key": "subject_id",
+			"value": "2",
+			"type": "string"
 		}
 	]
 }

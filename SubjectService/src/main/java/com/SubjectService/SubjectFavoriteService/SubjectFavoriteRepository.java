@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface SubjectFavoriteRepository extends JpaRepository<SubjectFavorite, Integer> {
-    List<SubjectFavorite> findByUserId(Long userId);
+    List<SubjectFavorite> findByUserId(String userId);
 }
