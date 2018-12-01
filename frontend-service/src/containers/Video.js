@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css'
 
 import { videoServiceURL, videoHistoryServiceURL } from '../utils/env'
 import requireAuth from '../utils/requireAuth'
+import NotFound from '../containers/404'
 
 @requireAuth
 class Video extends React.Component {
@@ -22,6 +23,7 @@ class Video extends React.Component {
   handleNoteChange = value => {
     this.setState({ note: value })
   }
+
   get videoId() {
     return this.props.match.params.videoId
   }
@@ -32,14 +34,12 @@ class Video extends React.Component {
     data.append('video_id', this.videoId)
     data.append('timestamp', moment(new Date()).format('x'))
 
-    const response = await axios({
+    await axios({
       url: `/video_histories`,
       baseURL: videoHistoryServiceURL,
       method: 'post',
       data
     })
-
-    console.log(response)
   }
 
   async componentDidMount() {
@@ -90,6 +90,12 @@ class Video extends React.Component {
   }
 
   render() {
+    if (!this.state.url) {
+      return (
+        <NotFound />
+      )
+    }
+
     return (
       <Layout>
         <div className="embed-responsive">
@@ -99,9 +105,6 @@ class Video extends React.Component {
           <div className="col-4">
             <div className="detail">
               <h4 className="mb-0">{this.state.name}</h4>
-              {/* <h6 className="text-muted">99,999 Views</h6> */}
-              {/* <div className="text-muted">Duration:  mins</div> */}
-              {/* <div className="text-muted">Profressor: Dr. Kunchai Sodhom — INT101</div> */}
               <div className="text-muted">Date: {this.state.date}</div>
               <div className="text-muted">
                 Time: {this.state.starttime} - {this.state.endtime}

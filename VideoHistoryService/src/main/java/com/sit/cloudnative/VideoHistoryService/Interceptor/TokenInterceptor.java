@@ -2,6 +2,7 @@ package com.sit.cloudnative.VideoHistoryService.Interceptor;
 
 import com.sit.cloudnative.VideoHistoryService.Exception.BadRequestException;
 import com.sit.cloudnative.VideoHistoryService.Exception.JWTException;
+import com.sit.cloudnative.VideoHistoryService.Logger.AuditLogger;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.sit.cloudnative.VideoHistoryService.ExceptionResponse.ExceptionResponse;
 
 public class TokenInterceptor implements HandlerInterceptor {
+    AuditLogger logger = new AuditLogger(this.getClass().getName());
+
     private String SECRET;
 
     private ExceptionResponse exceptionResponse;
@@ -50,6 +53,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String getToken (HttpServletRequest httpServletRequest) throws BadRequestException {
         String token = httpServletRequest.getHeader("Authorization");
         if (this.isValidToken(token) == false) {
+            logger.error(httpServletRequest, "Invalid authorization provided.");
             throw new BadRequestException("Invalid authorization provided.");
         }
         return token;
