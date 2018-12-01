@@ -36,12 +36,6 @@ public class MaterialController {
     @Autowired
     private MinioStorageService minioStorageService;
 
-    @Value("${storage.file.name.key}")
-    private String fileKey;
-
-    @Value("${storage.file.name.initVector}")
-    private String fileInitVector;
-
     @RequestMapping(method = RequestMethod.POST, value = "/subject/{subjectId}/materials")
     public ResponseEntity<?> addMaterial(HttpServletRequest request, @PathVariable("subjectId") int subjectId,
             @RequestParam(name = "file", required = true) MultipartFile file,
