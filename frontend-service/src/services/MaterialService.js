@@ -1,7 +1,10 @@
 import api from '../utils/api'
 
-const MATERIAL_SERVICE_URL =
-  window.env.materialServiceURL || 'https://material-service-dot-sit-cloudnative.appspot.com'
+let MATERIAL_SERVICE_URL = 'https://material-service-dot-sit-cloudnative.appspot.com'
+
+if (typeof window !== 'undefined') {
+  MATERIAL_SERVICE_URL = window.env.materialServiceURL
+}
 
 const SubjectService = {
   upload: (subjectId, data) => {
