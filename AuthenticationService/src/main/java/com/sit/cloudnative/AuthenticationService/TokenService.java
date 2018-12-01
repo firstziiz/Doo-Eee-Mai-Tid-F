@@ -18,10 +18,10 @@ import com.sit.cloudnative.AuthenticationService.Exception.TokenNotFoundExceptio
 
 @Service
 public class TokenService {
-    @Value("${authenservice.jwt.secret}")
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    @Value("${authenservice.jwt.expiresec}")
+    @Value("${jwt.expiresec}")
     private long EXPIRE_IN_SECOND;
 
     private final int MILLISECOND = 1000;
